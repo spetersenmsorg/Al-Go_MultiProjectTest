@@ -1,0 +1,20 @@
+name: Recording
+description: Test recording
+start:
+  profile: null
+steps:
+  - type: invoke
+    target:
+      - page: Business Manager Role Center
+        runtimeRef: b0
+      - part: Control16
+      - page: O365 Activities
+      - action: Sales This Month
+    invokeType: DrillDown
+    description: Invoke DrillDown on <caption>Sales This Month</caption>
+  - type: page-shown
+    source:
+      page: Customer Ledger Entries
+    modal: false
+    runtimeId: b6q
+    description: Page <caption>Customer Ledger Entries</caption> was shown.

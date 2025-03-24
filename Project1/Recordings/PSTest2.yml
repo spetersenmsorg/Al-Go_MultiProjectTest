@@ -1,0 +1,16 @@
+name: Recording
+description: Test recording
+start:
+  profile: null
+steps:
+  - type: navigate
+    target:
+      - page: Business Manager Role Center
+      - action: Vendors
+    description: Navigate to <caption>Vendors</caption>
+  - type: page-shown
+    source:
+      page: Vendor List
+    modal: false
+    runtimeId: bkl
+    description: Page <caption>Vendors</caption> was shown.
