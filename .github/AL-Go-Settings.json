@@ -1,4 +1,10 @@
 {
   "type": "PTE",
-  "templateUrl": "https://github.com/microsoft/AL-Go-PTE@main"
+  "templateUrl": "https://github.com/microsoft/AL-Go-PTE@main",
+  "generateDependencyArtifact": true,
+  "incrementalBuilds": {
+    "onPush": true,
+    "onPull_Request": true,
+    "mode": "modifiedApps"
+  }
 }
