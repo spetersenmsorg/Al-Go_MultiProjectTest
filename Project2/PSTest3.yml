@@ -1,0 +1,16 @@
+name: PSTest3
+description: Test recording
+start:
+  profile: null
+steps:
+  - type: navigate
+    target:
+      - page: Business Manager Role Center
+      - action: Items
+    description: Navigate to <caption>Items</caption>
+  - type: page-shown
+    source:
+      page: Item List
+    modal: false
+    runtimeId: bvj
+    description: Page <caption>Items</caption> was shown.
