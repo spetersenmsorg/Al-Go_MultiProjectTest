@@ -1,10 +1,11 @@
 {
   "type": "PTE",
-  "templateUrl": "https://github.com/microsoft/AL-Go-PTE@main",
+  "templateUrl": "https://github.com/spetersenms/AL-Go@PageScriptReporter",
   "generateDependencyArtifact": true,
   "incrementalBuilds": {
     "onPush": true,
     "onPull_Request": true,
     "mode": "modifiedApps"
-  }
+  },
+  "templateSha": "2942ab6a6f95372202cdf044cf28615f88b63530"
 }
