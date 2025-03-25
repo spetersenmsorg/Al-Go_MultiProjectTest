@@ -3,8 +3,13 @@
   "appFolders": [
     "./app1"
   ],
-  "testFolders": [],
+  "testFolders": [
+    "app1.Test"
+  ],
   "bcptTestFolders": [],
-  "pageScriptingTests": [ "Recordings/Scenario1", "Recordings/Scenario2" ],
+  "pageScriptingTests": [
+    "Recordings/Scenario1",
+    "Recordings/Scenario2"
+  ],
   "artifact": "//*//latest"
 }
