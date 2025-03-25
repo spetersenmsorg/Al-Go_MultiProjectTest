@@ -5,6 +5,6 @@
   ],
   "testFolders": [],
   "bcptTestFolders": [],
-  "pageScriptingTests": [ "Recordings" ],
+  "pageScriptingTests": [ "Recordings/Scenario1", "Recordings/Scenario2" ],
   "artifact": "//*//latest"
 }
