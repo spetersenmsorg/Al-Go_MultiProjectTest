@@ -6,5 +6,5 @@
   "testFolders": [],
   "bcptTestFolders": [],
   "pageScriptingTests": [ "Recordings" ],
-  "artifact": "//*//latest",
+  "artifact": "//*//latest"
 }
