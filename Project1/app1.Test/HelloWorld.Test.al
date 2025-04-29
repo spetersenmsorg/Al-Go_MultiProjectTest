@@ -1,4 +1,4 @@
-codeunit 50000 "HelloWorld Test"
+codeunit 50001 "HelloWorld Test"
 {
     Subtype = Test;
 
@@ -10,7 +10,6 @@ codeunit 50000 "HelloWorld Test"
     begin
         CustList.OpenView();
         CustList.Close();
-        MessageDisplayed := false;
         if (not MessageDisplayed) then
             ERROR('Message was not displayed!');
     end;
