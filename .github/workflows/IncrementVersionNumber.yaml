@@ -45,7 +45,7 @@ jobs:
       pull-requests: write
     steps:
       - name: Dump Workflow Information
-        uses: spetersenms/AL-Go/Actions/DumpWorkflowInfo@PageScriptReporter
+        uses: spetersenms/AL-Go/Actions/DumpWorkflowInfo@MarkdownFix
         with:
           shell: powershell
 
@@ -54,18 +54,18 @@ jobs:
 
       - name: Initialize the workflow
         id: init
-        uses: spetersenms/AL-Go/Actions/WorkflowInitialize@PageScriptReporter
+        uses: spetersenms/AL-Go/Actions/WorkflowInitialize@MarkdownFix
         with:
           shell: powershell
 
       - name: Read settings
-        uses: spetersenms/AL-Go/Actions/ReadSettings@PageScriptReporter
+        uses: spetersenms/AL-Go/Actions/ReadSettings@MarkdownFix
         with:
           shell: powershell
 
       - name: Read secrets
         id: ReadSecrets
-        uses: spetersenms/AL-Go/Actions/ReadSecrets@PageScriptReporter
+        uses: spetersenms/AL-Go/Actions/ReadSecrets@MarkdownFix
         with:
           shell: powershell
           gitHubSecrets: ${{ toJson(secrets) }}
@@ -73,7 +73,7 @@ jobs:
           useGhTokenWorkflowForPush: '${{ github.event.inputs.useGhTokenWorkflow }}'
 
       - name: Increment Version Number
-        uses: spetersenms/AL-Go/Actions/IncrementVersionNumber@PageScriptReporter
+        uses: spetersenms/AL-Go/Actions/IncrementVersionNumber@MarkdownFix
         with:
           shell: powershell
           token: ${{ steps.ReadSecrets.outputs.TokenForPush }}
@@ -84,7 +84,7 @@ jobs:
 
       - name: Finalize the workflow
         if: always()
-        uses: spetersenms/AL-Go/Actions/WorkflowPostProcess@PageScriptReporter
+        uses: spetersenms/AL-Go/Actions/WorkflowPostProcess@MarkdownFix
         env:
           GITHUB_TOKEN: ${{ github.token }}
         with:

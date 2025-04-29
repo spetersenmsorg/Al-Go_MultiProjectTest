@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       appVersion:
-        description: App version to deploy to environment(s) (current, prerelease, draft, latest or version number)
+        description: App version to deploy to environment(s) (current, prerelease, draft, latest, version number or PR_<PR Id>)
         required: false
         default: 'current'
       environmentName:
@@ -36,7 +36,7 @@ jobs:
       telemetryScopeJson: ${{ steps.init.outputs.telemetryScopeJson }}
     steps:
       - name: Dump Workflow Information
-        uses: spetersenms/AL-Go/Actions/DumpWorkflowInfo@PageScriptReporter
+        uses: spetersenms/AL-Go/Actions/DumpWorkflowInfo@MarkdownFix
         with:
           shell: powershell
 
@@ -45,19 +45,19 @@ jobs:
 
       - name: Initialize the workflow
         id: init
-        uses: spetersenms/AL-Go/Actions/WorkflowInitialize@PageScriptReporter
+        uses: spetersenms/AL-Go/Actions/WorkflowInitialize@MarkdownFix
         with:
           shell: powershell
 
       - name: Read settings
         id: ReadSettings
-        uses: spetersenms/AL-Go/Actions/ReadSettings@PageScriptReporter
+        uses: spetersenms/AL-Go/Actions/ReadSettings@MarkdownFix
         with:
           shell: powershell
 
       - name: Determine Deployment Environments
         id: DetermineDeploymentEnvironments
-        uses: spetersenms/AL-Go/Actions/DetermineDeploymentEnvironments@PageScriptReporter
+        uses: spetersenms/AL-Go/Actions/DetermineDeploymentEnvironments@MarkdownFix
         env:
           GITHUB_TOKEN: ${{ github.token }}
         with:
@@ -75,7 +75,7 @@ jobs:
 
       - name: Read secrets
         id: ReadSecrets
-        uses: spetersenms/AL-Go/Actions/ReadSecrets@PageScriptReporter
+        uses: spetersenms/AL-Go/Actions/ReadSecrets@MarkdownFix
         if: steps.DetermineDeploymentEnvironments.outputs.UnknownEnvironment == 1
         with:
           shell: powershell
@@ -107,7 +107,7 @@ jobs:
             Write-Host "No AuthContext provided for $envName, initiating Device Code flow"
             $ALGoHelperPath = "$([System.IO.Path]::GetTempFileName()).ps1"
             $webClient = New-Object System.Net.WebClient
-            $webClient.DownloadFile('https://raw.githubusercontent.com/spetersenms/AL-Go/PageScriptReporter/Actions/AL-Go-Helper.ps1', $ALGoHelperPath)
+            $webClient.DownloadFile('https://raw.githubusercontent.com/spetersenms/AL-Go/MarkdownFix/Actions/AL-Go-Helper.ps1', $ALGoHelperPath)
             . $ALGoHelperPath
             DownloadAndImportBcContainerHelper
             $authContext = New-BcAuthContext -includeDeviceLogin -deviceLoginTimeout ([TimeSpan]::FromSeconds(0))
@@ -141,21 +141,21 @@ jobs:
           Add-Content -Encoding UTF8 -Path $env:GITHUB_OUTPUT -Value "envName=$envName"
 
       - name: Read settings
-        uses: spetersenms/AL-Go/Actions/ReadSettings@PageScriptReporter
+        uses: spetersenms/AL-Go/Actions/ReadSettings@MarkdownFix
         with:
           shell: ${{ matrix.shell }}
           get: type,powerPlatformSolutionFolder
 
       - name: Read secrets
         id: ReadSecrets
-        uses: spetersenms/AL-Go/Actions/ReadSecrets@PageScriptReporter
+        uses: spetersenms/AL-Go/Actions/ReadSecrets@MarkdownFix
         with:
           shell: ${{ matrix.shell }}
           gitHubSecrets: ${{ toJson(secrets) }}
           getSecrets: '${{ steps.envName.outputs.envName }}-AuthContext,${{ steps.envName.outputs.envName }}_AuthContext,AuthContext'
 
       - name: Get Artifacts for deployment
-        uses: spetersenms/AL-Go/Actions/GetArtifactsForDeployment@PageScriptReporter
+        uses: spetersenms/AL-Go/Actions/GetArtifactsForDeployment@MarkdownFix
         with:
           shell: ${{ matrix.shell }}
           artifactsVersion: ${{ github.event.inputs.appVersion }}
@@ -163,7 +163,7 @@ jobs:
 
       - name: Deploy to Business Central
         id: Deploy
-        uses: spetersenms/AL-Go/Actions/Deploy@PageScriptReporter
+        uses: spetersenms/AL-Go/Actions/Deploy@MarkdownFix
         env:
           Secrets: '${{ steps.ReadSecrets.outputs.Secrets }}'
         with:
@@ -172,10 +172,11 @@ jobs:
           artifactsFolder: '.artifacts'
           type: 'Publish'
           deploymentEnvironmentsJson: ${{ needs.Initialization.outputs.deploymentEnvironmentsJson }}
+          artifactsVersion: ${{ github.event.inputs.appVersion }}
 
       - name: Deploy to Power Platform
         if: env.type == 'PTE' && env.powerPlatformSolutionFolder != ''
-        uses: spetersenms/AL-Go/Actions/DeployPowerPlatform@PageScriptReporter
+        uses: spetersenms/AL-Go/Actions/DeployPowerPlatform@MarkdownFix
         env:
           Secrets: '${{ steps.ReadSecrets.outputs.Secrets }}'
         with:
@@ -194,7 +195,7 @@ jobs:
 
       - name: Finalize the workflow
         id: PostProcess
-        uses: spetersenms/AL-Go/Actions/WorkflowPostProcess@PageScriptReporter
+        uses: spetersenms/AL-Go/Actions/WorkflowPostProcess@MarkdownFix
         env:
           GITHUB_TOKEN: ${{ github.token }}
         with:

@@ -1,11 +1,11 @@
 {
   "type": "PTE",
-  "templateUrl": "https://github.com/spetersenms/AL-Go@PageScriptReporter",
+  "templateUrl": "https://github.com/spetersenms/AL-Go@MarkdownFix",
   "generateDependencyArtifact": true,
   "incrementalBuilds": {
     "onPush": true,
     "onPull_Request": true,
     "mode": "modifiedApps"
   },
-  "templateSha": "2942ab6a6f95372202cdf044cf28615f88b63530"
+  "templateSha": "ecc0c8bc5e343c2c922e95a7edaa136b8f827e57"
 }

@@ -30,18 +30,18 @@ jobs:
 
       - name: Initialize the workflow
         id: init
-        uses: spetersenms/AL-Go/Actions/WorkflowInitialize@PageScriptReporter
+        uses: spetersenms/AL-Go/Actions/WorkflowInitialize@MarkdownFix
         with:
           shell: powershell
 
       - name: Read settings
-        uses: spetersenms/AL-Go/Actions/ReadSettings@PageScriptReporter
+        uses: spetersenms/AL-Go/Actions/ReadSettings@MarkdownFix
         with:
           shell: powershell
 
       - name: Determine Deployment Environments
         id: DetermineDeploymentEnvironments
-        uses: spetersenms/AL-Go/Actions/DetermineDeploymentEnvironments@PageScriptReporter
+        uses: spetersenms/AL-Go/Actions/DetermineDeploymentEnvironments@MarkdownFix
         env:
           GITHUB_TOKEN: ${{ github.token }}
         with:
@@ -54,7 +54,7 @@ jobs:
         uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b # v5.0.0
 
       - name: Build Reference Documentation
-        uses: spetersenms/AL-Go/Actions/BuildReferenceDocumentation@PageScriptReporter
+        uses: spetersenms/AL-Go/Actions/BuildReferenceDocumentation@MarkdownFix
         with:
           shell: powershell
           artifacts: 'latest'
@@ -71,7 +71,7 @@ jobs:
 
       - name: Finalize the workflow
         if: always()
-        uses: spetersenms/AL-Go/Actions/WorkflowPostProcess@PageScriptReporter
+        uses: spetersenms/AL-Go/Actions/WorkflowPostProcess@MarkdownFix
         env:
           GITHUB_TOKEN: ${{ github.token }}
         with:

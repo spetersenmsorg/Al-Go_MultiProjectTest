@@ -39,13 +39,16 @@ jobs:
       githubRunner: ${{ steps.ReadSettings.outputs.GitHubRunnerJson }}
       githubRunnerShell: ${{ steps.ReadSettings.outputs.GitHubRunnerShell }}
       projects: ${{ steps.determineProjectsToBuild.outputs.ProjectsJson }}
+      skippedProjects: ${{ steps.determineProjectsToBuild.outputs.SkippedProjectsJson }}
       projectDependenciesJson: ${{ steps.determineProjectsToBuild.outputs.ProjectDependenciesJson }}
       buildOrderJson: ${{ steps.determineProjectsToBuild.outputs.BuildOrderJson }}
-      powerPlatformSolutionFolder: ${{ steps.DeterminePowerPlatformSolutionFolder.outputs.powerPlatformSolutionFolder }}
+      baselineWorkflowRunId: ${{ steps.determineProjectsToBuild.outputs.BaselineWorkflowRunId }}
+      baselineWorkflowSHA: ${{ steps.determineProjectsToBuild.outputs.BaselineWorkflowSHA }}
       workflowDepth: ${{ steps.DetermineWorkflowDepth.outputs.WorkflowDepth }}
+      powerPlatformSolutionFolder: ${{ steps.DeterminePowerPlatformSolutionFolder.outputs.powerPlatformSolutionFolder }}
     steps:
       - name: Dump Workflow Information
-        uses: spetersenms/AL-Go/Actions/DumpWorkflowInfo@PageScriptReporter
+        uses: spetersenms/AL-Go/Actions/DumpWorkflowInfo@MarkdownFix
         with:
           shell: powershell
 
@@ -56,13 +59,13 @@ jobs:
 
       - name: Initialize the workflow
         id: init
-        uses: spetersenms/AL-Go/Actions/WorkflowInitialize@PageScriptReporter
+        uses: spetersenms/AL-Go/Actions/WorkflowInitialize@MarkdownFix
         with:
           shell: powershell
 
       - name: Read settings
         id: ReadSettings
-        uses: spetersenms/AL-Go/Actions/ReadSettings@PageScriptReporter
+        uses: spetersenms/AL-Go/Actions/ReadSettings@MarkdownFix
         with:
           shell: powershell
           get: type,powerPlatformSolutionFolder,useGitSubmodules
@@ -70,7 +73,7 @@ jobs:
       - name: Read submodules token
         id: ReadSubmodulesToken
         if: env.useGitSubmodules != 'false' && env.useGitSubmodules != ''
-        uses: spetersenms/AL-Go/Actions/ReadSecrets@PageScriptReporter
+        uses: spetersenms/AL-Go/Actions/ReadSecrets@MarkdownFix
         with:
           shell: powershell
           gitHubSecrets: ${{ toJson(secrets) }}
@@ -91,7 +94,7 @@ jobs:
 
       - name: Determine Projects To Build
         id: determineProjectsToBuild
-        uses: spetersenms/AL-Go/Actions/DetermineProjectsToBuild@PageScriptReporter
+        uses: spetersenms/AL-Go/Actions/DetermineProjectsToBuild@MarkdownFix
         with:
           shell: powershell
           maxBuildDepth: ${{ env.workflowDepth }}
@@ -104,7 +107,7 @@ jobs:
 
       - name: Determine Delivery Target Secrets
         id: DetermineDeliveryTargetSecrets
-        uses: spetersenms/AL-Go/Actions/DetermineDeliveryTargets@PageScriptReporter
+        uses: spetersenms/AL-Go/Actions/DetermineDeliveryTargets@MarkdownFix
         with:
           shell: powershell
           projectsJson: '${{ steps.determineProjectsToBuild.outputs.ProjectsJson }}'
@@ -112,7 +115,7 @@ jobs:
 
       - name: Read secrets
         id: ReadSecrets
-        uses: spetersenms/AL-Go/Actions/ReadSecrets@PageScriptReporter
+        uses: spetersenms/AL-Go/Actions/ReadSecrets@MarkdownFix
         with:
           shell: powershell
           gitHubSecrets: ${{ toJson(secrets) }}
@@ -120,7 +123,7 @@ jobs:
 
       - name: Determine Delivery Targets
         id: DetermineDeliveryTargets
-        uses: spetersenms/AL-Go/Actions/DetermineDeliveryTargets@PageScriptReporter
+        uses: spetersenms/AL-Go/Actions/DetermineDeliveryTargets@MarkdownFix
         env:
           Secrets: '${{ steps.ReadSecrets.outputs.Secrets }}'
         with:
@@ -130,7 +133,7 @@ jobs:
 
       - name: Determine Deployment Environments
         id: DetermineDeploymentEnvironments
-        uses: spetersenms/AL-Go/Actions/DetermineDeploymentEnvironments@PageScriptReporter
+        uses: spetersenms/AL-Go/Actions/DetermineDeploymentEnvironments@MarkdownFix
         env:
           GITHUB_TOKEN: ${{ github.token }}
         with:
@@ -146,16 +149,27 @@ jobs:
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
       - name: Read settings
-        uses: spetersenms/AL-Go/Actions/ReadSettings@PageScriptReporter
+        uses: spetersenms/AL-Go/Actions/ReadSettings@MarkdownFix
         with:
           shell: powershell
           get: templateUrl
 
+      - name: Read secrets
+        id: ReadSecrets
+        uses: spetersenms/AL-Go/Actions/ReadSecrets@MarkdownFix
+        with:
+          shell: powershell
+          gitHubSecrets: ${{ toJson(secrets) }}
+          getSecrets: 'ghTokenWorkflow'
+
       - name: Check for updates to AL-Go system files
-        uses: spetersenms/AL-Go/Actions/CheckForUpdates@PageScriptReporter
+        uses: spetersenms/AL-Go/Actions/CheckForUpdates@MarkdownFix
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
         with:
           shell: powershell
           templateUrl: ${{ env.templateUrl }}
+          token: ${{ fromJson(steps.ReadSecrets.outputs.Secrets).ghTokenWorkflow }}
           downloadLatest: true
 
   Build:
@@ -174,7 +188,10 @@ jobs:
       project: ${{ matrix.project }}
       projectName: ${{ matrix.projectName }}
       buildMode: ${{ matrix.buildMode }}
+      skippedProjectsJson: ${{ needs.Initialization.outputs.skippedProjects }}
       projectDependenciesJson: ${{ needs.Initialization.outputs.projectDependenciesJson }}
+      baselineWorkflowRunId: ${{ needs.Initialization.outputs.baselineWorkflowRunId }}
+      baselineWorkflowSHA: ${{ needs.Initialization.outputs.baselineWorkflowSHA }}
       secrets: 'licenseFileUrl,codeSignCertificateUrl,*codeSignCertificatePassword,keyVaultCertificateUrl,*keyVaultCertificatePassword,keyVaultClientId,gitHubPackagesContext,applicationInsightsConnectionString'
       signArtifacts: true
       useArtifactCache: true
@@ -197,12 +214,12 @@ jobs:
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
       - name: Download artifacts
-        uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4.1.8
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
         with:
           path: '.artifacts'
 
       - name: Read settings
-        uses: spetersenms/AL-Go/Actions/ReadSettings@PageScriptReporter
+        uses: spetersenms/AL-Go/Actions/ReadSettings@MarkdownFix
         with:
           shell: powershell
 
@@ -211,7 +228,7 @@ jobs:
         uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b # v5.0.0
 
       - name: Build Reference Documentation
-        uses: spetersenms/AL-Go/Actions/BuildReferenceDocumentation@PageScriptReporter
+        uses: spetersenms/AL-Go/Actions/BuildReferenceDocumentation@MarkdownFix
         with:
           shell: powershell
           artifacts: '.artifacts'
@@ -243,12 +260,12 @@ jobs:
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
       - name: Download artifacts
-        uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4.1.8
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
         with:
           path: '.artifacts'
 
       - name: Read settings
-        uses: spetersenms/AL-Go/Actions/ReadSettings@PageScriptReporter
+        uses: spetersenms/AL-Go/Actions/ReadSettings@MarkdownFix
         with:
           shell: ${{ matrix.shell }}
           get: type,powerPlatformSolutionFolder
@@ -262,7 +279,7 @@ jobs:
 
       - name: Read secrets
         id: ReadSecrets
-        uses: spetersenms/AL-Go/Actions/ReadSecrets@PageScriptReporter
+        uses: spetersenms/AL-Go/Actions/ReadSecrets@MarkdownFix
         with:
           shell: ${{ matrix.shell }}
           gitHubSecrets: ${{ toJson(secrets) }}
@@ -270,7 +287,7 @@ jobs:
 
       - name: Deploy to Business Central
         id: Deploy
-        uses: spetersenms/AL-Go/Actions/Deploy@PageScriptReporter
+        uses: spetersenms/AL-Go/Actions/Deploy@MarkdownFix
         env:
           Secrets: '${{ steps.ReadSecrets.outputs.Secrets }}'
         with:
@@ -282,7 +299,7 @@ jobs:
 
       - name: Deploy to Power Platform
         if: env.type == 'PTE' && env.powerPlatformSolutionFolder != ''
-        uses: spetersenms/AL-Go/Actions/DeployPowerPlatform@PageScriptReporter
+        uses: spetersenms/AL-Go/Actions/DeployPowerPlatform@MarkdownFix
         env:
           Secrets: '${{ steps.ReadSecrets.outputs.Secrets }}'
         with:
@@ -305,25 +322,25 @@ jobs:
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
       - name: Download artifacts
-        uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4.1.8
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
         with:
           path: '.artifacts'
 
       - name: Read settings
-        uses: spetersenms/AL-Go/Actions/ReadSettings@PageScriptReporter
+        uses: spetersenms/AL-Go/Actions/ReadSettings@MarkdownFix
         with:
           shell: powershell
 
       - name: Read secrets
         id: ReadSecrets
-        uses: spetersenms/AL-Go/Actions/ReadSecrets@PageScriptReporter
+        uses: spetersenms/AL-Go/Actions/ReadSecrets@MarkdownFix
         with:
           shell: powershell
           gitHubSecrets: ${{ toJson(secrets) }}
           getSecrets: '${{ matrix.deliveryTarget }}Context'
 
       - name: Deliver
-        uses: spetersenms/AL-Go/Actions/Deliver@PageScriptReporter
+        uses: spetersenms/AL-Go/Actions/Deliver@MarkdownFix
         env:
           Secrets: '${{ steps.ReadSecrets.outputs.Secrets }}'
         with:
@@ -343,7 +360,7 @@ jobs:
 
       - name: Finalize the workflow
         id: PostProcess
-        uses: spetersenms/AL-Go/Actions/WorkflowPostProcess@PageScriptReporter
+        uses: spetersenms/AL-Go/Actions/WorkflowPostProcess@MarkdownFix
         env:
           GITHUB_TOKEN: ${{ github.token }}
         with:
