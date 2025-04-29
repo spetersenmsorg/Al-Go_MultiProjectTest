@@ -4,7 +4,8 @@
     "./app1"
   ],
   "testFolders": [
-    "app1.Test"
+    "app1.Test",
+    "App1.abc.Test"
   ],
   "bcptTestFolders": [],
   "pageScriptingTests": [

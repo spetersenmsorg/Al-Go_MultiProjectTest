@@ -7,6 +7,9 @@
       "path": "app1.Test"
     },
     {
+      "path": "App1.abc.Test"
+    },
+    {
       "path": ".AL-Go"
     }
   ],
