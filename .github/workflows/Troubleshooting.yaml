@@ -30,7 +30,7 @@ jobs:
           lfs: true
 
       - name: Troubleshooting
-        uses: spetersenms/AL-Go/Actions/Troubleshooting@MarkdownFix
+        uses: spetersenms/AL-Go/Actions/Troubleshooting@NoJobSummaryOnNoTestsFound
         with:
           shell: powershell
           gitHubSecrets: ${{ toJson(secrets) }}

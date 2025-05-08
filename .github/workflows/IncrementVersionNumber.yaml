@@ -34,6 +34,9 @@ env:
   ALGoOrgSettings: ${{ vars.ALGoOrgSettings }}
   ALGoRepoSettings: ${{ vars.ALGoRepoSettings }}
 
+permissions:
+  contents: read
+
 jobs:
   IncrementVersionNumber:
     needs: [ ]
@@ -45,7 +48,7 @@ jobs:
       pull-requests: write
     steps:
       - name: Dump Workflow Information
-        uses: spetersenms/AL-Go/Actions/DumpWorkflowInfo@MarkdownFix
+        uses: spetersenms/AL-Go/Actions/DumpWorkflowInfo@NoJobSummaryOnNoTestsFound
         with:
           shell: powershell
 
@@ -54,18 +57,18 @@ jobs:
 
       - name: Initialize the workflow
         id: init
-        uses: spetersenms/AL-Go/Actions/WorkflowInitialize@MarkdownFix
+        uses: spetersenms/AL-Go/Actions/WorkflowInitialize@NoJobSummaryOnNoTestsFound
         with:
           shell: powershell
 
       - name: Read settings
-        uses: spetersenms/AL-Go/Actions/ReadSettings@MarkdownFix
+        uses: spetersenms/AL-Go/Actions/ReadSettings@NoJobSummaryOnNoTestsFound
         with:
           shell: powershell
 
       - name: Read secrets
         id: ReadSecrets
-        uses: spetersenms/AL-Go/Actions/ReadSecrets@MarkdownFix
+        uses: spetersenms/AL-Go/Actions/ReadSecrets@NoJobSummaryOnNoTestsFound
         with:
           shell: powershell
           gitHubSecrets: ${{ toJson(secrets) }}
@@ -73,7 +76,7 @@ jobs:
           useGhTokenWorkflowForPush: '${{ github.event.inputs.useGhTokenWorkflow }}'
 
       - name: Increment Version Number
-        uses: spetersenms/AL-Go/Actions/IncrementVersionNumber@MarkdownFix
+        uses: spetersenms/AL-Go/Actions/IncrementVersionNumber@NoJobSummaryOnNoTestsFound
         with:
           shell: powershell
           token: ${{ steps.ReadSecrets.outputs.TokenForPush }}
@@ -84,7 +87,7 @@ jobs:
 
       - name: Finalize the workflow
         if: always()
-        uses: spetersenms/AL-Go/Actions/WorkflowPostProcess@MarkdownFix
+        uses: spetersenms/AL-Go/Actions/WorkflowPostProcess@NoJobSummaryOnNoTestsFound
         env:
           GITHUB_TOKEN: ${{ github.token }}
         with:

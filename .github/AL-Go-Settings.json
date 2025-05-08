@@ -1,11 +1,11 @@
 {
   "type": "PTE",
-  "templateUrl": "https://github.com/spetersenms/AL-Go@MarkdownFix",
+  "templateUrl": "https://github.com/spetersenms/AL-Go@NoJobSummaryOnNoTestsFound",
   "generateDependencyArtifact": true,
   "incrementalBuilds": {
     "onPush": true,
     "onPull_Request": true,
     "mode": "modifiedApps"
   },
-  "templateSha": "ecc0c8bc5e343c2c922e95a7edaa136b8f827e57"
+  "templateSha": "20f98e27f14d9e8e88cc1581063e8367f7c299a8"
 }
