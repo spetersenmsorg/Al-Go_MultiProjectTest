@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       templateUrl:
-        description: Template Repository URL (current is https://github.com/spetersenms/AL-Go@NoJobSummaryOnNoTestsFound)
+        description: Template Repository URL (current is https://github.com/spetersenms/AL-Go@DeployToEnvVar)
         required: false
         default: ''
       downloadLatest:
@@ -46,14 +46,14 @@ jobs:
 
       - name: Read settings
         id: ReadSettings
-        uses: spetersenms/AL-Go/Actions/ReadSettings@NoJobSummaryOnNoTestsFound
+        uses: spetersenms/AL-Go/Actions/ReadSettings@DeployToEnvVar
         with:
           shell: powershell
           get: templateUrl
 
       - name: Get Workflow Multi-Run Branches
         id: GetBranches
-        uses: spetersenms/AL-Go/Actions/GetWorkflowMultiRunBranches@NoJobSummaryOnNoTestsFound
+        uses: spetersenms/AL-Go/Actions/GetWorkflowMultiRunBranches@DeployToEnvVar
         with:
           shell: powershell
           includeBranches: ${{ github.event.inputs.includeBranches }}
@@ -82,7 +82,7 @@ jobs:
 
     steps:
       - name: Dump Workflow Information
-        uses: spetersenms/AL-Go/Actions/DumpWorkflowInfo@NoJobSummaryOnNoTestsFound
+        uses: spetersenms/AL-Go/Actions/DumpWorkflowInfo@DeployToEnvVar
         with:
           shell: powershell
 
@@ -93,19 +93,19 @@ jobs:
 
       - name: Initialize the workflow
         id: init
-        uses: spetersenms/AL-Go/Actions/WorkflowInitialize@NoJobSummaryOnNoTestsFound
+        uses: spetersenms/AL-Go/Actions/WorkflowInitialize@DeployToEnvVar
         with:
           shell: powershell
 
       - name: Read settings
-        uses: spetersenms/AL-Go/Actions/ReadSettings@NoJobSummaryOnNoTestsFound
+        uses: spetersenms/AL-Go/Actions/ReadSettings@DeployToEnvVar
         with:
           shell: powershell
           get: commitOptions
 
       - name: Read secrets
         id: ReadSecrets
-        uses: spetersenms/AL-Go/Actions/ReadSecrets@NoJobSummaryOnNoTestsFound
+        uses: spetersenms/AL-Go/Actions/ReadSecrets@DeployToEnvVar
         with:
           shell: powershell
           gitHubSecrets: ${{ toJson(secrets) }}
@@ -132,7 +132,7 @@ jobs:
           Add-Content -Encoding UTF8 -Path $env:GITHUB_ENV -Value "downloadLatest=$downloadLatest"
 
       - name: Update AL-Go system files
-        uses: spetersenms/AL-Go/Actions/CheckForUpdates@NoJobSummaryOnNoTestsFound
+        uses: spetersenms/AL-Go/Actions/CheckForUpdates@DeployToEnvVar
         env:
           GITHUB_TOKEN: ${{ github.token }}
         with:
@@ -146,7 +146,7 @@ jobs:
 
       - name: Finalize the workflow
         if: always()
-        uses: spetersenms/AL-Go/Actions/WorkflowPostProcess@NoJobSummaryOnNoTestsFound
+        uses: spetersenms/AL-Go/Actions/WorkflowPostProcess@DeployToEnvVar
         env:
           GITHUB_TOKEN: ${{ github.token }}
         with:

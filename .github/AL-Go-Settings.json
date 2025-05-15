@@ -1,11 +1,11 @@
 {
   "type": "PTE",
-  "templateUrl": "https://github.com/spetersenms/AL-Go@NoJobSummaryOnNoTestsFound",
+  "templateUrl": "https://github.com/spetersenms/AL-Go@DeployToEnvVar",
   "generateDependencyArtifact": true,
   "incrementalBuilds": {
     "onPush": true,
     "onPull_Request": true,
     "mode": "modifiedApps"
   },
-  "templateSha": "20f98e27f14d9e8e88cc1581063e8367f7c299a8"
+  "templateSha": "4332e5c2c271ad139d490e1946f2e35747d97360"
 }
