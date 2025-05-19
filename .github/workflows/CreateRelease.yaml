@@ -78,7 +78,7 @@ jobs:
       telemetryScopeJson: ${{ steps.init.outputs.telemetryScopeJson }}
     steps:
       - name: Dump Workflow Information
-        uses: spetersenms/AL-Go/Actions/DumpWorkflowInfo@DeployToEnvVar
+        uses: spetersenms/AL-Go/Actions/DumpWorkflowInfo@ExtendedDebugLogging
         with:
           shell: powershell
 
@@ -87,20 +87,20 @@ jobs:
 
       - name: Initialize the workflow
         id: init
-        uses: spetersenms/AL-Go/Actions/WorkflowInitialize@DeployToEnvVar
+        uses: spetersenms/AL-Go/Actions/WorkflowInitialize@ExtendedDebugLogging
         with:
           shell: powershell
 
       - name: Read settings
         id: ReadSettings
-        uses: spetersenms/AL-Go/Actions/ReadSettings@DeployToEnvVar
+        uses: spetersenms/AL-Go/Actions/ReadSettings@ExtendedDebugLogging
         with:
           shell: powershell
           get: templateUrl,repoName,type,powerPlatformSolutionFolder
 
       - name: Read secrets
         id: ReadSecrets
-        uses: spetersenms/AL-Go/Actions/ReadSecrets@DeployToEnvVar
+        uses: spetersenms/AL-Go/Actions/ReadSecrets@ExtendedDebugLogging
         with:
           shell: powershell
           gitHubSecrets: ${{ toJson(secrets) }}
@@ -109,12 +109,12 @@ jobs:
 
       - name: Determine Projects
         id: determineProjects
-        uses: spetersenms/AL-Go/Actions/DetermineProjectsToBuild@DeployToEnvVar
+        uses: spetersenms/AL-Go/Actions/DetermineProjectsToBuild@ExtendedDebugLogging
         with:
           shell: powershell
 
       - name: Check for updates to AL-Go system files
-        uses: spetersenms/AL-Go/Actions/CheckForUpdates@DeployToEnvVar
+        uses: spetersenms/AL-Go/Actions/CheckForUpdates@ExtendedDebugLogging
         with:
           shell: powershell
           templateUrl: ${{ env.templateUrl }}
@@ -209,7 +209,7 @@ jobs:
 
       - name: Prepare release notes
         id: createreleasenotes
-        uses: spetersenms/AL-Go/Actions/CreateReleaseNotes@DeployToEnvVar
+        uses: spetersenms/AL-Go/Actions/CreateReleaseNotes@ExtendedDebugLogging
         with:
           shell: powershell
           buildVersion: ${{ github.event.inputs.buildVersion }}
@@ -244,6 +244,7 @@ jobs:
   UploadArtifacts:
     needs: [ CreateRelease ]
     runs-on: [ windows-latest ]
+    name: Upload ${{ matrix.name }}
     strategy:
       matrix: ${{ fromJson(needs.CreateRelease.outputs.artifacts) }}
       fail-fast: true
@@ -252,13 +253,13 @@ jobs:
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
       - name: Read settings
-        uses: spetersenms/AL-Go/Actions/ReadSettings@DeployToEnvVar
+        uses: spetersenms/AL-Go/Actions/ReadSettings@ExtendedDebugLogging
         with:
           shell: powershell
 
       - name: Read secrets
         id: ReadSecrets
-        uses: spetersenms/AL-Go/Actions/ReadSecrets@DeployToEnvVar
+        uses: spetersenms/AL-Go/Actions/ReadSecrets@ExtendedDebugLogging
         with:
           shell: powershell
           gitHubSecrets: ${{ toJson(secrets) }}
@@ -296,7 +297,7 @@ jobs:
             });
 
       - name: Deliver to NuGet
-        uses: spetersenms/AL-Go/Actions/Deliver@DeployToEnvVar
+        uses: spetersenms/AL-Go/Actions/Deliver@ExtendedDebugLogging
         if: ${{ fromJson(steps.ReadSecrets.outputs.Secrets).nuGetContext != '' }}
         env:
           Secrets: '${{ steps.ReadSecrets.outputs.Secrets }}'
@@ -309,7 +310,7 @@ jobs:
           atypes: 'Apps,TestApps'
 
       - name: Deliver to Storage
-        uses: spetersenms/AL-Go/Actions/Deliver@DeployToEnvVar
+        uses: spetersenms/AL-Go/Actions/Deliver@ExtendedDebugLogging
         if: ${{ fromJson(steps.ReadSecrets.outputs.Secrets).storageContext != '' }}
         env:
           Secrets: '${{ steps.ReadSecrets.outputs.Secrets }}'
@@ -353,13 +354,13 @@ jobs:
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
       - name: Read settings
-        uses: spetersenms/AL-Go/Actions/ReadSettings@DeployToEnvVar
+        uses: spetersenms/AL-Go/Actions/ReadSettings@ExtendedDebugLogging
         with:
           shell: powershell
 
       - name: Read secrets
         id: ReadSecrets
-        uses: spetersenms/AL-Go/Actions/ReadSecrets@DeployToEnvVar
+        uses: spetersenms/AL-Go/Actions/ReadSecrets@ExtendedDebugLogging
         with:
           shell: powershell
           gitHubSecrets: ${{ toJson(secrets) }}
@@ -367,7 +368,7 @@ jobs:
           useGhTokenWorkflowForPush: '${{ github.event.inputs.useGhTokenWorkflow }}'
 
       - name: Update Version Number
-        uses: spetersenms/AL-Go/Actions/IncrementVersionNumber@DeployToEnvVar
+        uses: spetersenms/AL-Go/Actions/IncrementVersionNumber@ExtendedDebugLogging
         with:
           shell: powershell
           token: ${{ steps.ReadSecrets.outputs.TokenForPush }}
@@ -385,7 +386,7 @@ jobs:
 
       - name: Finalize the workflow
         id: PostProcess
-        uses: spetersenms/AL-Go/Actions/WorkflowPostProcess@DeployToEnvVar
+        uses: spetersenms/AL-Go/Actions/WorkflowPostProcess@ExtendedDebugLogging
         env:
           GITHUB_TOKEN: ${{ github.token }}
         with:

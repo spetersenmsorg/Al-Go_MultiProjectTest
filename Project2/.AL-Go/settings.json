@@ -1,10 +1,13 @@
 {
+  "$schema": "https://raw.githubusercontent.com/spetersenms/AL-Go/ExtendedDebugLogging/Actions/settings.schema.json",
   "country": "us",
   "appFolders": [
     "./app2"
   ],
   "testFolders": [],
   "bcptTestFolders": [],
-  "pageScriptingTests": [ "Recordings" ],
+  "pageScriptingTests": [
+    "Recordings"
+  ],
   "artifact": "//*//latest"
 }
