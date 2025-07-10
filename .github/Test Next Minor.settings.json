@@ -1,5 +1,5 @@
 {
-  "$schema": "https://raw.githubusercontent.com/spetersenms/AL-Go/testEnvVar/Actions/settings.schema.json",
+  "$schema": "https://raw.githubusercontent.com/spetersenms/AL-Go/DeployToEnvVar/Actions/settings.schema.json",
   "artifact": "////nextminor",
   "cacheImageName": "",
   "versioningStrategy": 15

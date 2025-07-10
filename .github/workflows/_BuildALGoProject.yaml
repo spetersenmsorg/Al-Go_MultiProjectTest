@@ -103,7 +103,7 @@ jobs:
           lfs: true
 
       - name: Read settings
-        uses: spetersenms/AL-Go/Actions/ReadSettings@testEnvVar
+        uses: spetersenms/AL-Go/Actions/ReadSettings@DeployToEnvVar
         with:
           shell: ${{ inputs.shell }}
           project: ${{ inputs.project }}
@@ -112,7 +112,7 @@ jobs:
 
       - name: Determine whether to build project
         id: DetermineBuildProject
-        uses: spetersenms/AL-Go/Actions/DetermineBuildProject@testEnvVar
+        uses: spetersenms/AL-Go/Actions/DetermineBuildProject@DeployToEnvVar
         with:
           shell: ${{ inputs.shell }}
           skippedProjectsJson: ${{ inputs.skippedProjectsJson }}
@@ -122,7 +122,7 @@ jobs:
       - name: Read secrets
         id: ReadSecrets
         if: steps.DetermineBuildProject.outputs.BuildIt == 'True' && github.event_name != 'pull_request'
-        uses: spetersenms/AL-Go/Actions/ReadSecrets@testEnvVar
+        uses: spetersenms/AL-Go/Actions/ReadSecrets@DeployToEnvVar
         with:
           shell: ${{ inputs.shell }}
           gitHubSecrets: ${{ toJson(secrets) }}
@@ -140,7 +140,7 @@ jobs:
       - name: Determine ArtifactUrl
         id: determineArtifactUrl
         if: steps.DetermineBuildProject.outputs.BuildIt == 'True'
-        uses: spetersenms/AL-Go/Actions/DetermineArtifactUrl@testEnvVar
+        uses: spetersenms/AL-Go/Actions/DetermineArtifactUrl@DeployToEnvVar
         with:
           shell: ${{ inputs.shell }}
           project: ${{ inputs.project }}
@@ -155,7 +155,7 @@ jobs:
       - name: Download Project Dependencies
         id: DownloadProjectDependencies
         if: steps.DetermineBuildProject.outputs.BuildIt == 'True'
-        uses: spetersenms/AL-Go/Actions/DownloadProjectDependencies@testEnvVar
+        uses: spetersenms/AL-Go/Actions/DownloadProjectDependencies@DeployToEnvVar
         env:
           Secrets: '${{ steps.ReadSecrets.outputs.Secrets }}'
         with:
@@ -166,7 +166,7 @@ jobs:
           baselineWorkflowRunId: ${{ inputs.baselineWorkflowRunId }}
 
       - name: Build
-        uses: spetersenms/AL-Go/Actions/RunPipeline@testEnvVar
+        uses: spetersenms/AL-Go/Actions/RunPipeline@DeployToEnvVar
         if: steps.DetermineBuildProject.outputs.BuildIt == 'True'
         env:
           Secrets: '${{ steps.ReadSecrets.outputs.Secrets }}'
@@ -185,7 +185,7 @@ jobs:
       - name: Sign
         id: sign
         if: steps.DetermineBuildProject.outputs.BuildIt == 'True' && inputs.signArtifacts && env.doNotSignApps == 'False' && (env.keyVaultCodesignCertificateName != '' || (fromJson(env.trustedSigning).Endpoint != '' && fromJson(env.trustedSigning).Account != '' && fromJson(env.trustedSigning).CertificateProfile != ''))
-        uses: spetersenms/AL-Go/Actions/Sign@testEnvVar
+        uses: spetersenms/AL-Go/Actions/Sign@DeployToEnvVar
         with:
           shell: ${{ inputs.shell }}
           azureCredentialsJson: '${{ fromJson(steps.ReadSecrets.outputs.Secrets).AZURE_CREDENTIALS }}'
@@ -193,7 +193,7 @@ jobs:
 
       - name: Calculate Artifact names
         id: calculateArtifactsNames
-        uses: spetersenms/AL-Go/Actions/CalculateArtifactNames@testEnvVar
+        uses: spetersenms/AL-Go/Actions/CalculateArtifactNames@DeployToEnvVar
         if: success() || failure()
         with:
           shell: ${{ inputs.shell }}
@@ -279,7 +279,7 @@ jobs:
       - name: Analyze Test Results
         id: analyzeTestResults
         if: (success() || failure()) && env.doNotRunTests == 'False'
-        uses: spetersenms/AL-Go/Actions/AnalyzeTests@testEnvVar
+        uses: spetersenms/AL-Go/Actions/AnalyzeTests@DeployToEnvVar
         with:
           shell: ${{ inputs.shell }}
           project: ${{ inputs.project }}
@@ -288,7 +288,7 @@ jobs:
       - name: Analyze BCPT Test Results
         id: analyzeTestResultsBCPT
         if: (success() || failure()) && env.doNotRunBcptTests == 'False'
-        uses: spetersenms/AL-Go/Actions/AnalyzeTests@testEnvVar
+        uses: spetersenms/AL-Go/Actions/AnalyzeTests@DeployToEnvVar
         with:
           shell: ${{ inputs.shell }}
           project: ${{ inputs.project }}
@@ -297,7 +297,7 @@ jobs:
       - name: Analyze Page Scripting Test Results
         id: analyzeTestResultsPageScripting
         if: (success() || failure()) && env.doNotRunpageScriptingTests == 'False'
-        uses: spetersenms/AL-Go/Actions/AnalyzeTests@testEnvVar
+        uses: spetersenms/AL-Go/Actions/AnalyzeTests@DeployToEnvVar
         with:
           shell: ${{ inputs.shell }}
           project: ${{ inputs.project }}
@@ -305,7 +305,7 @@ jobs:
 
       - name: Cleanup
         if: always() && steps.DetermineBuildProject.outputs.BuildIt == 'True'
-        uses: spetersenms/AL-Go/Actions/PipelineCleanup@testEnvVar
+        uses: spetersenms/AL-Go/Actions/PipelineCleanup@DeployToEnvVar
         with:
           shell: ${{ inputs.shell }}
           project: ${{ inputs.project }}

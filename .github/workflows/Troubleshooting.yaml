@@ -30,7 +30,7 @@ jobs:
           lfs: true
 
       - name: Troubleshooting
-        uses: spetersenms/AL-Go/Actions/Troubleshooting@testEnvVar
+        uses: spetersenms/AL-Go/Actions/Troubleshooting@DeployToEnvVar
         with:
           shell: powershell
           gitHubSecrets: ${{ toJson(secrets) }}
