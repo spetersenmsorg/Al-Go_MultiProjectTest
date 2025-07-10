@@ -1,12 +1,12 @@
 {
-  "$schema": "https://raw.githubusercontent.com/spetersenms/AL-Go/DeployToEnvVar/Actions/settings.schema.json",
+  "$schema": "https://raw.githubusercontent.com/spetersenms/AL-Go/ExtendedDebugLogging/Actions/settings.schema.json",
   "type": "PTE",
-  "templateUrl": "https://github.com/spetersenms/AL-Go@DeployToEnvVar",
+  "templateUrl": "https://github.com/spetersenms/AL-Go@ExtendedDebugLogging",
   "generateDependencyArtifact": true,
   "incrementalBuilds": {
     "onPush": true,
     "onPull_Request": true,
     "mode": "modifiedApps"
   },
-  "templateSha": "7eabca3ff93a8089ba7c6974fd331599cd0ba7a5"
+  "templateSha": "6c8aaa582342a88cccb1239e1c67801aa0ab789a"
 }
