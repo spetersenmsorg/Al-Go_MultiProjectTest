@@ -1,12 +1,12 @@
 {
-  "$schema": "https://raw.githubusercontent.com/spetersenms/AL-Go/DeployToEnvVar/Actions/settings.schema.json",
+  "$schema": "https://raw.githubusercontent.com/spetersenms/AL-Go/testEnvVar/Actions/settings.schema.json",
   "type": "PTE",
-  "templateUrl": "https://github.com/spetersenms/AL-Go@DeployToEnvVar",
+  "templateUrl": "https://github.com/spetersenms/AL-Go@testEnvVar",
   "generateDependencyArtifact": true,
   "incrementalBuilds": {
     "onPush": true,
     "onPull_Request": true,
     "mode": "modifiedApps"
   },
-  "templateSha": "eb205b35345cdf49e39bbb745b85c22a5778ea04"
+  "templateSha": "c06c7d134899dde5c8ec8faa0e72940c0cc77fd1"
 }
