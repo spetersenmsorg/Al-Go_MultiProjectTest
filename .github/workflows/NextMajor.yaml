@@ -30,7 +30,7 @@ jobs:
       telemetryScopeJson: ${{ steps.init.outputs.telemetryScopeJson }}
     steps:
       - name: Dump Workflow Information
-        uses: spetersenms/AL-Go/Actions/DumpWorkflowInfo@DeployToEnvVar
+        uses: spetersenms/AL-Go/Actions/DumpWorkflowInfo@OnlyPurgeALGoContainers
         with:
           shell: powershell
 
@@ -41,13 +41,13 @@ jobs:
 
       - name: Initialize the workflow
         id: init
-        uses: spetersenms/AL-Go/Actions/WorkflowInitialize@DeployToEnvVar
+        uses: spetersenms/AL-Go/Actions/WorkflowInitialize@OnlyPurgeALGoContainers
         with:
           shell: powershell
 
       - name: Read settings
         id: ReadSettings
-        uses: spetersenms/AL-Go/Actions/ReadSettings@DeployToEnvVar
+        uses: spetersenms/AL-Go/Actions/ReadSettings@OnlyPurgeALGoContainers
         with:
           shell: powershell
           get: useGitSubmodules,shortLivedArtifactsRetentionDays
@@ -55,7 +55,7 @@ jobs:
       - name: Read submodules token
         id: ReadSubmodulesToken
         if: env.useGitSubmodules != 'false' && env.useGitSubmodules != ''
-        uses: spetersenms/AL-Go/Actions/ReadSecrets@DeployToEnvVar
+        uses: spetersenms/AL-Go/Actions/ReadSecrets@OnlyPurgeALGoContainers
         with:
           shell: powershell
           gitHubSecrets: ${{ toJson(secrets) }}
@@ -77,7 +77,7 @@ jobs:
 
       - name: Determine Projects To Build
         id: determineProjectsToBuild
-        uses: spetersenms/AL-Go/Actions/DetermineProjectsToBuild@DeployToEnvVar
+        uses: spetersenms/AL-Go/Actions/DetermineProjectsToBuild@OnlyPurgeALGoContainers
         with:
           shell: powershell
           maxBuildDepth: ${{ env.workflowDepth }}
@@ -114,7 +114,7 @@ jobs:
 
       - name: Finalize the workflow
         id: PostProcess
-        uses: spetersenms/AL-Go/Actions/WorkflowPostProcess@DeployToEnvVar
+        uses: spetersenms/AL-Go/Actions/WorkflowPostProcess@OnlyPurgeALGoContainers
         env:
           GITHUB_TOKEN: ${{ github.token }}
         with:

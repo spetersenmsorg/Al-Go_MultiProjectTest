@@ -28,7 +28,7 @@ jobs:
     if: (github.event.pull_request.base.repo.full_name != github.event.pull_request.head.repo.full_name) && (github.event_name != 'pull_request')
     runs-on: windows-latest
     steps:
-      - uses: spetersenms/AL-Go/Actions/VerifyPRChanges@DeployToEnvVar
+      - uses: spetersenms/AL-Go/Actions/VerifyPRChanges@OnlyPurgeALGoContainers
 
   Initialization:
     needs: [ PregateCheck ]
@@ -45,7 +45,7 @@ jobs:
       telemetryScopeJson: ${{ steps.init.outputs.telemetryScopeJson }}
     steps:
       - name: Dump Workflow Information
-        uses: spetersenms/AL-Go/Actions/DumpWorkflowInfo@DeployToEnvVar
+        uses: spetersenms/AL-Go/Actions/DumpWorkflowInfo@OnlyPurgeALGoContainers
         with:
           shell: powershell
 
@@ -57,13 +57,13 @@ jobs:
 
       - name: Initialize the workflow
         id: init
-        uses: spetersenms/AL-Go/Actions/WorkflowInitialize@DeployToEnvVar
+        uses: spetersenms/AL-Go/Actions/WorkflowInitialize@OnlyPurgeALGoContainers
         with:
           shell: powershell
 
       - name: Read settings
         id: ReadSettings
-        uses: spetersenms/AL-Go/Actions/ReadSettings@DeployToEnvVar
+        uses: spetersenms/AL-Go/Actions/ReadSettings@OnlyPurgeALGoContainers
         with:
           shell: powershell
           get: shortLivedArtifactsRetentionDays
@@ -76,7 +76,7 @@ jobs:
 
       - name: Determine Projects To Build
         id: determineProjectsToBuild
-        uses: spetersenms/AL-Go/Actions/DetermineProjectsToBuild@DeployToEnvVar
+        uses: spetersenms/AL-Go/Actions/DetermineProjectsToBuild@OnlyPurgeALGoContainers
         with:
           shell: powershell
           maxBuildDepth: ${{ env.workflowDepth }}
@@ -115,7 +115,7 @@ jobs:
     steps:
       - name: Pull Request Status Check
         id: PullRequestStatusCheck
-        uses: spetersenms/AL-Go/Actions/PullRequestStatusCheck@DeployToEnvVar
+        uses: spetersenms/AL-Go/Actions/PullRequestStatusCheck@OnlyPurgeALGoContainers
         env:
           GITHUB_TOKEN: ${{ github.token }}
         with:
@@ -123,7 +123,7 @@ jobs:
 
       - name: Finalize the workflow
         id: PostProcess
-        uses: spetersenms/AL-Go/Actions/WorkflowPostProcess@DeployToEnvVar
+        uses: spetersenms/AL-Go/Actions/WorkflowPostProcess@OnlyPurgeALGoContainers
         if: success() || failure()
         env:
           GITHUB_TOKEN: ${{ github.token }}
