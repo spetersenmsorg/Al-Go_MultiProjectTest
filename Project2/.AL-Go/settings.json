@@ -1,5 +1,5 @@
 {
-  "$schema": "https://raw.githubusercontent.com/spetersenms/AL-Go/FixDeployFromPRRefName/Actions/settings.schema.json",
+  "$schema": "https://raw.githubusercontent.com/spetersenms/AL-Go/main/Actions/settings.schema.json",
   "country": "us",
   "appFolders": [
     "./app2"

@@ -41,7 +41,7 @@ jobs:
     runs-on: [ windows-latest ]
     steps:
       - name: Dump Workflow Information
-        uses: spetersenms/AL-Go/Actions/DumpWorkflowInfo@FixDeployFromPRRefName
+        uses: spetersenms/AL-Go/Actions/DumpWorkflowInfo@main
         with:
           shell: powershell
 
@@ -50,18 +50,18 @@ jobs:
 
       - name: Initialize the workflow
         id: init
-        uses: spetersenms/AL-Go/Actions/WorkflowInitialize@FixDeployFromPRRefName
+        uses: spetersenms/AL-Go/Actions/WorkflowInitialize@main
         with:
           shell: powershell
 
       - name: Read settings
-        uses: spetersenms/AL-Go/Actions/ReadSettings@FixDeployFromPRRefName
+        uses: spetersenms/AL-Go/Actions/ReadSettings@main
         with:
           shell: powershell
 
       - name: Read secrets
         id: ReadSecrets
-        uses: spetersenms/AL-Go/Actions/ReadSecrets@FixDeployFromPRRefName
+        uses: spetersenms/AL-Go/Actions/ReadSecrets@main
         with:
           shell: powershell
           gitHubSecrets: ${{ toJson(secrets) }}
@@ -69,7 +69,7 @@ jobs:
           useGhTokenWorkflowForPush: '${{ github.event.inputs.useGhTokenWorkflow }}'
 
       - name: Add existing app
-        uses: spetersenms/AL-Go/Actions/AddExistingApp@FixDeployFromPRRefName
+        uses: spetersenms/AL-Go/Actions/AddExistingApp@main
         with:
           shell: powershell
           token: ${{ steps.ReadSecrets.outputs.TokenForPush }}
@@ -79,7 +79,7 @@ jobs:
 
       - name: Finalize the workflow
         if: always()
-        uses: spetersenms/AL-Go/Actions/WorkflowPostProcess@FixDeployFromPRRefName
+        uses: spetersenms/AL-Go/Actions/WorkflowPostProcess@main
         env:
           GITHUB_TOKEN: ${{ github.token }}
         with:
