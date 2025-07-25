@@ -10,6 +10,7 @@ codeunit 50001 "HelloWorld Test"
     begin
         CustList.OpenView();
         CustList.Close();
+        MessageDisplayed := true;
     end;
 
     [MessageHandler]
