@@ -1,12 +1,12 @@
 {
-  "$schema": "https://raw.githubusercontent.com/spetersenms/AL-Go/main/Actions/settings.schema.json",
+  "$schema": "https://raw.githubusercontent.com/spetersenms/AL-Go/FixDeployFromPRRefName/Actions/settings.schema.json",
   "type": "PTE",
-  "templateUrl": "https://github.com/spetersenms/AL-Go@main",
+  "templateUrl": "https://github.com/spetersenms/AL-Go@FixDeployFromPRRefName",
   "generateDependencyArtifact": true,
   "incrementalBuilds": {
     "onPush": true,
     "onPull_Request": true,
     "mode": "modifiedApps"
   },
-  "templateSha": "1598a2b57bfbf523c09d70b47177965180a70e9c"
+  "templateSha": "e86c54ca5d0897c3b4ace99e372329b5ea904f58"
 }
