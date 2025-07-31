@@ -18,7 +18,6 @@ pageextension 55000 CustomerListExt extends "Customer List"
 
     procedure TooLargeInteger()
     begin
-        someInt := 99999999999999999999999999999;
         InvalidDate := 19000101D;  
     end;
     
