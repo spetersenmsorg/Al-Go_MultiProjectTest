@@ -1,0 +1,13 @@
+{
+  "name": "RulesetName",
+  "description": "Some description",
+  "generalAction": "Error",
+  "includedRuleSets": [],
+  "rules": [
+    {
+      "id": "AL0297",
+      "action": "None",
+      "justification": "Some justification..."
+    }
+  ]
+}
