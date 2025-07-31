@@ -9,15 +9,15 @@ pageextension 55000 CustomerListExt extends "Customer List"
         myLabel: Label 'This is a label with "unescaped quotes"'; // May trigger malformed JSON in errorlog
         unusedVar: Integer; // Unused variable triggers AL0603 warning
         myText: Text[100]; // Text length may trigger AL0604 if unused or misused
+
+    procedure DoNothing()
+    begin
+        // Empty procedure triggers AL0605 (no implementation)
+    end;
+    
+    procedure DeprecatedUsage()
+    begin
+        // Using obsolete method triggers AL0432
+        CurrPage.Editable := true;
+    end;
 }
-
-procedure DoNothing()
-begin
-    // Empty procedure triggers AL0605 (no implementation)
-end;
-
-procedure DeprecatedUsage()
-begin
-    // Using obsolete method triggers AL0432
-    CurrPage.Editable := true;
-end;
