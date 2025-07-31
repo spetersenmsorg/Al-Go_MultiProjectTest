@@ -9,5 +9,7 @@
     "mode": "modifiedApps"
   },
   "templateSha": "caa8367ebfde88045504bbd5060c1826daf3e0d0",
+  "enableCodeCop": true,
+  "enableUICop": true,
   "rulesetFile": "../rulesets/ruleset.json"
 }
