@@ -5,19 +5,6 @@ pageextension 55000 CustomerListExt extends "Customer List"
         Message('App published: Hello world');
     end;
 
-    actions
-    {
-        addlast(Processing)
-        {
-            action(MyAction)
-            {
-                ApplicationArea = All;
-                Caption = 'Click Me';
-                // Missing PromotedOnly property triggers AW0011 warning
-            }
-        }
-    }
-
     var
         myLabel: Label 'This is a label with "unescaped quotes"'; // May trigger malformed JSON in errorlog
         unusedVar: Integer; // Unused variable triggers AL0603 warning
