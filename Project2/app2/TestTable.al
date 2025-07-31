@@ -1,4 +1,4 @@
-table 50100 MyTable
+table 55010 MyTable
 {
     fields
     {
