@@ -1,12 +1,12 @@
 {
   "name": "RulesetName",
   "description": "Some description",
-  "generalAction": "Error",
+  "generalAction": "Warning",
   "includedRuleSets": [],
   "rules": [
     {
       "id": "AL0297",
-      "action": "None",
+      "action": "Warning",
       "justification": "Some justification..."
     }
   ]
