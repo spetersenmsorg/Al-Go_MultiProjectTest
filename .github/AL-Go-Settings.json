@@ -8,7 +8,7 @@
     "onPull_Request": true,
     "mode": "modifiedApps"
   },
-  "templateSha": "37386d1e4360bebc32ebd03f03b8528c39e2930a",
+  "templateSha": "ffda5a75494be0e47fe3ad7ced7cd60dc60ec757",
   "enableCodeCop": true,
   "enableUICop": true,
   "rulesetFile": "../rulesets/ruleset.json"
