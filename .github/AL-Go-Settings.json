@@ -11,5 +11,6 @@
   "templateSha": "53fa5d8bf9f0efae251348479d5184544d697ae0",
   "enableCodeCop": true,
   "enableUICop": true,
-  "rulesetFile": "../rulesets/ruleset.json"
+  "rulesetFile": "../rulesets/ruleset.json",
+  "trackCodeCopIssuesInGitHub": true
 }
