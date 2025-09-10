@@ -12,5 +12,6 @@
   "enableCodeCop": true,
   "enableUICop": true,
   "rulesetFile": "../rulesets/ruleset.json",
-  "trackCodeCopIssuesInGitHub": true
+  "trackCodeCopIssuesInGitHub": true,
+  "useProjectDependencies": true
 }
