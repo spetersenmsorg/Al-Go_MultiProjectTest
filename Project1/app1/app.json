@@ -10,7 +10,14 @@
   "help": "",
   "url": "",
   "logo": "",
-  "dependencies": ["bf3aad19-830e-4f77-a181-34543759ebfc"],
+  "dependencies": [    
+    {
+      "publisher": "spetersenProductions",
+      "name": "app2",
+      "id": "bf3aad19-830e-4f77-a181-34543759ebfc",
+      "version": "1.0.0.0"
+    }
+  ],
   "screenshots": [],
   "platform": "1.0.0.0",
   "application": "25.0.0.0",
