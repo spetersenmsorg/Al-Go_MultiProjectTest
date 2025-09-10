@@ -10,7 +10,7 @@
   "help": "",
   "url": "",
   "logo": "",
-  "dependencies": [],
+  "dependencies": ["bf3aad19-830e-4f77-a181-34543759ebfc"],
   "screenshots": [],
   "platform": "1.0.0.0",
   "application": "25.0.0.0",
