@@ -13,5 +13,14 @@
   "enableUICop": true,
   "rulesetFile": "../rulesets/ruleset.json",
   "trackCodeCopIssuesInGitHub": true,
-  "useProjectDependencies": true
+  "useProjectDependencies": true,
+  "appDependencyProbingPaths":  [
+      {
+          "repo": "https://github.com/spetersenmsorg/Al-Go_MultiProjectTest",
+          "version": "latest",
+          "release_status": "release",
+          "authTokenSecret": "",
+          "projects": "Project2"
+      }
+  ]
 }
