@@ -1,26 +1,26 @@
 {
-  "$schema": "https://raw.githubusercontent.com/spetersenms/AL-Go/ALCodeAnalysisTracking/Actions/.Modules/settings.schema.json",
+  "$schema": "https://raw.githubusercontent.com/microsoft/AL-Go-Actions/v7.3/.Modules/settings.schema.json",
   "type": "PTE",
-  "templateUrl": "https://github.com/spetersenms/AL-Go@ALCodeAnalysisTracking",
+  "templateUrl": "https://github.com/microsoft/AL-Go-PTE@main",
   "generateDependencyArtifact": true,
   "incrementalBuilds": {
     "onPush": true,
     "onPull_Request": true,
     "mode": "modifiedApps"
   },
-  "templateSha": "e250f0242114a3205f976811a14c32a77cf93e55",
+  "templateSha": "920b9e1a65667be8e6d54cb478fae5f2847aa3ea",
   "enableCodeCop": true,
   "enableUICop": true,
   "rulesetFile": "../rulesets/ruleset.json",
   "trackCodeCopIssuesInGitHub": true,
   "useProjectDependencies": true,
-  "appDependencyProbingPaths":  [
-      {
-          "repo": "https://github.com/spetersenmsorg/Al-Go_MultiProjectTest",
-          "version": "latest",
-          "release_status": "release",
-          "authTokenSecret": "",
-          "projects": "Project2"
-      }
+  "appDependencyProbingPaths": [
+    {
+      "repo": "https://github.com/spetersenmsorg/Al-Go_MultiProjectTest",
+      "version": "latest",
+      "release_status": "release",
+      "authTokenSecret": "",
+      "projects": "Project2"
+    }
   ]
 }
