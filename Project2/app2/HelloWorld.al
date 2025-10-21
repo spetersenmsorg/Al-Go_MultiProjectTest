@@ -1,4 +1,4 @@
-pageextension 55000 CustomerListExt extends "Customer List"
+pageextension 55001 CustomerListExtTwo extends "Customer List"
 {
     trigger OnOpenPage();
     begin
