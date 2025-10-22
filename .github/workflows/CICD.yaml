@@ -308,7 +308,7 @@ jobs:
 
   Deploy:
     needs: [ Initialization, Build1, Build ]
-    if: (!cancelled()) && (needs.Build1.result == 'success' || needs.Build1.result == 'skipped') && (needs.Build.result == 'success' || needs.Build.result == 'skipped') && needs.Initialization.outputs.environmentCount > 0
+    if: (!cancelled()) && (needs.Build1.result == 'success' || needs.Build1.result == 'skipped') && (needs.Build.result == 'success' || needs.Build.result == 'skipped') && fromJson(needs.Initialization.outputs.deploymentEnvironmentsJson).environmentCount > 0
     strategy:
       matrix:
         include: ${{ fromJson(needs.Initialization.outputs.deploymentEnvironmentsJson).environments }}
@@ -418,7 +418,7 @@ jobs:
           artifacts: '.artifacts'
 
   PostProcess:
-    needs: [ Initialization, Build1, Build, Deploy, Deliver, DeployALDoc ]
+    needs: [ Initialization, Build1, Build, Deploy, Deliver, DeployALDoc, CodeAnalysisUpload ]
     if: (!cancelled())
     runs-on: [ windows-latest ]
     steps:

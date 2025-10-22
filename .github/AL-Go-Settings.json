@@ -11,14 +11,15 @@
   "DeployToProduction": {
     "buildMode": "Clean"
   },
-  "templateSha": "70865811a011ed5a3971b7cca581ea496c285b07",
+  "templateSha": "bf8d0cdf10a350431f64171687276d73d65cfe9a",
   "enableCodeCop": true,
   "enableUICop": true,
   "rulesetFile": "../rulesets/ruleset.json",
   "trackCodeCopIssuesInGitHub": true,
   "useProjectDependencies": true,
-  "buildModes": ["Clean"],
-  "generateDependencyArtifact": true,
+  "buildModes": [
+    "Clean"
+  ],
   "appDependencyProbingPaths": [
     {
       "repo": "https://github.com/spetersenmsorg/Al-Go_MultiProjectTest",
