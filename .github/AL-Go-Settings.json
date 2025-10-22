@@ -15,7 +15,7 @@
   "trackCodeCopIssuesInGitHub": true,
   "useProjectDependencies": true,
   "buildModes": ["Clean"],
-  "generateDependencyArtifact" true,
+  "generateDependencyArtifact": true,
   "appDependencyProbingPaths": [
     {
       "repo": "https://github.com/spetersenmsorg/Al-Go_MultiProjectTest",
