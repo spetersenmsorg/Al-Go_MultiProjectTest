@@ -8,6 +8,9 @@
     "onPull_Request": true,
     "mode": "modifiedApps"
   },
+  "DeployToProduction": {
+    "buildMode": "Clean"
+  },
   "templateSha": "70865811a011ed5a3971b7cca581ea496c285b07",
   "enableCodeCop": true,
   "enableUICop": true,
