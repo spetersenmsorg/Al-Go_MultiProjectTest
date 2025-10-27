@@ -9,7 +9,8 @@
     "mode": "modifiedApps"
   },
   "DeployToProduction": {
-    "buildMode": "Clean"
+    "buildMode": "Clean",
+    "environmentName": "AL-Go-Demo-Test"
   },
   "templateSha": "bf8d0cdf10a350431f64171687276d73d65cfe9a",
   "enableCodeCop": true,
