@@ -45,7 +45,8 @@ jobs:
       baselineWorkflowSHA: ${{ steps.determineProjectsToBuild.outputs.BaselineWorkflowSHA }}
       workflowDepth: ${{ steps.DetermineWorkflowDepth.outputs.WorkflowDepth }}
       powerPlatformSolutionFolder: ${{ steps.DeterminePowerPlatformSolutionFolder.outputs.powerPlatformSolutionFolder }}
-      trackALAlertsInGithub: ${{ steps.SetALCodeAnalysisVar.outputs.trackALAlertsInGithub }}
+      trackALAlertsInGitHub: ${{ steps.SetALCodeAnalysisVar.outputs.trackALAlertsInGitHub }}
+      githubEnvironments: ${{ steps.GetGitHubEnvironments.outputs.GitHubEnvironments }}
     steps:
       - name: Dump Workflow Information
         uses: spetersenms/AL-Go/Actions/DumpWorkflowInfo@refactor
@@ -63,18 +64,27 @@ jobs:
         with:
           shell: powershell
 
+      - name: Get GitHub Environments
+        id: GetGitHubEnvironments
+        uses: spetersenms/AL-Go/Actions/GetGitHubEnvironments@refactor
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          shell: powershell
+
       - name: Read settings
         id: ReadSettings
         uses: spetersenms/AL-Go/Actions/ReadSettings@refactor
         with:
           shell: powershell
-          get: type,powerPlatformSolutionFolder,useGitSubmodules,trackALAlertsInGithub
+          get: type,powerPlatformSolutionFolder,useGitSubmodules,trackALAlertsInGitHub
+          githubEnvironmentsJson: '${{ steps.GetGitHubEnvironments.outputs.GitHubEnvironments }}'
 
       - name: Set AL Code Analysis Var output
         id: SetALCodeAnalysisVar
         run: |
-          Write-Host "trackALAlertsInGithub environment variable: '$($env:trackALAlertsInGithub)'"
-          Add-Content -Encoding UTF8 -Path $env:GITHUB_OUTPUT -Value "trackALAlertsInGithub=$($env:trackALAlertsInGithub)"
+          Write-Host "trackALAlertsInGitHub environment variable: '$($env:trackALAlertsInGitHub)'"
+          Add-Content -Encoding UTF8 -Path $env:GITHUB_OUTPUT -Value "trackALAlertsInGitHub=$($env:trackALAlertsInGitHub)"
 
       - name: Read submodules token
         id: ReadSubmodulesToken
@@ -144,6 +154,7 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
         with:
           shell: powershell
+          githubEnvironmentsJson: '${{ steps.GetGitHubEnvironments.outputs.GitHubEnvironments }}'
           getEnvironments: '*'
           type: 'CD'
 
@@ -230,7 +241,7 @@ jobs:
 
   CodeAnalysisUpload:
     needs: [ Initialization, Build ]
-    if: (!cancelled()) && (needs.Initialization.outputs.trackALAlertsInGithub == 'True')
+    if: (!cancelled()) && (needs.Initialization.outputs.trackALAlertsInGitHub == 'True')
     runs-on: [ windows-latest ]
     name: Code Analysis Processing
     steps:
@@ -243,7 +254,7 @@ jobs:
         with:
           pattern: '*-ErrorLogs-*'
           path: '${{ github.workspace }}/ErrorLogs/'
-          merge_multiple: true
+          merge-multiple: true
 
       - name: Process AL Code Analysis Logs
         id: ProcessALCodeAnalysisLogs
@@ -253,8 +264,8 @@ jobs:
           shell: powershell
 
       - name: Upload SARIF file to GitHub
-        uses: github/codeql-action/upload-sarif@v3
-        if: always()
+        uses: github/codeql-action/upload-sarif@v4
+        if: (success() || failure()) && (hashFiles(format('{0}/ErrorLogs/output.sarif.json',github.workspace)) != '')
         with:
           sarif_file: '${{ github.workspace }}/ErrorLogs/output.sarif.json'
           category: "ALCodeAnalysis"
@@ -286,6 +297,12 @@ jobs:
         with:
           shell: powershell
 
+      - name: Determine ArtifactUrl
+        id: determineArtifactUrl
+        uses: spetersenms/AL-Go/Actions/DetermineArtifactUrl@refactor
+        with:
+          shell: powershell
+
       - name: Setup Pages
         if: needs.Initialization.outputs.deployALDocArtifact == 1
         uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b # v5.0.0
@@ -295,6 +312,7 @@ jobs:
         with:
           shell: powershell
           artifacts: '.artifacts'
+          artifactUrl: ${{ env.artifact }}
 
       - name: Upload pages artifact
         uses: actions/upload-pages-artifact@7b1f4a764d45c48632c6b24a0339c27f5614fb0b # v4.0.0
@@ -338,6 +356,7 @@ jobs:
         with:
           shell: ${{ matrix.shell }}
           get: type,powerPlatformSolutionFolder
+          githubEnvironmentsJson: ${{ needs.Initialization.outputs.githubEnvironmentsJson }}
 
       - name: EnvName
         id: envName
