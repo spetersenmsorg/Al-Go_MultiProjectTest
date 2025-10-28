@@ -12,7 +12,7 @@
     "buildMode": "Clean",
     "environmentName": "AL-Go-Demo-Test"
   },
-  "templateSha": "ebdcee1b6a92a040ae0b37840319ae386a8c13d7",
+  "templateSha": "6ed6a09cf168c7e89eaa7fa21a02bab701498084",
   "enableCodeCop": true,
   "enableUICop": true,
   "rulesetFile": "../rulesets/ruleset.json",
