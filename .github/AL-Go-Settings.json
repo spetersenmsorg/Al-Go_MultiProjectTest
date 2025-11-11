@@ -1,7 +1,7 @@
 {
-  "$schema": "https://raw.githubusercontent.com/spetersenms/AL-Go/refactor/Actions/.Modules/settings.schema.json",
+  "$schema": "https://raw.githubusercontent.com/spetersenms/AL-Go/aldocCommasInNames/Actions/.Modules/settings.schema.json",
   "type": "PTE",
-  "templateUrl": "https://github.com/spetersenms/AL-Go@refactor",
+  "templateUrl": "https://github.com/spetersenms/AL-Go@aldocCommasInNames",
   "generateDependencyArtifact": true,
   "incrementalBuilds": {
     "onPush": true,
@@ -12,7 +12,7 @@
     "buildMode": "Clean",
     "environmentName": "AL-Go-Demo-Test"
   },
-  "templateSha": "7b602a8379f7c9eb25dbe4592c721bb477d942d0",
+  "templateSha": "3ee0cc60bd3c991ad9e10b634fa0d01c1516ecbf",
   "enableCodeCop": true,
   "enableUICop": true,
   "rulesetFile": "../rulesets/ruleset.json",

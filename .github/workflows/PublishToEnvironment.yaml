@@ -31,13 +31,14 @@ jobs:
     needs: [ ]
     runs-on: [ windows-latest ]
     outputs:
+      environmentsMatrixJson: ${{ steps.DetermineDeploymentEnvironments.outputs.EnvironmentsMatrixJson }}
+      environmentCount: ${{ steps.DetermineDeploymentEnvironments.outputs.EnvironmentCount }}
       deploymentEnvironmentsJson: ${{ steps.DetermineDeploymentEnvironments.outputs.DeploymentEnvironmentsJson }}
       deviceCode: ${{ steps.Authenticate.outputs.deviceCode }}
       telemetryScopeJson: ${{ steps.init.outputs.telemetryScopeJson }}
-      githubEnvironmentsJson: ${{ steps.GetGitHubEnvironments.outputs.GitHubEnvironments }}
     steps:
       - name: Dump Workflow Information
-        uses: spetersenms/AL-Go/Actions/DumpWorkflowInfo@refactor
+        uses: spetersenms/AL-Go/Actions/DumpWorkflowInfo@aldocCommasInNames
         with:
           shell: powershell
 
@@ -46,33 +47,23 @@ jobs:
 
       - name: Initialize the workflow
         id: init
-        uses: spetersenms/AL-Go/Actions/WorkflowInitialize@refactor
-        with:
-          shell: powershell
-
-      - name: Get GitHub Environments
-        id: GetGitHubEnvironments
-        uses: spetersenms/AL-Go/Actions/GetGitHubEnvironments@refactor
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
+        uses: spetersenms/AL-Go/Actions/WorkflowInitialize@aldocCommasInNames
         with:
           shell: powershell
 
       - name: Read settings
         id: ReadSettings
-        uses: spetersenms/AL-Go/Actions/ReadSettings@refactor
+        uses: spetersenms/AL-Go/Actions/ReadSettings@aldocCommasInNames
         with:
           shell: powershell
-          githubEnvironmentsJson: ${{ env.GithubEnvironments }}
 
       - name: Determine Deployment Environments
         id: DetermineDeploymentEnvironments
-        uses: spetersenms/AL-Go/Actions/DetermineDeploymentEnvironments@refactor
+        uses: spetersenms/AL-Go/Actions/DetermineDeploymentEnvironments@aldocCommasInNames
         env:
           GITHUB_TOKEN: ${{ github.token }}
         with:
           shell: powershell
-          githubEnvironmentsJson: ${{ env.GithubEnvironments }}
           getEnvironments: ${{ github.event.inputs.environmentName }}
           type: 'Publish'
 
@@ -81,12 +72,12 @@ jobs:
         if: steps.DetermineDeploymentEnvironments.outputs.UnknownEnvironment == 1
         run: |
           $errorActionPreference = "Stop"; $ProgressPreference = "SilentlyContinue"; Set-StrictMode -Version 2.0
-          $envName = '${{ fromJson(steps.DetermineDeploymentEnvironments.outputs.DeploymentEnvironmentsJson).environments[0].name }}'.split(' ')[0]
+          $envName = '${{ fromJson(steps.DetermineDeploymentEnvironments.outputs.environmentsMatrixJson).matrix.include[0].environment }}'.split(' ')[0]
           Add-Content -Encoding UTF8 -Path $env:GITHUB_OUTPUT -Value "envName=$envName"
 
       - name: Read secrets
         id: ReadSecrets
-        uses: spetersenms/AL-Go/Actions/ReadSecrets@refactor
+        uses: spetersenms/AL-Go/Actions/ReadSecrets@aldocCommasInNames
         if: steps.DetermineDeploymentEnvironments.outputs.UnknownEnvironment == 1
         with:
           shell: powershell
@@ -118,7 +109,7 @@ jobs:
             Write-Host "No AuthContext provided for $envName, initiating Device Code flow"
             $ALGoHelperPath = "$([System.IO.Path]::GetTempFileName()).ps1"
             $webClient = New-Object System.Net.WebClient
-            $webClient.DownloadFile('https://raw.githubusercontent.com/spetersenms/AL-Go/refactor/Actions/AL-Go-Helper.ps1', $ALGoHelperPath)
+            $webClient.DownloadFile('https://raw.githubusercontent.com/spetersenms/AL-Go/aldocCommasInNames/Actions/AL-Go-Helper.ps1', $ALGoHelperPath)
             . $ALGoHelperPath
             DownloadAndImportBcContainerHelper
             $authContext = New-BcAuthContext -includeDeviceLogin -deviceLoginTimeout ([TimeSpan]::FromSeconds(0))
@@ -128,23 +119,20 @@ jobs:
 
   Deploy:
     needs: [ Initialization ]
-    if: fromJson(needs.Initialization.outputs.deploymentEnvironmentsJson).environmentCount > 0
-    strategy:
-      matrix:
-        include: ${{ fromJson(needs.Initialization.outputs.deploymentEnvironmentsJson).environments }}
-      fail-fast: false
-    runs-on: ${{ fromJson(matrix.runs-on) }}
-    name: Deploy to ${{ matrix.environmentName }}
+    if: needs.Initialization.outputs.environmentCount > 0
+    strategy: ${{ fromJson(needs.Initialization.outputs.environmentsMatrixJson) }}
+    runs-on: ${{ fromJson(matrix.os) }}
+    name: Deploy to ${{ matrix.environment }}
     defaults:
       run:
         shell: ${{ matrix.shell }}
     environment:
-      name: ${{ matrix.environmentName }}
+      name: ${{ matrix.environment }}
       url: ${{ steps.Deploy.outputs.environmentUrl }}
     env:
       deviceCode: ${{ needs.Initialization.outputs.deviceCode }}
       ALGoEnvSettings: ${{ vars.ALGoEnvironmentSettings }}
-      ALGoEnvName: ${{ matrix.environmentName }}
+      ALGoEnvName: ${{ matrix.environment }}
     steps:
       - name: Checkout
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
@@ -153,53 +141,53 @@ jobs:
         id: envName
         run: |
           $errorActionPreference = "Stop"; $ProgressPreference = "SilentlyContinue"; Set-StrictMode -Version 2.0
-          $envName = '${{ matrix.environmentName }}'.split(' ')[0]
+          $envName = '${{ matrix.environment }}'.split(' ')[0]
           Add-Content -Encoding UTF8 -Path $env:GITHUB_OUTPUT -Value "envName=$envName"
 
       - name: Read settings
-        uses: spetersenms/AL-Go/Actions/ReadSettings@refactor
+        uses: spetersenms/AL-Go/Actions/ReadSettings@aldocCommasInNames
         with:
           shell: ${{ matrix.shell }}
           get: type,powerPlatformSolutionFolder
-          githubEnvironmentsJson: ${{ needs.Initialization.outputs.githubEnvironmentsJson }}
 
       - name: Read secrets
         id: ReadSecrets
-        uses: spetersenms/AL-Go/Actions/ReadSecrets@refactor
+        uses: spetersenms/AL-Go/Actions/ReadSecrets@aldocCommasInNames
         with:
           shell: ${{ matrix.shell }}
           gitHubSecrets: ${{ toJson(secrets) }}
           getSecrets: '${{ steps.envName.outputs.envName }}-AuthContext,${{ steps.envName.outputs.envName }}_AuthContext,AuthContext'
 
       - name: Get Artifacts for deployment
-        uses: spetersenms/AL-Go/Actions/GetArtifactsForDeployment@refactor
+        uses: spetersenms/AL-Go/Actions/GetArtifactsForDeployment@aldocCommasInNames
         with:
           shell: ${{ matrix.shell }}
           artifactsVersion: ${{ github.event.inputs.appVersion }}
           artifactsFolder: '.artifacts'
-          environmentName: ${{ matrix.environmentName }}
 
       - name: Deploy to Business Central
         id: Deploy
-        uses: spetersenms/AL-Go/Actions/Deploy@refactor
+        uses: spetersenms/AL-Go/Actions/Deploy@aldocCommasInNames
         env:
           Secrets: '${{ steps.ReadSecrets.outputs.Secrets }}'
         with:
           shell: ${{ matrix.shell }}
-          environmentName: ${{ matrix.environmentName }}
+          environmentName: ${{ matrix.environment }}
           artifactsFolder: '.artifacts'
           type: 'Publish'
+          deploymentEnvironmentsJson: ${{ needs.Initialization.outputs.deploymentEnvironmentsJson }}
           artifactsVersion: ${{ github.event.inputs.appVersion }}
 
       - name: Deploy to Power Platform
         if: env.type == 'PTE' && env.powerPlatformSolutionFolder != ''
-        uses: spetersenms/AL-Go/Actions/DeployPowerPlatform@refactor
+        uses: spetersenms/AL-Go/Actions/DeployPowerPlatform@aldocCommasInNames
         env:
           Secrets: '${{ steps.ReadSecrets.outputs.Secrets }}'
         with:
           shell: ${{ matrix.shell }}
-          environmentName: ${{ matrix.environmentName }}
+          environmentName: ${{ matrix.environment }}
           artifactsFolder: '.artifacts'
+          deploymentEnvironmentsJson: ${{ needs.Initialization.outputs.deploymentEnvironmentsJson }}
 
   PostProcess:
     needs: [ Initialization, Deploy ]
@@ -211,7 +199,7 @@ jobs:
 
       - name: Finalize the workflow
         id: PostProcess
-        uses: spetersenms/AL-Go/Actions/WorkflowPostProcess@refactor
+        uses: spetersenms/AL-Go/Actions/WorkflowPostProcess@aldocCommasInNames
         env:
           GITHUB_TOKEN: ${{ github.token }}
         with:
