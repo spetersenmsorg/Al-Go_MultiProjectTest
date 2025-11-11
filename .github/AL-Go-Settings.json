@@ -3,11 +3,6 @@
   "type": "PTE",
   "templateUrl": "https://github.com/spetersenms/AL-Go@aldocCommasInNames",
   "generateDependencyArtifact": true,
-  "incrementalBuilds": {
-    "onPush": true,
-    "onPull_Request": true,
-    "mode": "modifiedApps"
-  },
   "DeployToProduction": {
     "buildMode": "Clean",
     "environmentName": "AL-Go-Demo-Test"
@@ -20,13 +15,5 @@
   "useProjectDependencies": true,
   "buildModes": [
     "Clean"
-  ],
-  "appDependencyProbingPaths": [
-    {
-      "repo": "https://github.com/spetersenmsorg/Al-Go_MultiProjectTest",
-      "version": "latest",
-      "release_status": "release",
-      "projects": "Project2"
-    }
   ]
 }
