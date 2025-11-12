@@ -20,7 +20,7 @@ env:
 jobs:
   Initialization:
     needs: [ ]
-    runs-on: [ windows-latest ]
+    runs-on: [ self-hosted ]
     outputs:
       projects: ${{ steps.determineProjectsToBuild.outputs.ProjectsJson }}
       projectDependenciesJson: ${{ steps.determineProjectsToBuild.outputs.ProjectDependenciesJson }}
@@ -129,7 +129,7 @@ jobs:
   PostProcess:
     needs: [ Initialization, Build1, Build ]
     if: always()
-    runs-on: [ windows-latest ]
+    runs-on: [ self-hosted ]
     steps:
       - name: Checkout
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0

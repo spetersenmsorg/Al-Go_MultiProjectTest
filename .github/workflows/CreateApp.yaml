@@ -48,7 +48,7 @@ env:
 jobs:
   CreateApp:
     needs: [ ]
-    runs-on: [ windows-latest ]
+    runs-on: [ self-hosted ]
     steps:
       - name: Dump Workflow Information
         uses: spetersenms/AL-Go/Actions/DumpWorkflowInfo@aldocCommasInNames
