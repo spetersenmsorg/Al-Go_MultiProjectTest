@@ -15,7 +15,7 @@
   "useProjectDependencies": true,
   "buildModes": [
     "Clean"
-  ]
+  ],
   "runs-on": "self-hosted",
   "githubRunner": "self-hosted"
 }
