@@ -2,7 +2,7 @@ pageextension 55001 CustomerListExtTwo extends "Customer List"
 {
     trigger OnOpenPage();
     begin
-        Message('App published: Hello world!');
+        Message('App published: Hello world!!');
     end;
 
     // var
