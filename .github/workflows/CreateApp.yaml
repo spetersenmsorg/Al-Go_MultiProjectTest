@@ -51,7 +51,7 @@ jobs:
     runs-on: [ self-hosted ]
     steps:
       - name: Dump Workflow Information
-        uses: spetersenms/AL-Go/Actions/DumpWorkflowInfo@aldocCommasInNames
+        uses: spetersenms/AL-Go/Actions/DumpWorkflowInfo@longPaths
         with:
           shell: powershell
 
@@ -60,19 +60,19 @@ jobs:
 
       - name: Initialize the workflow
         id: init
-        uses: spetersenms/AL-Go/Actions/WorkflowInitialize@aldocCommasInNames
+        uses: spetersenms/AL-Go/Actions/WorkflowInitialize@longPaths
         with:
           shell: powershell
 
       - name: Read settings
-        uses: spetersenms/AL-Go/Actions/ReadSettings@aldocCommasInNames
+        uses: spetersenms/AL-Go/Actions/ReadSettings@longPaths
         with:
           shell: powershell
           get: type
 
       - name: Read secrets
         id: ReadSecrets
-        uses: spetersenms/AL-Go/Actions/ReadSecrets@aldocCommasInNames
+        uses: spetersenms/AL-Go/Actions/ReadSecrets@longPaths
         with:
           shell: powershell
           gitHubSecrets: ${{ toJson(secrets) }}
@@ -80,7 +80,7 @@ jobs:
           useGhTokenWorkflowForPush: '${{ github.event.inputs.useGhTokenWorkflow }}'
 
       - name: Creating a new app
-        uses: spetersenms/AL-Go/Actions/CreateApp@aldocCommasInNames
+        uses: spetersenms/AL-Go/Actions/CreateApp@longPaths
         with:
           shell: powershell
           token: ${{ steps.ReadSecrets.outputs.TokenForPush }}
@@ -94,7 +94,7 @@ jobs:
 
       - name: Finalize the workflow
         if: always()
-        uses: spetersenms/AL-Go/Actions/WorkflowPostProcess@aldocCommasInNames
+        uses: spetersenms/AL-Go/Actions/WorkflowPostProcess@longPaths
         env:
           GITHUB_TOKEN: ${{ github.token }}
         with:

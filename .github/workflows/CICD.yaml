@@ -50,7 +50,7 @@ jobs:
       trackALAlertsInGitHub: ${{ steps.SetALCodeAnalysisVar.outputs.trackALAlertsInGitHub }}
     steps:
       - name: Dump Workflow Information
-        uses: spetersenms/AL-Go/Actions/DumpWorkflowInfo@aldocCommasInNames
+        uses: spetersenms/AL-Go/Actions/DumpWorkflowInfo@longPaths
         with:
           shell: powershell
 
@@ -61,13 +61,13 @@ jobs:
 
       - name: Initialize the workflow
         id: init
-        uses: spetersenms/AL-Go/Actions/WorkflowInitialize@aldocCommasInNames
+        uses: spetersenms/AL-Go/Actions/WorkflowInitialize@longPaths
         with:
           shell: powershell
 
       - name: Read settings
         id: ReadSettings
-        uses: spetersenms/AL-Go/Actions/ReadSettings@aldocCommasInNames
+        uses: spetersenms/AL-Go/Actions/ReadSettings@longPaths
         with:
           shell: powershell
           get: type,powerPlatformSolutionFolder,useGitSubmodules,trackALAlertsInGitHub
@@ -81,7 +81,7 @@ jobs:
       - name: Read submodules token
         id: ReadSubmodulesToken
         if: env.useGitSubmodules != 'false' && env.useGitSubmodules != ''
-        uses: spetersenms/AL-Go/Actions/ReadSecrets@aldocCommasInNames
+        uses: spetersenms/AL-Go/Actions/ReadSecrets@longPaths
         with:
           shell: powershell
           gitHubSecrets: ${{ toJson(secrets) }}
@@ -102,7 +102,7 @@ jobs:
 
       - name: Determine Projects To Build
         id: determineProjectsToBuild
-        uses: spetersenms/AL-Go/Actions/DetermineProjectsToBuild@aldocCommasInNames
+        uses: spetersenms/AL-Go/Actions/DetermineProjectsToBuild@longPaths
         with:
           shell: powershell
           maxBuildDepth: ${{ env.workflowDepth }}
@@ -115,7 +115,7 @@ jobs:
 
       - name: Determine Delivery Target Secrets
         id: DetermineDeliveryTargetSecrets
-        uses: spetersenms/AL-Go/Actions/DetermineDeliveryTargets@aldocCommasInNames
+        uses: spetersenms/AL-Go/Actions/DetermineDeliveryTargets@longPaths
         with:
           shell: powershell
           projectsJson: '${{ steps.determineProjectsToBuild.outputs.ProjectsJson }}'
@@ -123,7 +123,7 @@ jobs:
 
       - name: Read secrets
         id: ReadSecrets
-        uses: spetersenms/AL-Go/Actions/ReadSecrets@aldocCommasInNames
+        uses: spetersenms/AL-Go/Actions/ReadSecrets@longPaths
         with:
           shell: powershell
           gitHubSecrets: ${{ toJson(secrets) }}
@@ -131,7 +131,7 @@ jobs:
 
       - name: Determine Delivery Targets
         id: DetermineDeliveryTargets
-        uses: spetersenms/AL-Go/Actions/DetermineDeliveryTargets@aldocCommasInNames
+        uses: spetersenms/AL-Go/Actions/DetermineDeliveryTargets@longPaths
         env:
           Secrets: '${{ steps.ReadSecrets.outputs.Secrets }}'
         with:
@@ -141,7 +141,7 @@ jobs:
 
       - name: Determine Deployment Environments
         id: DetermineDeploymentEnvironments
-        uses: spetersenms/AL-Go/Actions/DetermineDeploymentEnvironments@aldocCommasInNames
+        uses: spetersenms/AL-Go/Actions/DetermineDeploymentEnvironments@longPaths
         env:
           GITHUB_TOKEN: ${{ github.token }}
         with:
@@ -157,21 +157,21 @@ jobs:
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
 
       - name: Read settings
-        uses: spetersenms/AL-Go/Actions/ReadSettings@aldocCommasInNames
+        uses: spetersenms/AL-Go/Actions/ReadSettings@longPaths
         with:
           shell: powershell
           get: templateUrl
 
       - name: Read secrets
         id: ReadSecrets
-        uses: spetersenms/AL-Go/Actions/ReadSecrets@aldocCommasInNames
+        uses: spetersenms/AL-Go/Actions/ReadSecrets@longPaths
         with:
           shell: powershell
           gitHubSecrets: ${{ toJson(secrets) }}
           getSecrets: 'ghTokenWorkflow'
 
       - name: Check for updates to AL-Go system files
-        uses: spetersenms/AL-Go/Actions/CheckForUpdates@aldocCommasInNames
+        uses: spetersenms/AL-Go/Actions/CheckForUpdates@longPaths
         env:
           GITHUB_TOKEN: ${{ github.token }}
         with:
@@ -250,7 +250,7 @@ jobs:
       - name: Process AL Code Analysis Logs
         id: ProcessALCodeAnalysisLogs
         if: (success() || failure())
-        uses: spetersenms/AL-Go/Actions/ProcessALCodeAnalysisLogs@aldocCommasInNames
+        uses: spetersenms/AL-Go/Actions/ProcessALCodeAnalysisLogs@longPaths
         with:
           shell: powershell
 
@@ -284,13 +284,13 @@ jobs:
           path: '.artifacts'
 
       - name: Read settings
-        uses: spetersenms/AL-Go/Actions/ReadSettings@aldocCommasInNames
+        uses: spetersenms/AL-Go/Actions/ReadSettings@longPaths
         with:
           shell: powershell
 
       - name: Determine ArtifactUrl
         id: determineArtifactUrl
-        uses: spetersenms/AL-Go/Actions/DetermineArtifactUrl@aldocCommasInNames
+        uses: spetersenms/AL-Go/Actions/DetermineArtifactUrl@longPaths
         with:
           shell: powershell
 
@@ -299,7 +299,7 @@ jobs:
         uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b # v5.0.0
 
       - name: Build Reference Documentation
-        uses: spetersenms/AL-Go/Actions/BuildReferenceDocumentation@aldocCommasInNames
+        uses: spetersenms/AL-Go/Actions/BuildReferenceDocumentation@longPaths
         with:
           shell: powershell
           artifacts: '.artifacts'
@@ -340,7 +340,7 @@ jobs:
           path: '.artifacts'
 
       - name: Read settings
-        uses: spetersenms/AL-Go/Actions/ReadSettings@aldocCommasInNames
+        uses: spetersenms/AL-Go/Actions/ReadSettings@longPaths
         with:
           shell: ${{ matrix.shell }}
           get: type,powerPlatformSolutionFolder
@@ -354,7 +354,7 @@ jobs:
 
       - name: Read secrets
         id: ReadSecrets
-        uses: spetersenms/AL-Go/Actions/ReadSecrets@aldocCommasInNames
+        uses: spetersenms/AL-Go/Actions/ReadSecrets@longPaths
         with:
           shell: ${{ matrix.shell }}
           gitHubSecrets: ${{ toJson(secrets) }}
@@ -362,7 +362,7 @@ jobs:
 
       - name: Deploy to Business Central
         id: Deploy
-        uses: spetersenms/AL-Go/Actions/Deploy@aldocCommasInNames
+        uses: spetersenms/AL-Go/Actions/Deploy@longPaths
         env:
           Secrets: '${{ steps.ReadSecrets.outputs.Secrets }}'
         with:
@@ -374,7 +374,7 @@ jobs:
 
       - name: Deploy to Power Platform
         if: env.type == 'PTE' && env.powerPlatformSolutionFolder != ''
-        uses: spetersenms/AL-Go/Actions/DeployPowerPlatform@aldocCommasInNames
+        uses: spetersenms/AL-Go/Actions/DeployPowerPlatform@longPaths
         env:
           Secrets: '${{ steps.ReadSecrets.outputs.Secrets }}'
         with:
@@ -402,20 +402,20 @@ jobs:
           path: '.artifacts'
 
       - name: Read settings
-        uses: spetersenms/AL-Go/Actions/ReadSettings@aldocCommasInNames
+        uses: spetersenms/AL-Go/Actions/ReadSettings@longPaths
         with:
           shell: powershell
 
       - name: Read secrets
         id: ReadSecrets
-        uses: spetersenms/AL-Go/Actions/ReadSecrets@aldocCommasInNames
+        uses: spetersenms/AL-Go/Actions/ReadSecrets@longPaths
         with:
           shell: powershell
           gitHubSecrets: ${{ toJson(secrets) }}
           getSecrets: '${{ matrix.deliveryTarget }}Context'
 
       - name: Deliver
-        uses: spetersenms/AL-Go/Actions/Deliver@aldocCommasInNames
+        uses: spetersenms/AL-Go/Actions/Deliver@longPaths
         env:
           Secrets: '${{ steps.ReadSecrets.outputs.Secrets }}'
         with:
@@ -435,7 +435,7 @@ jobs:
 
       - name: Finalize the workflow
         id: PostProcess
-        uses: spetersenms/AL-Go/Actions/WorkflowPostProcess@aldocCommasInNames
+        uses: spetersenms/AL-Go/Actions/WorkflowPostProcess@longPaths
         env:
           GITHUB_TOKEN: ${{ github.token }}
         with:

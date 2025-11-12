@@ -30,7 +30,7 @@ jobs:
           lfs: true
 
       - name: Troubleshooting
-        uses: spetersenms/AL-Go/Actions/Troubleshooting@aldocCommasInNames
+        uses: spetersenms/AL-Go/Actions/Troubleshooting@longPaths
         with:
           shell: powershell
           gitHubSecrets: ${{ toJson(secrets) }}
