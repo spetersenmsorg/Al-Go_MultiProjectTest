@@ -1,5 +1,5 @@
 {
-  "$schema": "https://raw.githubusercontent.com/spetersenms/AL-Go/longPaths/Actions/.Modules/settings.schema.json",
+  "$schema": "https://raw.githubusercontent.com/spetersenms/AL-Go/aldocCommasInNames/Actions/.Modules/settings.schema.json",
   "artifact": "////latest",
   "cacheImageName": "",
   "versioningStrategy": 15

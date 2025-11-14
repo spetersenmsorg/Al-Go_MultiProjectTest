@@ -1,13 +1,13 @@
 {
-  "$schema": "https://raw.githubusercontent.com/spetersenms/AL-Go/longPaths/Actions/.Modules/settings.schema.json",
+  "$schema": "https://raw.githubusercontent.com/spetersenms/AL-Go/aldocCommasInNames/Actions/.Modules/settings.schema.json",
   "type": "PTE",
-  "templateUrl": "https://github.com/spetersenms/AL-Go@longPaths",
+  "templateUrl": "https://github.com/spetersenms/AL-Go@aldocCommasInNames",
   "generateDependencyArtifact": true,
   "DeployToProduction": {
     "buildMode": "Clean",
     "environmentName": "AL-Go-Demo-Test"
   },
-  "templateSha": "c1f6c41241851c25d6ea2361fc95f4fb1246f40b",
+  "templateSha": "05d0778d2cdac4f80029d72d4f17aa7283aa6a3a",
   "enableCodeCop": true,
   "enableUICop": true,
   "rulesetFile": "../rulesets/ruleset.json",
