@@ -54,7 +54,7 @@ env:
 jobs:
   CreatePerformanceTestApp:
     needs: [ ]
-    runs-on: [ self-hosted ]
+    runs-on: [ windows-latest ]
     steps:
       - name: Dump Workflow Information
         uses: spetersenms/AL-Go/Actions/DumpWorkflowInfo@aldocCommasInNames

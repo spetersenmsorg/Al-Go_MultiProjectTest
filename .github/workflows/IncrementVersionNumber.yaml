@@ -40,7 +40,7 @@ permissions:
 jobs:
   IncrementVersionNumber:
     needs: [ ]
-    runs-on: [ self-hosted ]
+    runs-on: [ windows-latest ]
     permissions:
       actions: read
       contents: write
