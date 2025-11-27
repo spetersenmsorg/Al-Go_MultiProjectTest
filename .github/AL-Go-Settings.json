@@ -11,7 +11,7 @@
   "enableCodeCop": true,
   "enableUICop": true,
   "rulesetFile": "../rulesets/ruleset.json",
-  "trackCodeCopIssuesInGitHub": true,
+  "trackAlAlertsInGitHub": true,
   "useProjectDependencies": true,
   "buildModes": [
     "Clean"
