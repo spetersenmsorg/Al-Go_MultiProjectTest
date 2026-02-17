@@ -53,27 +53,27 @@ jobs:
     runs-on: [ windows-latest ]
     steps:
       - name: Dump Workflow Information
-        uses: spetersenms/AL-Go/Actions/DumpWorkflowInfo@alAlertsBuildModes
+        uses: microsoft/AL-Go-Actions/DumpWorkflowInfo@v8.2
         with:
           shell: powershell
 
       - name: Checkout
-        uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
       - name: Initialize the workflow
         id: init
-        uses: spetersenms/AL-Go/Actions/WorkflowInitialize@alAlertsBuildModes
+        uses: microsoft/AL-Go-Actions/WorkflowInitialize@v8.2
         with:
           shell: powershell
 
       - name: Read settings
-        uses: spetersenms/AL-Go/Actions/ReadSettings@alAlertsBuildModes
+        uses: microsoft/AL-Go-Actions/ReadSettings@v8.2
         with:
           shell: powershell
 
       - name: Read secrets
         id: ReadSecrets
-        uses: spetersenms/AL-Go/Actions/ReadSecrets@alAlertsBuildModes
+        uses: microsoft/AL-Go-Actions/ReadSecrets@v8.2
         with:
           shell: powershell
           gitHubSecrets: ${{ toJson(secrets) }}
@@ -81,7 +81,7 @@ jobs:
           useGhTokenWorkflowForPush: '${{ github.event.inputs.useGhTokenWorkflow }}'
 
       - name: Creating a new test app
-        uses: spetersenms/AL-Go/Actions/CreateApp@alAlertsBuildModes
+        uses: microsoft/AL-Go-Actions/CreateApp@v8.2
         with:
           shell: powershell
           token: ${{ steps.ReadSecrets.outputs.TokenForPush }}
@@ -95,7 +95,7 @@ jobs:
 
       - name: Finalize the workflow
         if: always()
-        uses: spetersenms/AL-Go/Actions/WorkflowPostProcess@alAlertsBuildModes
+        uses: microsoft/AL-Go-Actions/WorkflowPostProcess@v8.2
         env:
           GITHUB_TOKEN: ${{ github.token }}
         with:
