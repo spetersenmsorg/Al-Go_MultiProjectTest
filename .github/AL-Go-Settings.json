@@ -4,7 +4,6 @@
   "templateUrl": "https://github.com/spetersenms/AL-Go@PublishToEnvPr",
   "generateDependencyArtifact": true,
   "DeployToProduction": {
-    "buildMode": "Clean",
     "environmentName": "AL-Go-Demo-Test"
   },
   "templateSha": "96ecce5b36fc1ed9ff0fa0fb61e529ed5f2f743f",
@@ -13,8 +12,6 @@
   "rulesetFile": "../rulesets/ruleset.json",
   "trackAlAlertsInGitHub": true,
   "useProjectDependencies": true,
-  "buildModes": [
-    "Clean"
-  ],
+  "buildModes": [],
   "artifact": "//26//latest"
 }
