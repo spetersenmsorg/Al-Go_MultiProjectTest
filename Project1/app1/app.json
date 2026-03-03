@@ -2,7 +2,7 @@
   "id": "6a25f3a8-0eb0-4fd8-8057-73a1f5d98a7c",
   "name": "app1",
   "publisher": "spetersenProductions",
-  "version": "1.0.0.0",
+  "version": "1.1.0.0",
   "brief": "",
   "description": "",
   "privacyStatement": "",
@@ -10,12 +10,12 @@
   "help": "",
   "url": "",
   "logo": "",
-  "dependencies": [    
+  "dependencies": [
     {
       "publisher": "spetersenProductions",
       "name": "app2",
       "id": "bf3aad19-830e-4f77-a181-34543759ebfc",
-      "version": "1.0.0.0"
+      "version": "1.1.0.0"
     }
   ],
   "screenshots": [],
