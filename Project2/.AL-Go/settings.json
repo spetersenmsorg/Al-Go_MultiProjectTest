@@ -9,5 +9,6 @@
   "pageScriptingTests": [
     "Recordings"
   ],
-  "artifact": "//*//latest"
+  "artifact": "//*//latest",
+  "repoVersion": "1.1"
 }
