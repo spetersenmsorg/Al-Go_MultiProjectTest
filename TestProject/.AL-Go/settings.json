@@ -9,7 +9,10 @@
   "bcptTestFolders": [],
   "doNotRunTests": false,
   "useCompilerFolder": false,
+  "doNotPublishApps": false,
   "useProjectDependencies": true,
+  "runTestsInAllInstalledTestApps": true,
+  "installOnlyReferencedApps": false,
   "pageScriptingTests": [
     "Recordings"
   ],
