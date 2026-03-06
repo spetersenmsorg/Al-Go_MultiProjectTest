@@ -1,5 +1,5 @@
 {
-  "$schema": "https://raw.githubusercontent.com/spetersenms/AL-Go/PublishToEnvPr/Actions/.Modules/settings.schema.json",
+  "$schema": "https://raw.githubusercontent.com/spetersenms/AL-Go/TestProject/Actions/.Modules/settings.schema.json",
   "country": "us",
   "appFolders": [
     "./app1"

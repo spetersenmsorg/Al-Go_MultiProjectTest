@@ -1,12 +1,12 @@
 {
-  "$schema": "https://raw.githubusercontent.com/spetersenms/AL-Go/PublishToEnvPr/Actions/.Modules/settings.schema.json",
+  "$schema": "https://raw.githubusercontent.com/spetersenms/AL-Go/TestProject/Actions/.Modules/settings.schema.json",
   "type": "PTE",
-  "templateUrl": "https://github.com/spetersenms/AL-Go@PublishToEnvPr",
+  "templateUrl": "https://github.com/spetersenms/AL-Go@TestProject",
   "generateDependencyArtifact": true,
   "DeployToProduction": {
     "environmentName": "AL-Go-Demo-Test"
   },
-  "templateSha": "496ae1736eedfe8e083ef47f1e080e8216748023",
+  "templateSha": "9798aa16542b5625ded3a4bb57caf8f65dec51bb",
   "enableCodeCop": true,
   "enableUICop": true,
   "rulesetFile": "../rulesets/ruleset.json",
