@@ -5,6 +5,9 @@
   "appFolders": [],
   "testFolders": [],
   "bcptTestFolders": [],
+  "doNotRunTests": false,
+  "useCompilerFolder": false,
+  "useProjectDependencies": true,
   "pageScriptingTests": [
     "Recordings"
   ],
