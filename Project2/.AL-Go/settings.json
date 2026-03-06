@@ -9,5 +9,5 @@
   "pageScriptingTests": [
     "Recordings"
   ],
-  "artifact": "//*//latest"
+  "artifact": "//27.0/us/latest"
 }
