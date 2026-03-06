@@ -1,0 +1,12 @@
+{
+  "$schema": "https://raw.githubusercontent.com/spetersenms/AL-Go/TestProject/Actions/.Modules/settings.schema.json",
+  "country": "us",
+  "testProject": [ "Project1" ],
+  "appFolders": [],
+  "testFolders": [],
+  "bcptTestFolders": [],
+  "pageScriptingTests": [
+    "Recordings"
+  ],
+  "artifact": "//*//latest"
+}
