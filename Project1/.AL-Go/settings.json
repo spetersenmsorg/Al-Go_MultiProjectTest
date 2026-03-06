@@ -13,5 +13,5 @@
     "Recordings/Scenario1",
     "Recordings/Scenario2"
   ],
-  "artifact": "//*//latest"
+  "artifact": "//27.0/us/latest"
 }
