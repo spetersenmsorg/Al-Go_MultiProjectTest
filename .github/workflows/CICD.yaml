@@ -22,7 +22,7 @@ permissions:
   packages: read
 
 env:
-  workflowDepth: 3
+  workflowDepth: 2
   ALGoOrgSettings: ${{ vars.ALGoOrgSettings }}
   ALGoRepoSettings: ${{ vars.ALGoRepoSettings }}
 
@@ -51,7 +51,7 @@ jobs:
       trackALAlertsInGitHub: ${{ steps.SetALCodeAnalysisVar.outputs.trackALAlertsInGitHub }}
     steps:
       - name: Dump Workflow Information
-        uses: spetersenms/AL-Go/Actions/DumpWorkflowInfo@TestProject
+        uses: spetersenms/AL-Go/Actions/DumpWorkflowInfo@needsContextPoC
         with:
           shell: powershell
 
@@ -62,13 +62,13 @@ jobs:
 
       - name: Initialize the workflow
         id: init
-        uses: spetersenms/AL-Go/Actions/WorkflowInitialize@TestProject
+        uses: spetersenms/AL-Go/Actions/WorkflowInitialize@needsContextPoC
         with:
           shell: powershell
 
       - name: Read settings
         id: ReadSettings
-        uses: spetersenms/AL-Go/Actions/ReadSettings@TestProject
+        uses: spetersenms/AL-Go/Actions/ReadSettings@needsContextPoC
         with:
           shell: powershell
           get: type,powerPlatformSolutionFolder,useGitSubmodules,trackALAlertsInGitHub
@@ -82,7 +82,7 @@ jobs:
       - name: Read submodules token
         id: ReadSubmodulesToken
         if: env.useGitSubmodules != 'false' && env.useGitSubmodules != ''
-        uses: spetersenms/AL-Go/Actions/ReadSecrets@TestProject
+        uses: spetersenms/AL-Go/Actions/ReadSecrets@needsContextPoC
         with:
           shell: powershell
           gitHubSecrets: ${{ toJson(secrets) }}
@@ -103,7 +103,7 @@ jobs:
 
       - name: Determine Projects To Build
         id: determineProjectsToBuild
-        uses: spetersenms/AL-Go/Actions/DetermineProjectsToBuild@TestProject
+        uses: spetersenms/AL-Go/Actions/DetermineProjectsToBuild@needsContextPoC
         with:
           shell: powershell
           maxBuildDepth: ${{ env.workflowDepth }}
@@ -116,7 +116,7 @@ jobs:
 
       - name: Determine Delivery Target Secrets
         id: DetermineDeliveryTargetSecrets
-        uses: spetersenms/AL-Go/Actions/DetermineDeliveryTargets@TestProject
+        uses: spetersenms/AL-Go/Actions/DetermineDeliveryTargets@needsContextPoC
         with:
           shell: powershell
           projectsJson: '${{ steps.determineProjectsToBuild.outputs.ProjectsJson }}'
@@ -124,7 +124,7 @@ jobs:
 
       - name: Read secrets
         id: ReadSecrets
-        uses: spetersenms/AL-Go/Actions/ReadSecrets@TestProject
+        uses: spetersenms/AL-Go/Actions/ReadSecrets@needsContextPoC
         with:
           shell: powershell
           gitHubSecrets: ${{ toJson(secrets) }}
@@ -132,7 +132,7 @@ jobs:
 
       - name: Determine Delivery Targets
         id: DetermineDeliveryTargets
-        uses: spetersenms/AL-Go/Actions/DetermineDeliveryTargets@TestProject
+        uses: spetersenms/AL-Go/Actions/DetermineDeliveryTargets@needsContextPoC
         env:
           Secrets: '${{ steps.ReadSecrets.outputs.Secrets }}'
         with:
@@ -142,7 +142,7 @@ jobs:
 
       - name: Determine Deployment Environments
         id: DetermineDeploymentEnvironments
-        uses: spetersenms/AL-Go/Actions/DetermineDeploymentEnvironments@TestProject
+        uses: spetersenms/AL-Go/Actions/DetermineDeploymentEnvironments@needsContextPoC
         env:
           GITHUB_TOKEN: ${{ github.token }}
         with:
@@ -158,21 +158,21 @@ jobs:
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
       - name: Read settings
-        uses: spetersenms/AL-Go/Actions/ReadSettings@TestProject
+        uses: spetersenms/AL-Go/Actions/ReadSettings@needsContextPoC
         with:
           shell: powershell
           get: templateUrl
 
       - name: Read secrets
         id: ReadSecrets
-        uses: spetersenms/AL-Go/Actions/ReadSecrets@TestProject
+        uses: spetersenms/AL-Go/Actions/ReadSecrets@needsContextPoC
         with:
           shell: powershell
           gitHubSecrets: ${{ toJson(secrets) }}
           getSecrets: 'ghTokenWorkflow'
 
       - name: Check for updates to AL-Go system files
-        uses: spetersenms/AL-Go/Actions/CheckForUpdates@TestProject
+        uses: spetersenms/AL-Go/Actions/CheckForUpdates@needsContextPoC
         env:
           GITHUB_TOKEN: ${{ github.token }}
         with:
@@ -206,37 +206,12 @@ jobs:
       useArtifactCache: true
       needsContext:  ${{ toJson(needs) }}
 
-  Build2:
+  Build:
     needs: [ Initialization, Build1 ]
     if: (!failure()) && (!cancelled()) && (needs.Build1.result == 'success' || needs.Build1.result == 'skipped') && fromJson(needs.Initialization.outputs.buildOrderJson)[1].projectsCount > 0
     strategy:
       matrix:
         include: ${{ fromJson(needs.Initialization.outputs.buildOrderJson)[1].buildDimensions }}
-      fail-fast: false
-    name: Build ${{ matrix.projectName }} (${{ matrix.buildMode }})
-    uses: ./.github/workflows/_BuildALGoProject.yaml
-    secrets: inherit
-    with:
-      shell: ${{ matrix.githubRunnerShell }}
-      runsOn: ${{ matrix.githubRunner }}
-      project: ${{ matrix.project }}
-      projectName: ${{ matrix.projectName }}
-      buildMode: ${{ matrix.buildMode }}
-      skippedProjectsJson: ${{ needs.Initialization.outputs.skippedProjects }}
-      projectDependenciesJson: ${{ needs.Initialization.outputs.projectDependenciesJson }}
-      baselineWorkflowRunId: ${{ needs.Initialization.outputs.baselineWorkflowRunId }}
-      baselineWorkflowSHA: ${{ needs.Initialization.outputs.baselineWorkflowSHA }}
-      secrets: 'licenseFileUrl,codeSignCertificateUrl,*codeSignCertificatePassword,keyVaultCertificateUrl,*keyVaultCertificatePassword,keyVaultClientId,gitHubPackagesContext,applicationInsightsConnectionString'
-      signArtifacts: true
-      useArtifactCache: true
-      needsContext:  ${{ toJson(needs) }}
-
-  Build:
-    needs: [ Initialization, Build2, Build1 ]
-    if: (!failure()) && (!cancelled()) && (needs.Build2.result == 'success' || needs.Build2.result == 'skipped') && (needs.Build1.result == 'success' || needs.Build1.result == 'skipped') && fromJson(needs.Initialization.outputs.buildOrderJson)[2].projectsCount > 0
-    strategy:
-      matrix:
-        include: ${{ fromJson(needs.Initialization.outputs.buildOrderJson)[2].buildDimensions }}
       fail-fast: false
     name: Build ${{ matrix.projectName }} (${{ matrix.buildMode }})
     uses: ./.github/workflows/_BuildALGoProject.yaml
@@ -266,7 +241,7 @@ jobs:
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
       - name: Download artifacts - ErrorLogs
-        uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         if: (success() || failure())
         with:
           pattern: '*-*ErrorLogs-*'
@@ -276,7 +251,7 @@ jobs:
       - name: Process AL Code Analysis Logs
         id: ProcessALCodeAnalysisLogs
         if: (success() || failure())
-        uses: spetersenms/AL-Go/Actions/ProcessALCodeAnalysisLogs@TestProject
+        uses: spetersenms/AL-Go/Actions/ProcessALCodeAnalysisLogs@needsContextPoC
         with:
           shell: powershell
 
@@ -305,18 +280,18 @@ jobs:
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
       - name: Download artifacts
-        uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           path: '.artifacts'
 
       - name: Read settings
-        uses: spetersenms/AL-Go/Actions/ReadSettings@TestProject
+        uses: spetersenms/AL-Go/Actions/ReadSettings@needsContextPoC
         with:
           shell: powershell
 
       - name: Determine ArtifactUrl
         id: determineArtifactUrl
-        uses: spetersenms/AL-Go/Actions/DetermineArtifactUrl@TestProject
+        uses: spetersenms/AL-Go/Actions/DetermineArtifactUrl@needsContextPoC
         with:
           shell: powershell
 
@@ -325,7 +300,7 @@ jobs:
         uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b # v5.0.0
 
       - name: Build Reference Documentation
-        uses: spetersenms/AL-Go/Actions/BuildReferenceDocumentation@TestProject
+        uses: spetersenms/AL-Go/Actions/BuildReferenceDocumentation@needsContextPoC
         with:
           shell: powershell
           artifacts: '.artifacts'
@@ -342,8 +317,8 @@ jobs:
         uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e # v4.0.5
 
   Deploy:
-    needs: [ Initialization, Build2, Build1, Build ]
-    if: (!cancelled()) && (needs.Build2.result == 'success' || needs.Build2.result == 'skipped') && (needs.Build1.result == 'success' || needs.Build1.result == 'skipped') && (needs.Build.result == 'success' || needs.Build.result == 'skipped') && needs.Initialization.outputs.environmentCount > 0
+    needs: [ Initialization, Build1, Build ]
+    if: (!cancelled()) && (needs.Build1.result == 'success' || needs.Build1.result == 'skipped') && (needs.Build.result == 'success' || needs.Build.result == 'skipped') && needs.Initialization.outputs.environmentCount > 0
     strategy: ${{ fromJson(needs.Initialization.outputs.environmentsMatrixJson) }}
     runs-on: ${{ fromJson(matrix.os) }}
     name: Deploy to ${{ matrix.environment }}
@@ -361,12 +336,12 @@ jobs:
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
       - name: Download artifacts
-        uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           path: '.artifacts'
 
       - name: Read settings
-        uses: spetersenms/AL-Go/Actions/ReadSettings@TestProject
+        uses: spetersenms/AL-Go/Actions/ReadSettings@needsContextPoC
         with:
           shell: ${{ matrix.shell }}
           get: type,powerPlatformSolutionFolder
@@ -380,7 +355,7 @@ jobs:
 
       - name: Read secrets
         id: ReadSecrets
-        uses: spetersenms/AL-Go/Actions/ReadSecrets@TestProject
+        uses: spetersenms/AL-Go/Actions/ReadSecrets@needsContextPoC
         with:
           shell: ${{ matrix.shell }}
           gitHubSecrets: ${{ toJson(secrets) }}
@@ -388,7 +363,7 @@ jobs:
 
       - name: Deploy to Business Central
         id: Deploy
-        uses: spetersenms/AL-Go/Actions/Deploy@TestProject
+        uses: spetersenms/AL-Go/Actions/Deploy@needsContextPoC
         env:
           Secrets: '${{ steps.ReadSecrets.outputs.Secrets }}'
         with:
@@ -400,7 +375,7 @@ jobs:
 
       - name: Deploy to Power Platform
         if: env.type == 'PTE' && env.powerPlatformSolutionFolder != ''
-        uses: spetersenms/AL-Go/Actions/DeployPowerPlatform@TestProject
+        uses: spetersenms/AL-Go/Actions/DeployPowerPlatform@needsContextPoC
         env:
           Secrets: '${{ steps.ReadSecrets.outputs.Secrets }}'
         with:
@@ -410,8 +385,8 @@ jobs:
           deploymentEnvironmentsJson: ${{ needs.Initialization.outputs.deploymentEnvironmentsJson }}
 
   Deliver:
-    needs: [ Initialization, Build2, Build1, Build ]
-    if: (!cancelled()) && (needs.Build2.result == 'success' || needs.Build2.result == 'skipped') && (needs.Build1.result == 'success' || needs.Build1.result == 'skipped') && (needs.Build.result == 'success' || needs.Build.result == 'skipped') && needs.Initialization.outputs.deliveryTargetsJson != '[]'
+    needs: [ Initialization, Build1, Build ]
+    if: (!cancelled()) && (needs.Build1.result == 'success' || needs.Build1.result == 'skipped') && (needs.Build.result == 'success' || needs.Build.result == 'skipped') && needs.Initialization.outputs.deliveryTargetsJson != '[]'
     strategy:
       matrix:
         deliveryTarget: ${{ fromJson(needs.Initialization.outputs.deliveryTargetsJson) }}
@@ -423,25 +398,25 @@ jobs:
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
       - name: Download artifacts
-        uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           path: '.artifacts'
 
       - name: Read settings
-        uses: spetersenms/AL-Go/Actions/ReadSettings@TestProject
+        uses: spetersenms/AL-Go/Actions/ReadSettings@needsContextPoC
         with:
           shell: powershell
 
       - name: Read secrets
         id: ReadSecrets
-        uses: spetersenms/AL-Go/Actions/ReadSecrets@TestProject
+        uses: spetersenms/AL-Go/Actions/ReadSecrets@needsContextPoC
         with:
           shell: powershell
           gitHubSecrets: ${{ toJson(secrets) }}
           getSecrets: '${{ matrix.deliveryTarget }}Context'
 
       - name: Deliver
-        uses: spetersenms/AL-Go/Actions/Deliver@TestProject
+        uses: spetersenms/AL-Go/Actions/Deliver@needsContextPoC
         env:
           Secrets: '${{ steps.ReadSecrets.outputs.Secrets }}'
         with:
@@ -452,7 +427,7 @@ jobs:
           artifacts: '.artifacts'
 
   PostProcess:
-    needs: [ Initialization, Build2, Build1, Build, Deploy, Deliver, DeployALDoc, CodeAnalysisUpload ]
+    needs: [ Initialization, Build1, Build, Deploy, Deliver, DeployALDoc, CodeAnalysisUpload ]
     if: (!cancelled())
     runs-on: [ windows-latest ]
     steps:
@@ -461,7 +436,7 @@ jobs:
 
       - name: Finalize the workflow
         id: PostProcess
-        uses: spetersenms/AL-Go/Actions/WorkflowPostProcess@TestProject
+        uses: spetersenms/AL-Go/Actions/WorkflowPostProcess@needsContextPoC
         env:
           GITHUB_TOKEN: ${{ github.token }}
         with:

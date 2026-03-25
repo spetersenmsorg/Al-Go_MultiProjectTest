@@ -30,7 +30,7 @@ jobs:
           lfs: true
 
       - name: Troubleshooting
-        uses: spetersenms/AL-Go/Actions/Troubleshooting@TestProject
+        uses: spetersenms/AL-Go/Actions/Troubleshooting@needsContextPoC
         with:
           shell: powershell
           gitHubSecrets: ${{ toJson(secrets) }}

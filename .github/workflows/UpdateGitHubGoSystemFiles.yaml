@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       templateUrl:
-        description: Template Repository URL (current is https://github.com/spetersenms/AL-Go@TestProject)
+        description: Template Repository URL (current is https://github.com/spetersenms/AL-Go@needsContextPoC)
         required: false
         default: ''
       downloadLatest:
@@ -21,8 +21,12 @@ on:
         default: ''
   workflow_call:
     inputs:
+      caller:
+        description: Name of the calling workflow (use github.workflow as value when calling)
+        type: string
+        required: true
       templateUrl:
-        description: Template Repository URL (current is https://github.com/spetersenms/AL-Go@TestProject)
+        description: Template Repository URL (current is https://github.com/spetersenms/AL-Go@needsContextPoC)
         type: string
         required: false
         default: ''
@@ -50,6 +54,7 @@ defaults:
     shell: powershell
 
 env:
+  WorkflowEventName: ${{ inputs.caller && 'workflow_call' || github.event_name }}
   ALGoOrgSettings: ${{ vars.ALGoOrgSettings }}
   ALGoRepoSettings: ${{ vars.ALGoRepoSettings }}
 
@@ -66,22 +71,23 @@ jobs:
 
       - name: Read settings
         id: ReadSettings
-        uses: spetersenms/AL-Go/Actions/ReadSettings@TestProject
+        uses: spetersenms/AL-Go/Actions/ReadSettings@needsContextPoC
         with:
           shell: powershell
           get: templateUrl
 
       - name: Get Workflow Multi-Run Branches
         id: GetBranches
-        uses: spetersenms/AL-Go/Actions/GetWorkflowMultiRunBranches@TestProject
+        uses: spetersenms/AL-Go/Actions/GetWorkflowMultiRunBranches@needsContextPoC
         with:
           shell: powershell
-          includeBranches: ${{ github.event.inputs.includeBranches }}
+          workflowEventName: ${{ env.WorkflowEventName }}
+          includeBranches: ${{ inputs.includeBranches }}
 
       - name: Determine Template URL
         id: DetermineTemplateUrl
         env:
-          TemplateUrlAsInput: '${{ github.event.inputs.templateUrl }}'
+          TemplateUrlAsInput: '${{ inputs.templateUrl }}'
         run: |
             $templateUrl = $env:templateUrl # Available from ReadSettings step
             if ($ENV:TemplateUrlAsInput) {
@@ -102,7 +108,7 @@ jobs:
 
     steps:
       - name: Dump Workflow Information
-        uses: spetersenms/AL-Go/Actions/DumpWorkflowInfo@TestProject
+        uses: spetersenms/AL-Go/Actions/DumpWorkflowInfo@needsContextPoC
         with:
           shell: powershell
 
@@ -113,19 +119,19 @@ jobs:
 
       - name: Initialize the workflow
         id: init
-        uses: spetersenms/AL-Go/Actions/WorkflowInitialize@TestProject
+        uses: spetersenms/AL-Go/Actions/WorkflowInitialize@needsContextPoC
         with:
           shell: powershell
 
       - name: Read settings
-        uses: spetersenms/AL-Go/Actions/ReadSettings@TestProject
+        uses: spetersenms/AL-Go/Actions/ReadSettings@needsContextPoC
         with:
           shell: powershell
           get: commitOptions
 
       - name: Read secrets
         id: ReadSecrets
-        uses: spetersenms/AL-Go/Actions/ReadSecrets@TestProject
+        uses: spetersenms/AL-Go/Actions/ReadSecrets@needsContextPoC
         with:
           shell: powershell
           gitHubSecrets: ${{ toJson(secrets) }}
@@ -133,12 +139,12 @@ jobs:
 
       - name: Calculate Commit Options
         env:
-          directCommit: '${{ github.event.inputs.directCommit }}'
-          downloadLatest: '${{ github.event.inputs.downloadLatest }}'
+          directCommit: '${{ inputs.directCommit }}'
+          downloadLatest: '${{ inputs.downloadLatest }}'
         run: |
           $errorActionPreference = "Stop"; $ProgressPreference = "SilentlyContinue"; Set-StrictMode -Version 2.0
-          if('${{ github.event_name }}' -in 'workflow_dispatch', 'workflow_call') {
-            Write-Host "Using inputs from ${{ github.event_name }} event"
+          if($env:WorkflowEventName -in 'workflow_dispatch', 'workflow_call') {
+            Write-Host "Using inputs from $($env:WorkflowEventName) event"
             $directCommit = $env:directCommit
             $downloadLatest = $env:downloadLatest
           }
@@ -152,7 +158,7 @@ jobs:
           Add-Content -Encoding UTF8 -Path $env:GITHUB_ENV -Value "downloadLatest=$downloadLatest"
 
       - name: Update AL-Go system files
-        uses: spetersenms/AL-Go/Actions/CheckForUpdates@TestProject
+        uses: spetersenms/AL-Go/Actions/CheckForUpdates@needsContextPoC
         env:
           GITHUB_TOKEN: ${{ github.token }}
         with:
@@ -166,7 +172,7 @@ jobs:
 
       - name: Finalize the workflow
         if: always()
-        uses: spetersenms/AL-Go/Actions/WorkflowPostProcess@TestProject
+        uses: spetersenms/AL-Go/Actions/WorkflowPostProcess@needsContextPoC
         env:
           GITHUB_TOKEN: ${{ github.token }}
         with:
