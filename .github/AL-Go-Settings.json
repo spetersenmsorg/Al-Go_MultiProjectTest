@@ -1,12 +1,12 @@
 {
-  "$schema": "https://raw.githubusercontent.com/spetersenms/AL-Go/needsContextPoC/Actions/.Modules/settings.schema.json",
+  "$schema": "https://raw.githubusercontent.com/microsoft/AL-Go/7209c0276f09fa18469b985fd609d45255b77426/Actions/.Modules/settings.schema.json",
   "type": "PTE",
-  "templateUrl": "https://github.com/spetersenms/AL-Go@needsContextPoC",
+  "templateUrl": "https://github.com/microsoft/AL-Go-PTE@preview",
   "generateDependencyArtifact": true,
   "DeployToProduction": {
     "environmentName": "AL-Go-Demo-Test"
   },
-  "templateSha": "35c93ec06a5c3c50053dbbdcda9ad75c3f2b52eb",
+  "templateSha": "753ebe3247fb37b6e066585f582144a7ff60588f",
   "enableCodeCop": true,
   "enableUICop": true,
   "rulesetFile": "../rulesets/ruleset.json",
