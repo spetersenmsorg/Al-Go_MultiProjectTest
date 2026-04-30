@@ -1,12 +1,12 @@
 {
-  "$schema": "https://raw.githubusercontent.com/spetersenms/AL-Go/main/Actions/.Modules/settings.schema.json",
+  "$schema": "https://raw.githubusercontent.com/spetersenms/AL-Go/downloadOnlySingleDependencyFix/Actions/.Modules/settings.schema.json",
   "type": "PTE",
-  "templateUrl": "https://github.com/spetersenms/AL-Go@main",
+  "templateUrl": "https://github.com/spetersenms/AL-Go@downloadOnlySingleDependencyFix",
   "generateDependencyArtifact": true,
   "DeployToProduction": {
     "environmentName": "AL-Go-Demo-Test"
   },
-  "templateSha": "2b21a3d4898b539f1b6d1e5c35abceae233cb59b",
+  "templateSha": "7449814f50b4c3aa7a71392d82ba2491774744d3",
   "enableCodeCop": true,
   "enableUICop": true,
   "rulesetFile": "../rulesets/ruleset.json",
