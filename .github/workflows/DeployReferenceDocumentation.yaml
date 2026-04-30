@@ -30,24 +30,24 @@ jobs:
 
       - name: Initialize the workflow
         id: init
-        uses: spetersenms/AL-Go/Actions/WorkflowInitialize@downloadOnlyRelevantProjectDependencies
+        uses: spetersenms/AL-Go/Actions/WorkflowInitialize@main
         with:
           shell: powershell
 
       - name: Read settings
-        uses: spetersenms/AL-Go/Actions/ReadSettings@downloadOnlyRelevantProjectDependencies
+        uses: spetersenms/AL-Go/Actions/ReadSettings@main
         with:
           shell: powershell
 
       - name: Determine ArtifactUrl
         id: determineArtifactUrl
-        uses: spetersenms/AL-Go/Actions/DetermineArtifactUrl@downloadOnlyRelevantProjectDependencies
+        uses: spetersenms/AL-Go/Actions/DetermineArtifactUrl@main
         with:
           shell: powershell
 
       - name: Determine Deployment Environments
         id: DetermineDeploymentEnvironments
-        uses: spetersenms/AL-Go/Actions/DetermineDeploymentEnvironments@downloadOnlyRelevantProjectDependencies
+        uses: spetersenms/AL-Go/Actions/DetermineDeploymentEnvironments@main
         env:
           GITHUB_TOKEN: ${{ github.token }}
         with:
@@ -60,7 +60,7 @@ jobs:
         uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6.0.0
 
       - name: Build Reference Documentation
-        uses: spetersenms/AL-Go/Actions/BuildReferenceDocumentation@downloadOnlyRelevantProjectDependencies
+        uses: spetersenms/AL-Go/Actions/BuildReferenceDocumentation@main
         with:
           shell: powershell
           artifacts: 'latest'
@@ -78,7 +78,7 @@ jobs:
 
       - name: Finalize the workflow
         if: always()
-        uses: spetersenms/AL-Go/Actions/WorkflowPostProcess@downloadOnlyRelevantProjectDependencies
+        uses: spetersenms/AL-Go/Actions/WorkflowPostProcess@main
         env:
           GITHUB_TOKEN: ${{ github.token }}
         with:
