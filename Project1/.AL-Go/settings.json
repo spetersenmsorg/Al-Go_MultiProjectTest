@@ -14,7 +14,7 @@
     "Recordings/Scenario2"
   ],
   "artifact": "//27.0/us/latest",
-  "useCompiledFolder": false,
+  "useCompilerFolder": false,
   "doNotPublishApps": false,
   "doNotRunTests": false
 }
