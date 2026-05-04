@@ -51,7 +51,7 @@ jobs:
       trackALAlertsInGitHub: ${{ steps.SetALCodeAnalysisVar.outputs.trackALAlertsInGitHub }}
     steps:
       - name: Dump Workflow Information
-        uses: spetersenms/AL-Go/Actions/DumpWorkflowInfo@downloadOnlySingleDependencyFix
+        uses: spetersenms/AL-Go/Actions/DumpWorkflowInfo@CodeCoverage
         with:
           shell: powershell
 
@@ -62,13 +62,13 @@ jobs:
 
       - name: Initialize the workflow
         id: init
-        uses: spetersenms/AL-Go/Actions/WorkflowInitialize@downloadOnlySingleDependencyFix
+        uses: spetersenms/AL-Go/Actions/WorkflowInitialize@CodeCoverage
         with:
           shell: powershell
 
       - name: Read settings
         id: ReadSettings
-        uses: spetersenms/AL-Go/Actions/ReadSettings@downloadOnlySingleDependencyFix
+        uses: spetersenms/AL-Go/Actions/ReadSettings@CodeCoverage
         with:
           shell: powershell
           get: type,powerPlatformSolutionFolder,useGitSubmodules,trackALAlertsInGitHub
@@ -82,7 +82,7 @@ jobs:
       - name: Read submodules token
         id: ReadSubmodulesToken
         if: env.useGitSubmodules != 'false' && env.useGitSubmodules != ''
-        uses: spetersenms/AL-Go/Actions/ReadSecrets@downloadOnlySingleDependencyFix
+        uses: spetersenms/AL-Go/Actions/ReadSecrets@CodeCoverage
         with:
           shell: powershell
           gitHubSecrets: ${{ toJson(secrets) }}
@@ -103,7 +103,7 @@ jobs:
 
       - name: Determine Projects To Build
         id: determineProjectsToBuild
-        uses: spetersenms/AL-Go/Actions/DetermineProjectsToBuild@downloadOnlySingleDependencyFix
+        uses: spetersenms/AL-Go/Actions/DetermineProjectsToBuild@CodeCoverage
         with:
           shell: powershell
           maxBuildDepth: ${{ env.workflowDepth }}
@@ -116,7 +116,7 @@ jobs:
 
       - name: Determine Delivery Target Secrets
         id: DetermineDeliveryTargetSecrets
-        uses: spetersenms/AL-Go/Actions/DetermineDeliveryTargets@downloadOnlySingleDependencyFix
+        uses: spetersenms/AL-Go/Actions/DetermineDeliveryTargets@CodeCoverage
         with:
           shell: powershell
           projectsJson: '${{ steps.determineProjectsToBuild.outputs.ProjectsJson }}'
@@ -124,7 +124,7 @@ jobs:
 
       - name: Read secrets
         id: ReadSecrets
-        uses: spetersenms/AL-Go/Actions/ReadSecrets@downloadOnlySingleDependencyFix
+        uses: spetersenms/AL-Go/Actions/ReadSecrets@CodeCoverage
         with:
           shell: powershell
           gitHubSecrets: ${{ toJson(secrets) }}
@@ -132,7 +132,7 @@ jobs:
 
       - name: Determine Delivery Targets
         id: DetermineDeliveryTargets
-        uses: spetersenms/AL-Go/Actions/DetermineDeliveryTargets@downloadOnlySingleDependencyFix
+        uses: spetersenms/AL-Go/Actions/DetermineDeliveryTargets@CodeCoverage
         env:
           Secrets: '${{ steps.ReadSecrets.outputs.Secrets }}'
         with:
@@ -142,7 +142,7 @@ jobs:
 
       - name: Determine Deployment Environments
         id: DetermineDeploymentEnvironments
-        uses: spetersenms/AL-Go/Actions/DetermineDeploymentEnvironments@downloadOnlySingleDependencyFix
+        uses: spetersenms/AL-Go/Actions/DetermineDeploymentEnvironments@CodeCoverage
         env:
           GITHUB_TOKEN: ${{ github.token }}
         with:
@@ -158,21 +158,21 @@ jobs:
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
       - name: Read settings
-        uses: spetersenms/AL-Go/Actions/ReadSettings@downloadOnlySingleDependencyFix
+        uses: spetersenms/AL-Go/Actions/ReadSettings@CodeCoverage
         with:
           shell: powershell
           get: templateUrl
 
       - name: Read secrets
         id: ReadSecrets
-        uses: spetersenms/AL-Go/Actions/ReadSecrets@downloadOnlySingleDependencyFix
+        uses: spetersenms/AL-Go/Actions/ReadSecrets@CodeCoverage
         with:
           shell: powershell
           gitHubSecrets: ${{ toJson(secrets) }}
           getSecrets: 'ghTokenWorkflow'
 
       - name: Check for updates to AL-Go system files
-        uses: spetersenms/AL-Go/Actions/CheckForUpdates@downloadOnlySingleDependencyFix
+        uses: spetersenms/AL-Go/Actions/CheckForUpdates@CodeCoverage
         env:
           GITHUB_TOKEN: ${{ github.token }}
         with:
@@ -251,7 +251,7 @@ jobs:
       - name: Process AL Code Analysis Logs
         id: ProcessALCodeAnalysisLogs
         if: (success() || failure())
-        uses: spetersenms/AL-Go/Actions/ProcessALCodeAnalysisLogs@downloadOnlySingleDependencyFix
+        uses: spetersenms/AL-Go/Actions/ProcessALCodeAnalysisLogs@CodeCoverage
         with:
           shell: powershell
 
@@ -261,6 +261,41 @@ jobs:
         with:
           sarif_file: '${{ github.workspace }}/ErrorLogs/output.sarif.json'
           category: "ALCodeAnalysis"
+
+  MergeCoverage:
+    # Runs unconditionally (steps are gated by hashFiles). Job-level gating would require
+    # passing enableCodeCoverage through Initialization outputs — not worth the complexity for ~20s savings.
+    needs: [ Initialization, Build ]
+    if: (!cancelled()) && (needs.Build.result == 'success' || needs.Build.result == 'skipped' || needs.Build.result == 'failure')
+    runs-on: [ windows-latest ]
+    name: Merge Code Coverage
+    env:
+      _BUILD_RESULT: ${{ needs.Build.result }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Download coverage artifacts
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          pattern: '*-CodeCoverage-*'
+          path: '${{ github.workspace }}/.coverage-inputs/'
+
+      - name: Merge Coverage Summaries
+        if: hashFiles('.coverage-inputs/**/cobertura.xml') != ''
+        uses: spetersenms/AL-Go/Actions/MergeCoverageSummaries@CodeCoverage
+        with:
+          shell: pwsh
+          coveragePath: '${{ github.workspace }}/.coverage-inputs'
+
+      - name: Publish merged coverage artifact
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        if: hashFiles('.coverage-inputs/_merged/cobertura.xml') != ''
+        with:
+          name: MergedCodeCoverage
+          path: '${{ github.workspace }}/.coverage-inputs/_merged/'
+          if-no-files-found: ignore
+          retention-days: 3
 
   DeployALDoc:
     needs: [ Initialization, Build ]
@@ -285,13 +320,13 @@ jobs:
           path: '.artifacts'
 
       - name: Read settings
-        uses: spetersenms/AL-Go/Actions/ReadSettings@downloadOnlySingleDependencyFix
+        uses: spetersenms/AL-Go/Actions/ReadSettings@CodeCoverage
         with:
           shell: powershell
 
       - name: Determine ArtifactUrl
         id: determineArtifactUrl
-        uses: spetersenms/AL-Go/Actions/DetermineArtifactUrl@downloadOnlySingleDependencyFix
+        uses: spetersenms/AL-Go/Actions/DetermineArtifactUrl@CodeCoverage
         with:
           shell: powershell
 
@@ -300,7 +335,7 @@ jobs:
         uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6.0.0
 
       - name: Build Reference Documentation
-        uses: spetersenms/AL-Go/Actions/BuildReferenceDocumentation@downloadOnlySingleDependencyFix
+        uses: spetersenms/AL-Go/Actions/BuildReferenceDocumentation@CodeCoverage
         with:
           shell: powershell
           artifacts: '.artifacts'
@@ -341,7 +376,7 @@ jobs:
           path: '.artifacts'
 
       - name: Read settings
-        uses: spetersenms/AL-Go/Actions/ReadSettings@downloadOnlySingleDependencyFix
+        uses: spetersenms/AL-Go/Actions/ReadSettings@CodeCoverage
         with:
           shell: ${{ matrix.shell }}
           get: type,powerPlatformSolutionFolder
@@ -355,7 +390,7 @@ jobs:
 
       - name: Read secrets
         id: ReadSecrets
-        uses: spetersenms/AL-Go/Actions/ReadSecrets@downloadOnlySingleDependencyFix
+        uses: spetersenms/AL-Go/Actions/ReadSecrets@CodeCoverage
         with:
           shell: ${{ matrix.shell }}
           gitHubSecrets: ${{ toJson(secrets) }}
@@ -363,7 +398,7 @@ jobs:
 
       - name: Deploy to Business Central
         id: Deploy
-        uses: spetersenms/AL-Go/Actions/Deploy@downloadOnlySingleDependencyFix
+        uses: spetersenms/AL-Go/Actions/Deploy@CodeCoverage
         env:
           Secrets: '${{ steps.ReadSecrets.outputs.Secrets }}'
         with:
@@ -375,7 +410,7 @@ jobs:
 
       - name: Deploy to Power Platform
         if: env.type == 'PTE' && env.powerPlatformSolutionFolder != ''
-        uses: spetersenms/AL-Go/Actions/DeployPowerPlatform@downloadOnlySingleDependencyFix
+        uses: spetersenms/AL-Go/Actions/DeployPowerPlatform@CodeCoverage
         env:
           Secrets: '${{ steps.ReadSecrets.outputs.Secrets }}'
         with:
@@ -403,20 +438,20 @@ jobs:
           path: '.artifacts'
 
       - name: Read settings
-        uses: spetersenms/AL-Go/Actions/ReadSettings@downloadOnlySingleDependencyFix
+        uses: spetersenms/AL-Go/Actions/ReadSettings@CodeCoverage
         with:
           shell: powershell
 
       - name: Read secrets
         id: ReadSecrets
-        uses: spetersenms/AL-Go/Actions/ReadSecrets@downloadOnlySingleDependencyFix
+        uses: spetersenms/AL-Go/Actions/ReadSecrets@CodeCoverage
         with:
           shell: powershell
           gitHubSecrets: ${{ toJson(secrets) }}
           getSecrets: '${{ matrix.deliveryTarget }}Context'
 
       - name: Deliver
-        uses: spetersenms/AL-Go/Actions/Deliver@downloadOnlySingleDependencyFix
+        uses: spetersenms/AL-Go/Actions/Deliver@CodeCoverage
         env:
           Secrets: '${{ steps.ReadSecrets.outputs.Secrets }}'
         with:
@@ -436,7 +471,7 @@ jobs:
 
       - name: Finalize the workflow
         id: PostProcess
-        uses: spetersenms/AL-Go/Actions/WorkflowPostProcess@downloadOnlySingleDependencyFix
+        uses: spetersenms/AL-Go/Actions/WorkflowPostProcess@CodeCoverage
         env:
           GITHUB_TOKEN: ${{ github.token }}
         with:
