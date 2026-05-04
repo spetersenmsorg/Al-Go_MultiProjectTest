@@ -13,5 +13,11 @@
   "trackAlAlertsInGitHub": true,
   "useProjectDependencies": true,
   "buildModes": [],
-  "artifact": "//26//latest"
+  "artifact": "//26//latest",
+  "enableCodeCoverage": true,
+  "codeCoverageSetup": {
+      "trackingType": "PerRun",
+      "produceCodeCoverageMap": "PerCodeunit",
+      "excludeFilesPattern": ["*.PermissionSet.al"]
+  }
 }
