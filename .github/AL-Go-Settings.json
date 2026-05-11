@@ -1,12 +1,12 @@
 {
-  "$schema": "https://raw.githubusercontent.com/spetersenms/AL-Go/CodeCoverage/Actions/.Modules/settings.schema.json",
+  "$schema": "https://raw.githubusercontent.com/spetersenms/AL-Go/BuildInitializeOverride/Actions/.Modules/settings.schema.json",
   "type": "PTE",
-  "templateUrl": "https://github.com/spetersenms/AL-Go@CodeCoverage",
+  "templateUrl": "https://github.com/spetersenms/AL-Go@BuildInitializeOverride",
   "generateDependencyArtifact": true,
   "DeployToProduction": {
     "environmentName": "AL-Go-Demo-Test"
   },
-  "templateSha": "48106a4496920fff5aa6161689b11b0888045aab",
+  "templateSha": "84431c82aac79b55da58428b9ac8886fd2e5f490",
   "enableCodeCop": true,
   "enableUICop": true,
   "rulesetFile": "../rulesets/ruleset.json",
@@ -16,8 +16,10 @@
   "artifact": "//26//latest",
   "enableCodeCoverage": true,
   "codeCoverageSetup": {
-      "trackingType": "PerRun",
-      "produceCodeCoverageMap": "PerCodeunit",
-      "excludeFilesPattern": ["*.PermissionSet.al"]
+    "trackingType": "PerRun",
+    "produceCodeCoverageMap": "PerCodeunit",
+    "excludeFilesPattern": [
+      "*.PermissionSet.al"
+    ]
   }
 }

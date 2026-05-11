@@ -30,7 +30,7 @@ jobs:
           lfs: true
 
       - name: Troubleshooting
-        uses: spetersenms/AL-Go/Actions/Troubleshooting@CodeCoverage
+        uses: spetersenms/AL-Go/Actions/Troubleshooting@BuildInitializeOverride
         with:
           shell: powershell
           gitHubSecrets: ${{ toJson(secrets) }}

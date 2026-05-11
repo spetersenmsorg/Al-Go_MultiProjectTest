@@ -31,7 +31,7 @@ jobs:
     if: (github.event.pull_request.base.repo.full_name != github.event.pull_request.head.repo.full_name) && (github.event_name != 'pull_request')
     runs-on: windows-latest
     steps:
-      - uses: spetersenms/AL-Go/Actions/VerifyPRChanges@CodeCoverage
+      - uses: spetersenms/AL-Go/Actions/VerifyPRChanges@BuildInitializeOverride
 
   Initialization:
     needs: [ PregateCheck ]
@@ -49,7 +49,7 @@ jobs:
       trackALAlertsInGitHub: ${{ steps.SetALCodeAnalysisVar.outputs.trackALAlertsInGitHub }}
     steps:
       - name: Dump Workflow Information
-        uses: spetersenms/AL-Go/Actions/DumpWorkflowInfo@CodeCoverage
+        uses: spetersenms/AL-Go/Actions/DumpWorkflowInfo@BuildInitializeOverride
         with:
           shell: powershell
 
@@ -61,13 +61,13 @@ jobs:
 
       - name: Initialize the workflow
         id: init
-        uses: spetersenms/AL-Go/Actions/WorkflowInitialize@CodeCoverage
+        uses: spetersenms/AL-Go/Actions/WorkflowInitialize@BuildInitializeOverride
         with:
           shell: powershell
 
       - name: Read settings
         id: ReadSettings
-        uses: spetersenms/AL-Go/Actions/ReadSettings@CodeCoverage
+        uses: spetersenms/AL-Go/Actions/ReadSettings@BuildInitializeOverride
         with:
           shell: powershell
           get: shortLivedArtifactsRetentionDays,trackALAlertsInGitHub
@@ -86,7 +86,7 @@ jobs:
 
       - name: Determine Projects To Build
         id: determineProjectsToBuild
-        uses: spetersenms/AL-Go/Actions/DetermineProjectsToBuild@CodeCoverage
+        uses: spetersenms/AL-Go/Actions/DetermineProjectsToBuild@BuildInitializeOverride
         with:
           shell: powershell
           maxBuildDepth: ${{ env.workflowDepth }}
@@ -165,7 +165,7 @@ jobs:
       - name: Process AL Code Analysis Logs
         id: ProcessALCodeAnalysisLogs
         if: (success() || failure())
-        uses: spetersenms/AL-Go/Actions/ProcessALCodeAnalysisLogs@CodeCoverage
+        uses: spetersenms/AL-Go/Actions/ProcessALCodeAnalysisLogs@BuildInitializeOverride
         with:
           shell: powershell
 
@@ -178,52 +178,15 @@ jobs:
           ref: ${{ format('refs/pull/{0}/head', github.event.pull_request.number) }}
           sha: ${{ github.event.pull_request.head.sha }}
 
-  MergeCoverage:
-    # Runs unconditionally (steps are gated by hashFiles). Job-level gating would require
-    # passing enableCodeCoverage through Initialization outputs — not worth the complexity for ~20s savings.
-    needs: [ Initialization, Build ]
-    if: (!cancelled()) && (needs.Build.result == 'success' || needs.Build.result == 'skipped' || needs.Build.result == 'failure')
-    runs-on: [ windows-latest ]
-    name: Merge Code Coverage
-    env:
-      _BUILD_RESULT: ${{ needs.Build.result }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-        with:
-          ref: ${{ format('refs/pull/{0}/head', github.event.pull_request.number) }}
-
-      - name: Download coverage artifacts
-        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
-        with:
-          pattern: '*-CodeCoverage-*'
-          path: '${{ github.workspace }}/.coverage-inputs/'
-
-      - name: Merge Coverage Summaries
-        if: hashFiles('.coverage-inputs/**/cobertura.xml') != ''
-        uses: spetersenms/AL-Go/Actions/MergeCoverageSummaries@CodeCoverage
-        with:
-          shell: pwsh
-          coveragePath: '${{ github.workspace }}/.coverage-inputs'
-
-      - name: Publish merged coverage artifact
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
-        if: hashFiles('.coverage-inputs/_merged/cobertura.xml') != ''
-        with:
-          name: MergedCodeCoverage
-          path: '${{ github.workspace }}/.coverage-inputs/_merged/'
-          if-no-files-found: ignore
-          retention-days: 3
-
   StatusCheck:
-    needs: [ Initialization, Build, MergeCoverage ]
+    needs: [ Initialization, Build ]
     if: (!cancelled())
     runs-on: [ windows-latest ]
     name: Pull Request Status Check
     steps:
       - name: Pull Request Status Check
         id: PullRequestStatusCheck
-        uses: spetersenms/AL-Go/Actions/PullRequestStatusCheck@CodeCoverage
+        uses: spetersenms/AL-Go/Actions/PullRequestStatusCheck@BuildInitializeOverride
         env:
           GITHUB_TOKEN: ${{ github.token }}
         with:
@@ -231,7 +194,7 @@ jobs:
 
       - name: Finalize the workflow
         id: PostProcess
-        uses: spetersenms/AL-Go/Actions/WorkflowPostProcess@CodeCoverage
+        uses: spetersenms/AL-Go/Actions/WorkflowPostProcess@BuildInitializeOverride
         if: success() || failure()
         env:
           GITHUB_TOKEN: ${{ github.token }}
