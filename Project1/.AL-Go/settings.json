@@ -14,5 +14,6 @@
     "Recordings/Scenario2"
   ],
   "artifact": "//*//latest",
-  "repoVersion": "1.1"
+  "repoVersion": "1.1",
+  "useCompilerFolder": false
 }
