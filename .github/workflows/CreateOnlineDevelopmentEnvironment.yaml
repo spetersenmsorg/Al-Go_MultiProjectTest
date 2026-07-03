@@ -50,28 +50,28 @@ jobs:
       telemetryScopeJson: ${{ steps.init.outputs.telemetryScopeJson }}
     steps:
       - name: Dump Workflow Information
-        uses: spetersenms/AL-Go/Actions/DumpWorkflowInfo@BuildInitializeOverride
+        uses: spetersenms/AL-Go/Actions/DumpWorkflowInfo@spetersen/aldoc-refdoc-packagecache
         with:
           shell: powershell
 
       - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
 
       - name: Initialize the workflow
         id: init
-        uses: spetersenms/AL-Go/Actions/WorkflowInitialize@BuildInitializeOverride
+        uses: spetersenms/AL-Go/Actions/WorkflowInitialize@spetersen/aldoc-refdoc-packagecache
         with:
           shell: powershell
 
       - name: Read settings
         id: ReadSettings
-        uses: spetersenms/AL-Go/Actions/ReadSettings@BuildInitializeOverride
+        uses: spetersenms/AL-Go/Actions/ReadSettings@spetersen/aldoc-refdoc-packagecache
         with:
           shell: powershell
 
       - name: Read secrets
         id: ReadSecrets
-        uses: spetersenms/AL-Go/Actions/ReadSecrets@BuildInitializeOverride
+        uses: spetersenms/AL-Go/Actions/ReadSecrets@spetersen/aldoc-refdoc-packagecache
         with:
           shell: powershell
           gitHubSecrets: ${{ toJson(secrets) }}
@@ -90,7 +90,7 @@ jobs:
             Write-Host "AdminCenterApiCredentials not provided, initiating Device Code flow"
             $ALGoHelperPath = "$([System.IO.Path]::GetTempFileName()).ps1"
             $webClient = New-Object System.Net.WebClient
-            $webClient.DownloadFile('https://raw.githubusercontent.com/spetersenms/AL-Go/BuildInitializeOverride/Actions/AL-Go-Helper.ps1', $ALGoHelperPath)
+            $webClient.DownloadFile('https://raw.githubusercontent.com/spetersenms/AL-Go/spetersen/aldoc-refdoc-packagecache/Actions/AL-Go-Helper.ps1', $ALGoHelperPath)
             . $ALGoHelperPath
             DownloadAndImportBcContainerHelper
             $authContext = New-BcAuthContext -includeDeviceLogin -deviceLoginTimeout ([TimeSpan]::FromSeconds(0))
@@ -109,16 +109,16 @@ jobs:
       deviceCode: ${{ needs.Initialization.outputs.deviceCode }}
     steps:
       - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
 
       - name: Read settings
-        uses: spetersenms/AL-Go/Actions/ReadSettings@BuildInitializeOverride
+        uses: spetersenms/AL-Go/Actions/ReadSettings@spetersen/aldoc-refdoc-packagecache
         with:
           shell: powershell
 
       - name: Read secrets
         id: ReadSecrets
-        uses: spetersenms/AL-Go/Actions/ReadSecrets@BuildInitializeOverride
+        uses: spetersenms/AL-Go/Actions/ReadSecrets@spetersen/aldoc-refdoc-packagecache
         with:
           shell: powershell
           gitHubSecrets: ${{ toJson(secrets) }}
@@ -137,7 +137,7 @@ jobs:
           Add-Content -Encoding UTF8 -Path $env:GITHUB_OUTPUT -value "adminCenterApiCredentials=$adminCenterApiCredentials"
 
       - name: Create Development Environment
-        uses: spetersenms/AL-Go/Actions/CreateDevelopmentEnvironment@BuildInitializeOverride
+        uses: spetersenms/AL-Go/Actions/CreateDevelopmentEnvironment@spetersen/aldoc-refdoc-packagecache
         with:
           shell: powershell
           token: ${{ steps.ReadSecrets.outputs.TokenForPush }}
@@ -149,7 +149,7 @@ jobs:
 
       - name: Finalize the workflow
         if: always()
-        uses: spetersenms/AL-Go/Actions/WorkflowPostProcess@BuildInitializeOverride
+        uses: spetersenms/AL-Go/Actions/WorkflowPostProcess@spetersen/aldoc-refdoc-packagecache
         env:
           GITHUB_TOKEN: ${{ github.token }}
         with:

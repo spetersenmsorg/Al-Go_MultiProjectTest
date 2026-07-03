@@ -26,28 +26,28 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
 
       - name: Initialize the workflow
         id: init
-        uses: spetersenms/AL-Go/Actions/WorkflowInitialize@BuildInitializeOverride
+        uses: spetersenms/AL-Go/Actions/WorkflowInitialize@spetersen/aldoc-refdoc-packagecache
         with:
           shell: powershell
 
       - name: Read settings
-        uses: spetersenms/AL-Go/Actions/ReadSettings@BuildInitializeOverride
+        uses: spetersenms/AL-Go/Actions/ReadSettings@spetersen/aldoc-refdoc-packagecache
         with:
           shell: powershell
 
       - name: Determine ArtifactUrl
         id: determineArtifactUrl
-        uses: spetersenms/AL-Go/Actions/DetermineArtifactUrl@BuildInitializeOverride
+        uses: spetersenms/AL-Go/Actions/DetermineArtifactUrl@spetersen/aldoc-refdoc-packagecache
         with:
           shell: powershell
 
       - name: Determine Deployment Environments
         id: DetermineDeploymentEnvironments
-        uses: spetersenms/AL-Go/Actions/DetermineDeploymentEnvironments@BuildInitializeOverride
+        uses: spetersenms/AL-Go/Actions/DetermineDeploymentEnvironments@spetersen/aldoc-refdoc-packagecache
         env:
           GITHUB_TOKEN: ${{ github.token }}
         with:
@@ -60,7 +60,7 @@ jobs:
         uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6.0.0
 
       - name: Build Reference Documentation
-        uses: spetersenms/AL-Go/Actions/BuildReferenceDocumentation@BuildInitializeOverride
+        uses: spetersenms/AL-Go/Actions/BuildReferenceDocumentation@spetersen/aldoc-refdoc-packagecache
         with:
           shell: powershell
           artifacts: 'latest'
@@ -78,7 +78,7 @@ jobs:
 
       - name: Finalize the workflow
         if: always()
-        uses: spetersenms/AL-Go/Actions/WorkflowPostProcess@BuildInitializeOverride
+        uses: spetersenms/AL-Go/Actions/WorkflowPostProcess@spetersen/aldoc-refdoc-packagecache
         env:
           GITHUB_TOKEN: ${{ github.token }}
         with:

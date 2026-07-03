@@ -31,24 +31,24 @@ jobs:
       telemetryScopeJson: ${{ steps.init.outputs.telemetryScopeJson }}
     steps:
       - name: Dump Workflow Information
-        uses: spetersenms/AL-Go/Actions/DumpWorkflowInfo@BuildInitializeOverride
+        uses: spetersenms/AL-Go/Actions/DumpWorkflowInfo@spetersen/aldoc-refdoc-packagecache
         with:
           shell: powershell
 
       - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
           lfs: true
 
       - name: Initialize the workflow
         id: init
-        uses: spetersenms/AL-Go/Actions/WorkflowInitialize@BuildInitializeOverride
+        uses: spetersenms/AL-Go/Actions/WorkflowInitialize@spetersen/aldoc-refdoc-packagecache
         with:
           shell: powershell
 
       - name: Read settings
         id: ReadSettings
-        uses: spetersenms/AL-Go/Actions/ReadSettings@BuildInitializeOverride
+        uses: spetersenms/AL-Go/Actions/ReadSettings@spetersen/aldoc-refdoc-packagecache
         with:
           shell: powershell
           get: useGitSubmodules,shortLivedArtifactsRetentionDays
@@ -56,7 +56,7 @@ jobs:
       - name: Read submodules token
         id: ReadSubmodulesToken
         if: env.useGitSubmodules != 'false' && env.useGitSubmodules != ''
-        uses: spetersenms/AL-Go/Actions/ReadSecrets@BuildInitializeOverride
+        uses: spetersenms/AL-Go/Actions/ReadSecrets@spetersen/aldoc-refdoc-packagecache
         with:
           shell: powershell
           gitHubSecrets: ${{ toJson(secrets) }}
@@ -64,7 +64,7 @@ jobs:
 
       - name: Checkout Submodules
         if: env.useGitSubmodules != 'false' && env.useGitSubmodules != ''
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
           lfs: true
           submodules: ${{ env.useGitSubmodules }}
@@ -78,7 +78,7 @@ jobs:
 
       - name: Determine Projects To Build
         id: determineProjectsToBuild
-        uses: spetersenms/AL-Go/Actions/DetermineProjectsToBuild@BuildInitializeOverride
+        uses: spetersenms/AL-Go/Actions/DetermineProjectsToBuild@spetersen/aldoc-refdoc-packagecache
         with:
           shell: powershell
           maxBuildDepth: ${{ env.workflowDepth }}
@@ -133,11 +133,11 @@ jobs:
     runs-on: [ windows-latest ]
     steps:
       - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
 
       - name: Finalize the workflow
         id: PostProcess
-        uses: spetersenms/AL-Go/Actions/WorkflowPostProcess@BuildInitializeOverride
+        uses: spetersenms/AL-Go/Actions/WorkflowPostProcess@spetersen/aldoc-refdoc-packagecache
         env:
           GITHUB_TOKEN: ${{ github.token }}
         with:

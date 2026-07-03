@@ -1,12 +1,12 @@
 {
-  "$schema": "https://raw.githubusercontent.com/spetersenms/AL-Go/BuildInitializeOverride/Actions/.Modules/settings.schema.json",
+  "$schema": "https://raw.githubusercontent.com/spetersenms/AL-Go/spetersen/aldoc-refdoc-packagecache/Actions/.Modules/settings.schema.json",
   "type": "PTE",
-  "templateUrl": "https://github.com/spetersenms/AL-Go@BuildInitializeOverride",
+  "templateUrl": "https://github.com/spetersenms/AL-Go@spetersen/aldoc-refdoc-packagecache",
   "generateDependencyArtifact": true,
   "DeployToProduction": {
     "environmentName": "AL-Go-Demo-Test"
   },
-  "templateSha": "ac8573f5c5709b2d3c5aafeb800cff20aea2c5a8",
+  "templateSha": "422353242b759f65faab9f84f8e7e3310d84e916",
   "enableCodeCop": true,
   "enableUICop": true,
   "rulesetFile": "../rulesets/ruleset.json",
