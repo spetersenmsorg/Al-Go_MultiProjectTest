@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       templateUrl:
-        description: Template Repository URL (current is https://github.com/spetersenms/AL-Go@spetersen/aldoc-refdoc-packagecache)
+        description: Template Repository URL (current is https://github.com/spetersenms/AL-Go@spetersen-microsoft-separate-test-action-investigation)
         required: false
         default: ''
       downloadLatest:
@@ -26,7 +26,7 @@ on:
         type: string
         required: true
       templateUrl:
-        description: Template Repository URL (current is https://github.com/spetersenms/AL-Go@spetersen/aldoc-refdoc-packagecache)
+        description: Template Repository URL (current is https://github.com/spetersenms/AL-Go@spetersen-microsoft-separate-test-action-investigation)
         type: string
         required: false
         default: ''
@@ -71,14 +71,14 @@ jobs:
 
       - name: Read settings
         id: ReadSettings
-        uses: spetersenms/AL-Go/Actions/ReadSettings@spetersen/aldoc-refdoc-packagecache
+        uses: spetersenms/AL-Go/Actions/ReadSettings@spetersen-microsoft-separate-test-action-investigation
         with:
           shell: powershell
           get: templateUrl
 
       - name: Get Workflow Multi-Run Branches
         id: GetBranches
-        uses: spetersenms/AL-Go/Actions/GetWorkflowMultiRunBranches@spetersen/aldoc-refdoc-packagecache
+        uses: spetersenms/AL-Go/Actions/GetWorkflowMultiRunBranches@spetersen-microsoft-separate-test-action-investigation
         with:
           shell: powershell
           workflowEventName: ${{ env.WorkflowEventName }}
@@ -108,7 +108,7 @@ jobs:
 
     steps:
       - name: Dump Workflow Information
-        uses: spetersenms/AL-Go/Actions/DumpWorkflowInfo@spetersen/aldoc-refdoc-packagecache
+        uses: spetersenms/AL-Go/Actions/DumpWorkflowInfo@spetersen-microsoft-separate-test-action-investigation
         with:
           shell: powershell
 
@@ -119,19 +119,19 @@ jobs:
 
       - name: Initialize the workflow
         id: init
-        uses: spetersenms/AL-Go/Actions/WorkflowInitialize@spetersen/aldoc-refdoc-packagecache
+        uses: spetersenms/AL-Go/Actions/WorkflowInitialize@spetersen-microsoft-separate-test-action-investigation
         with:
           shell: powershell
 
       - name: Read settings
-        uses: spetersenms/AL-Go/Actions/ReadSettings@spetersen/aldoc-refdoc-packagecache
+        uses: spetersenms/AL-Go/Actions/ReadSettings@spetersen-microsoft-separate-test-action-investigation
         with:
           shell: powershell
           get: commitOptions
 
       - name: Read secrets
         id: ReadSecrets
-        uses: spetersenms/AL-Go/Actions/ReadSecrets@spetersen/aldoc-refdoc-packagecache
+        uses: spetersenms/AL-Go/Actions/ReadSecrets@spetersen-microsoft-separate-test-action-investigation
         with:
           shell: powershell
           gitHubSecrets: ${{ toJson(secrets) }}
@@ -158,7 +158,7 @@ jobs:
           Add-Content -Encoding UTF8 -Path $env:GITHUB_ENV -Value "downloadLatest=$downloadLatest"
 
       - name: Update AL-Go system files
-        uses: spetersenms/AL-Go/Actions/CheckForUpdates@spetersen/aldoc-refdoc-packagecache
+        uses: spetersenms/AL-Go/Actions/CheckForUpdates@spetersen-microsoft-separate-test-action-investigation
         env:
           GITHUB_TOKEN: ${{ github.token }}
         with:
@@ -172,7 +172,7 @@ jobs:
 
       - name: Finalize the workflow
         if: always()
-        uses: spetersenms/AL-Go/Actions/WorkflowPostProcess@spetersen/aldoc-refdoc-packagecache
+        uses: spetersenms/AL-Go/Actions/WorkflowPostProcess@spetersen-microsoft-separate-test-action-investigation
         env:
           GITHUB_TOKEN: ${{ github.token }}
         with:

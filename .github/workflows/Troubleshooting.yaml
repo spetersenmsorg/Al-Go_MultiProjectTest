@@ -30,7 +30,7 @@ jobs:
           lfs: true
 
       - name: Troubleshooting
-        uses: spetersenms/AL-Go/Actions/Troubleshooting@spetersen/aldoc-refdoc-packagecache
+        uses: spetersenms/AL-Go/Actions/Troubleshooting@spetersen-microsoft-separate-test-action-investigation
         with:
           shell: powershell
           gitHubSecrets: ${{ toJson(secrets) }}

@@ -1,12 +1,12 @@
 {
-  "$schema": "https://raw.githubusercontent.com/spetersenms/AL-Go/spetersen/aldoc-refdoc-packagecache/Actions/.Modules/settings.schema.json",
+  "$schema": "https://raw.githubusercontent.com/spetersenms/AL-Go/spetersen-microsoft-separate-test-action-investigation/Actions/.Modules/settings.schema.json",
   "type": "PTE",
-  "templateUrl": "https://github.com/spetersenms/AL-Go@spetersen/aldoc-refdoc-packagecache",
+  "templateUrl": "https://github.com/spetersenms/AL-Go@spetersen-microsoft-separate-test-action-investigation",
   "generateDependencyArtifact": true,
   "DeployToProduction": {
     "environmentName": "AL-Go-Demo-Test"
   },
-  "templateSha": "422353242b759f65faab9f84f8e7e3310d84e916",
+  "templateSha": "a050f8d00281297b2b90a9bede6974714587ad6c",
   "enableCodeCop": true,
   "enableUICop": true,
   "rulesetFile": "../rulesets/ruleset.json",
