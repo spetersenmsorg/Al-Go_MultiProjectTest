@@ -6,7 +6,7 @@
   "DeployToProduction": {
     "environmentName": "AL-Go-Demo-Test"
   },
-  "templateSha": "babc939dd7b56142c84f654eec8cf212eff5a502",
+  "templateSha": "564ac9e8461865d550d0860edcc43de0191088f4",
   "enableCodeCop": true,
   "enableUICop": true,
   "rulesetFile": "../rulesets/ruleset.json",
