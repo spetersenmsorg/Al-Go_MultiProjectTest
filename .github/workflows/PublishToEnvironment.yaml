@@ -42,28 +42,28 @@ jobs:
       telemetryScopeJson: ${{ steps.init.outputs.telemetryScopeJson }}
     steps:
       - name: Dump Workflow Information
-        uses: spetersenms/AL-Go/Actions/DumpWorkflowInfo@spetersen-microsoft-separate-test-action-investigation
+        uses: spetersenms/AL-Go/Actions/DumpWorkflowInfo@spetersen/separateTestAction-codecoverage
         with:
           shell: powershell
 
       - name: Checkout
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Initialize the workflow
         id: init
-        uses: spetersenms/AL-Go/Actions/WorkflowInitialize@spetersen-microsoft-separate-test-action-investigation
+        uses: spetersenms/AL-Go/Actions/WorkflowInitialize@spetersen/separateTestAction-codecoverage
         with:
           shell: powershell
 
       - name: Read settings
         id: ReadSettings
-        uses: spetersenms/AL-Go/Actions/ReadSettings@spetersen-microsoft-separate-test-action-investigation
+        uses: spetersenms/AL-Go/Actions/ReadSettings@spetersen/separateTestAction-codecoverage
         with:
           shell: powershell
 
       - name: Determine Deployment Environments
         id: DetermineDeploymentEnvironments
-        uses: spetersenms/AL-Go/Actions/DetermineDeploymentEnvironments@spetersen-microsoft-separate-test-action-investigation
+        uses: spetersenms/AL-Go/Actions/DetermineDeploymentEnvironments@spetersen/separateTestAction-codecoverage
         env:
           GITHUB_TOKEN: ${{ github.token }}
         with:
@@ -82,7 +82,7 @@ jobs:
 
       - name: Read secrets
         id: ReadSecrets
-        uses: spetersenms/AL-Go/Actions/ReadSecrets@spetersen-microsoft-separate-test-action-investigation
+        uses: spetersenms/AL-Go/Actions/ReadSecrets@spetersen/separateTestAction-codecoverage
         if: steps.DetermineDeploymentEnvironments.outputs.UnknownEnvironment == 1
         with:
           shell: powershell
@@ -114,7 +114,7 @@ jobs:
             Write-Host "No AuthContext provided for $envName, initiating Device Code flow"
             $ALGoHelperPath = "$([System.IO.Path]::GetTempFileName()).ps1"
             $webClient = New-Object System.Net.WebClient
-            $webClient.DownloadFile('https://raw.githubusercontent.com/spetersenms/AL-Go/spetersen-microsoft-separate-test-action-investigation/Actions/AL-Go-Helper.ps1', $ALGoHelperPath)
+            $webClient.DownloadFile('https://raw.githubusercontent.com/spetersenms/AL-Go/spetersen/separateTestAction-codecoverage/Actions/AL-Go-Helper.ps1', $ALGoHelperPath)
             . $ALGoHelperPath
             DownloadAndImportBcContainerHelper
             $authContext = New-BcAuthContext -includeDeviceLogin -deviceLoginTimeout ([TimeSpan]::FromSeconds(0))
@@ -140,7 +140,7 @@ jobs:
       ALGoEnvName: ${{ matrix.environment }}
     steps:
       - name: Checkout
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: EnvName
         id: envName
@@ -150,21 +150,21 @@ jobs:
           Add-Content -Encoding UTF8 -Path $env:GITHUB_OUTPUT -Value "envName=$envName"
 
       - name: Read settings
-        uses: spetersenms/AL-Go/Actions/ReadSettings@spetersen-microsoft-separate-test-action-investigation
+        uses: spetersenms/AL-Go/Actions/ReadSettings@spetersen/separateTestAction-codecoverage
         with:
           shell: ${{ matrix.shell }}
           get: type,powerPlatformSolutionFolder
 
       - name: Read secrets
         id: ReadSecrets
-        uses: spetersenms/AL-Go/Actions/ReadSecrets@spetersen-microsoft-separate-test-action-investigation
+        uses: spetersenms/AL-Go/Actions/ReadSecrets@spetersen/separateTestAction-codecoverage
         with:
           shell: ${{ matrix.shell }}
           gitHubSecrets: ${{ toJson(secrets) }}
           getSecrets: '${{ steps.envName.outputs.envName }}-AuthContext,${{ steps.envName.outputs.envName }}_AuthContext,AuthContext'
 
       - name: Get Artifacts for deployment
-        uses: spetersenms/AL-Go/Actions/GetArtifactsForDeployment@spetersen-microsoft-separate-test-action-investigation
+        uses: spetersenms/AL-Go/Actions/GetArtifactsForDeployment@spetersen/separateTestAction-codecoverage
         with:
           shell: ${{ matrix.shell }}
           artifactsVersion: ${{ github.event.inputs.appVersion }}
@@ -173,7 +173,7 @@ jobs:
 
       - name: Deploy to Business Central
         id: Deploy
-        uses: spetersenms/AL-Go/Actions/Deploy@spetersen-microsoft-separate-test-action-investigation
+        uses: spetersenms/AL-Go/Actions/Deploy@spetersen/separateTestAction-codecoverage
         env:
           Secrets: '${{ steps.ReadSecrets.outputs.Secrets }}'
         with:
@@ -186,7 +186,7 @@ jobs:
 
       - name: Deploy to Power Platform
         if: env.type == 'PTE' && env.powerPlatformSolutionFolder != ''
-        uses: spetersenms/AL-Go/Actions/DeployPowerPlatform@spetersen-microsoft-separate-test-action-investigation
+        uses: spetersenms/AL-Go/Actions/DeployPowerPlatform@spetersen/separateTestAction-codecoverage
         env:
           Secrets: '${{ steps.ReadSecrets.outputs.Secrets }}'
         with:
@@ -201,11 +201,11 @@ jobs:
     runs-on: [ windows-latest ]
     steps:
       - name: Checkout
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Finalize the workflow
         id: PostProcess
-        uses: spetersenms/AL-Go/Actions/WorkflowPostProcess@spetersen-microsoft-separate-test-action-investigation
+        uses: spetersenms/AL-Go/Actions/WorkflowPostProcess@spetersen/separateTestAction-codecoverage
         env:
           GITHUB_TOKEN: ${{ github.token }}
         with:

@@ -53,27 +53,27 @@ jobs:
     runs-on: [ windows-latest ]
     steps:
       - name: Dump Workflow Information
-        uses: spetersenms/AL-Go/Actions/DumpWorkflowInfo@spetersen-microsoft-separate-test-action-investigation
+        uses: spetersenms/AL-Go/Actions/DumpWorkflowInfo@spetersen/separateTestAction-codecoverage
         with:
           shell: powershell
 
       - name: Checkout
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Initialize the workflow
         id: init
-        uses: spetersenms/AL-Go/Actions/WorkflowInitialize@spetersen-microsoft-separate-test-action-investigation
+        uses: spetersenms/AL-Go/Actions/WorkflowInitialize@spetersen/separateTestAction-codecoverage
         with:
           shell: powershell
 
       - name: Read settings
-        uses: spetersenms/AL-Go/Actions/ReadSettings@spetersen-microsoft-separate-test-action-investigation
+        uses: spetersenms/AL-Go/Actions/ReadSettings@spetersen/separateTestAction-codecoverage
         with:
           shell: powershell
 
       - name: Read secrets
         id: ReadSecrets
-        uses: spetersenms/AL-Go/Actions/ReadSecrets@spetersen-microsoft-separate-test-action-investigation
+        uses: spetersenms/AL-Go/Actions/ReadSecrets@spetersen/separateTestAction-codecoverage
         with:
           shell: powershell
           gitHubSecrets: ${{ toJson(secrets) }}
@@ -81,7 +81,7 @@ jobs:
           useGhTokenWorkflowForPush: '${{ github.event.inputs.useGhTokenWorkflow }}'
 
       - name: Creating a new test app
-        uses: spetersenms/AL-Go/Actions/CreateApp@spetersen-microsoft-separate-test-action-investigation
+        uses: spetersenms/AL-Go/Actions/CreateApp@spetersen/separateTestAction-codecoverage
         with:
           shell: powershell
           token: ${{ steps.ReadSecrets.outputs.TokenForPush }}
@@ -95,7 +95,7 @@ jobs:
 
       - name: Finalize the workflow
         if: always()
-        uses: spetersenms/AL-Go/Actions/WorkflowPostProcess@spetersen-microsoft-separate-test-action-investigation
+        uses: spetersenms/AL-Go/Actions/WorkflowPostProcess@spetersen/separateTestAction-codecoverage
         env:
           GITHUB_TOKEN: ${{ github.token }}
         with:
