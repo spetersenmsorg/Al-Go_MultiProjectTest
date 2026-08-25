@@ -41,7 +41,7 @@ jobs:
     runs-on: [ windows-latest ]
     steps:
       - name: Dump Workflow Information
-        uses: spetersenms/AL-Go/Actions/DumpWorkflowInfo@spetersen/separateTestAction-codecoverage
+        uses: spetersenms/AL-Go/Actions/DumpWorkflowInfo@spetersen/separateTestAction
         with:
           shell: powershell
 
@@ -50,18 +50,18 @@ jobs:
 
       - name: Initialize the workflow
         id: init
-        uses: spetersenms/AL-Go/Actions/WorkflowInitialize@spetersen/separateTestAction-codecoverage
+        uses: spetersenms/AL-Go/Actions/WorkflowInitialize@spetersen/separateTestAction
         with:
           shell: powershell
 
       - name: Read settings
-        uses: spetersenms/AL-Go/Actions/ReadSettings@spetersen/separateTestAction-codecoverage
+        uses: spetersenms/AL-Go/Actions/ReadSettings@spetersen/separateTestAction
         with:
           shell: powershell
 
       - name: Read secrets
         id: ReadSecrets
-        uses: spetersenms/AL-Go/Actions/ReadSecrets@spetersen/separateTestAction-codecoverage
+        uses: spetersenms/AL-Go/Actions/ReadSecrets@spetersen/separateTestAction
         with:
           shell: powershell
           gitHubSecrets: ${{ toJson(secrets) }}
@@ -69,7 +69,7 @@ jobs:
           useGhTokenWorkflowForPush: '${{ github.event.inputs.useGhTokenWorkflow }}'
 
       - name: Add existing app
-        uses: spetersenms/AL-Go/Actions/AddExistingApp@spetersen/separateTestAction-codecoverage
+        uses: spetersenms/AL-Go/Actions/AddExistingApp@spetersen/separateTestAction
         with:
           shell: powershell
           token: ${{ steps.ReadSecrets.outputs.TokenForPush }}
@@ -79,7 +79,7 @@ jobs:
 
       - name: Finalize the workflow
         if: always()
-        uses: spetersenms/AL-Go/Actions/WorkflowPostProcess@spetersen/separateTestAction-codecoverage
+        uses: spetersenms/AL-Go/Actions/WorkflowPostProcess@spetersen/separateTestAction
         env:
           GITHUB_TOKEN: ${{ github.token }}
         with:

@@ -31,7 +31,7 @@ jobs:
       telemetryScopeJson: ${{ steps.init.outputs.telemetryScopeJson }}
     steps:
       - name: Dump Workflow Information
-        uses: spetersenms/AL-Go/Actions/DumpWorkflowInfo@spetersen/separateTestAction-codecoverage
+        uses: spetersenms/AL-Go/Actions/DumpWorkflowInfo@spetersen/separateTestAction
         with:
           shell: powershell
 
@@ -42,13 +42,13 @@ jobs:
 
       - name: Initialize the workflow
         id: init
-        uses: spetersenms/AL-Go/Actions/WorkflowInitialize@spetersen/separateTestAction-codecoverage
+        uses: spetersenms/AL-Go/Actions/WorkflowInitialize@spetersen/separateTestAction
         with:
           shell: powershell
 
       - name: Read settings
         id: ReadSettings
-        uses: spetersenms/AL-Go/Actions/ReadSettings@spetersen/separateTestAction-codecoverage
+        uses: spetersenms/AL-Go/Actions/ReadSettings@spetersen/separateTestAction
         with:
           shell: powershell
           get: useGitSubmodules,shortLivedArtifactsRetentionDays
@@ -56,7 +56,7 @@ jobs:
       - name: Read submodules token
         id: ReadSubmodulesToken
         if: env.useGitSubmodules != 'false' && env.useGitSubmodules != ''
-        uses: spetersenms/AL-Go/Actions/ReadSecrets@spetersen/separateTestAction-codecoverage
+        uses: spetersenms/AL-Go/Actions/ReadSecrets@spetersen/separateTestAction
         with:
           shell: powershell
           gitHubSecrets: ${{ toJson(secrets) }}
@@ -78,7 +78,7 @@ jobs:
 
       - name: Determine Projects To Build
         id: determineProjectsToBuild
-        uses: spetersenms/AL-Go/Actions/DetermineProjectsToBuild@spetersen/separateTestAction-codecoverage
+        uses: spetersenms/AL-Go/Actions/DetermineProjectsToBuild@spetersen/separateTestAction
         with:
           shell: powershell
           maxBuildDepth: ${{ env.workflowDepth }}
@@ -137,7 +137,7 @@ jobs:
 
       - name: Finalize the workflow
         id: PostProcess
-        uses: spetersenms/AL-Go/Actions/WorkflowPostProcess@spetersen/separateTestAction-codecoverage
+        uses: spetersenms/AL-Go/Actions/WorkflowPostProcess@spetersen/separateTestAction
         env:
           GITHUB_TOKEN: ${{ github.token }}
         with:
