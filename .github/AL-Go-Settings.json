@@ -16,6 +16,6 @@
   "artifact": "//26//latest",
   "useSeparateTestAction": {
     "enabled": true,
-    "testType": []
+    "testType": ""
   }
 }
