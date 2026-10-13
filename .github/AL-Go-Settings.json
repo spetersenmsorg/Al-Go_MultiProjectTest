@@ -14,13 +14,8 @@
   "useProjectDependencies": true,
   "buildModes": [],
   "artifact": "//26//latest",
-  "enableCodeCoverage": true,
-  "useSeparateTestAction": true,
-  "codeCoverageSetup": {
-    "trackingType": "PerRun",
-    "produceCodeCoverageMap": "PerCodeunit",
-    "excludeFilesPattern": [
-      "*.PermissionSet.al"
-    ]
+  "useSeparateTestAction": {
+    "enabled": true,
+    "testType": []
   }
 }
