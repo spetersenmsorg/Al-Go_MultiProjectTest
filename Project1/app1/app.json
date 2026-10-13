@@ -16,6 +16,12 @@
       "name": "app2",
       "id": "bf3aad19-830e-4f77-a181-34543759ebfc",
       "version": "1.0.0.0"
+    },
+    {
+      "id": "536ff3c4-0c4f-4e1d-8dbf-7978f1369e59",
+      "publisher": "Finclair GmbH",
+      "name": "Circula Expenses Connector to Dynamics 365 Business Central",
+      "version": "0.0.0.0"
     }
   ],
   "screenshots": [],
