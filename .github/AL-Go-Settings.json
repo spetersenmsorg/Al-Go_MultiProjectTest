@@ -16,6 +16,12 @@
   "artifact": "//26//latest",
   "useSeparateTestAction": {
     "enabled": true,
-    "testType": ""
+    "testType": "",
+    "codeCoverageEnabled": true,
+    "codeCoverageMode": "all",
+    "codeCoverageFormats" [
+      "bc-json",
+      "cobertura"
+    ]
   }
 }
