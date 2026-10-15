@@ -13,7 +13,7 @@
   "trackAlAlertsInGitHub": true,
   "useProjectDependencies": true,
   "buildModes": [],
-  "artifact": "//26//latest",
+  "artifact": "bcinsider//30//latest",
   "useSeparateTestAction": {
     "enabled": true,
     "testType": "",
