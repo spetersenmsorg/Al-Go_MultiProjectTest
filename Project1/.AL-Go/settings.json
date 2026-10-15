@@ -13,7 +13,7 @@
     "Recordings/Scenario1",
     "Recordings/Scenario2"
   ],
-  "artifact": "//27.0/us/latest",
+  "artifact": "bcinsider//30/us/latest",
   "useCompilerFolder": false,
   "doNotPublishApps": false,
   "doNotRunTests": false
