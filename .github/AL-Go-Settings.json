@@ -19,7 +19,7 @@
     "testType": "",
     "codeCoverageEnabled": true,
     "codeCoverageMode": "all",
-    "codeCoverageFormats" [
+    "codeCoverageFormats": [
       "bc-json",
       "cobertura"
     ]
