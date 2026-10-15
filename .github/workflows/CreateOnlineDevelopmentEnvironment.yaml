@@ -50,7 +50,7 @@ jobs:
       telemetryScopeJson: ${{ steps.init.outputs.telemetryScopeJson }}
     steps:
       - name: Dump Workflow Information
-        uses: spetersenms/AL-Go/Actions/DumpWorkflowInfo@spetersen/separateTestAction
+        uses: spetersenms/AL-Go/Actions/DumpWorkflowInfo@spetersen/separateTestActionCodeCoverage
         with:
           shell: powershell
 
@@ -59,19 +59,19 @@ jobs:
 
       - name: Initialize the workflow
         id: init
-        uses: spetersenms/AL-Go/Actions/WorkflowInitialize@spetersen/separateTestAction
+        uses: spetersenms/AL-Go/Actions/WorkflowInitialize@spetersen/separateTestActionCodeCoverage
         with:
           shell: powershell
 
       - name: Read settings
         id: ReadSettings
-        uses: spetersenms/AL-Go/Actions/ReadSettings@spetersen/separateTestAction
+        uses: spetersenms/AL-Go/Actions/ReadSettings@spetersen/separateTestActionCodeCoverage
         with:
           shell: powershell
 
       - name: Read secrets
         id: ReadSecrets
-        uses: spetersenms/AL-Go/Actions/ReadSecrets@spetersen/separateTestAction
+        uses: spetersenms/AL-Go/Actions/ReadSecrets@spetersen/separateTestActionCodeCoverage
         with:
           shell: powershell
           gitHubSecrets: ${{ toJson(secrets) }}
@@ -79,7 +79,7 @@ jobs:
 
       - name: Check AdminCenterApiCredentials / Initiate Device Login (open to see code)
         id: authenticate
-        uses: spetersenms/AL-Go/Actions/Authenticate@spetersen/separateTestAction
+        uses: spetersenms/AL-Go/Actions/Authenticate@spetersen/separateTestActionCodeCoverage
         with:
           shell: powershell
           secrets: ${{ steps.ReadSecrets.outputs.Secrets }}
@@ -100,13 +100,13 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Read settings
-        uses: spetersenms/AL-Go/Actions/ReadSettings@spetersen/separateTestAction
+        uses: spetersenms/AL-Go/Actions/ReadSettings@spetersen/separateTestActionCodeCoverage
         with:
           shell: powershell
 
       - name: Read secrets
         id: ReadSecrets
-        uses: spetersenms/AL-Go/Actions/ReadSecrets@spetersen/separateTestAction
+        uses: spetersenms/AL-Go/Actions/ReadSecrets@spetersen/separateTestActionCodeCoverage
         with:
           shell: powershell
           gitHubSecrets: ${{ toJson(secrets) }}
@@ -125,7 +125,7 @@ jobs:
           Add-Content -Encoding UTF8 -Path $env:GITHUB_OUTPUT -value "adminCenterApiCredentials=$adminCenterApiCredentials"
 
       - name: Create Development Environment
-        uses: spetersenms/AL-Go/Actions/CreateDevelopmentEnvironment@spetersen/separateTestAction
+        uses: spetersenms/AL-Go/Actions/CreateDevelopmentEnvironment@spetersen/separateTestActionCodeCoverage
         with:
           shell: powershell
           token: ${{ steps.ReadSecrets.outputs.TokenForPush }}
@@ -137,7 +137,7 @@ jobs:
 
       - name: Finalize the workflow
         if: always()
-        uses: spetersenms/AL-Go/Actions/WorkflowPostProcess@spetersen/separateTestAction
+        uses: spetersenms/AL-Go/Actions/WorkflowPostProcess@spetersen/separateTestActionCodeCoverage
         env:
           GITHUB_TOKEN: ${{ github.token }}
         with:

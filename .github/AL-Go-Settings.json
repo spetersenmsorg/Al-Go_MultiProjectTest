@@ -1,12 +1,12 @@
 {
-  "$schema": "https://raw.githubusercontent.com/spetersenms/AL-Go/spetersen/separateTestAction/Actions/.Modules/settings.schema.json",
+  "$schema": "https://raw.githubusercontent.com/spetersenms/AL-Go/spetersen/separateTestActionCodeCoverage/Actions/.Modules/settings.schema.json",
   "type": "PTE",
-  "templateUrl": "https://github.com/spetersenms/AL-Go@spetersen/separateTestAction",
+  "templateUrl": "https://github.com/spetersenms/AL-Go@spetersen/separateTestActionCodeCoverage",
   "generateDependencyArtifact": true,
   "DeployToProduction": {
     "environmentName": "AL-Go-Demo-Test"
   },
-  "templateSha": "4671f3a037d5c32278ee8899cc245d19c94b249c",
+  "templateSha": "5136a35bdfabcbf14ceebd99e38a06990f629fef",
   "enableCodeCop": true,
   "enableUICop": true,
   "rulesetFile": "../rulesets/ruleset.json",
