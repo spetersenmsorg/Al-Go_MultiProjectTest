@@ -5,11 +5,11 @@ pageextension 55001 CustomerListExtTwo extends "Customer List"
         Message('App published: Hello world!');
     end;
 
-    // var
-    //     InvalidDate : Date;
-    //     myLabel: Label 'This is a label with "unescaped quotes"'; // May trigger malformed JSON in errorlog
-    //     unusedVar, someInt: Integer; // Unused variable triggers AL0603 warning
-    //     myText: Text[100]; // Text length may trigger AL0604 if unused or misused
+    var
+        InvalidDate : Date;
+        myLabel: Label 'This is a label with "unescaped quotes"'; // May trigger malformed JSON in errorlog
+        unusedVar, someInt: Integer; // Unused variable triggers AL0603 warning
+        myText: Text[100]; // Text length may trigger AL0604 if unused or misused
 
     // procedure DoNothing()
     // begin
