@@ -3,9 +3,6 @@
   "type": "PTE",
   "templateUrl": "https://github.com/spetersenms/AL-Go@spetersen/separateTestActionCodeCoverage",
   "generateDependencyArtifact": true,
-  "DeployToProduction": {
-    "environmentName": "AL-Go-Demo-Test"
-  },
   "templateSha": "18e47457fc1375cfda95fab28d47183c0b552435",
   "enableCodeCop": true,
   "enableUICop": true,
