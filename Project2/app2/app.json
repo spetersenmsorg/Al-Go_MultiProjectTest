@@ -3,8 +3,8 @@
   "name": "app2",
   "publisher": "spetersenProductions",
   "version": "1.0.0.0",
-  "brief": "",
-  "description": "",
+  "brief": "Project 2 full coverage sample",
+  "description": "Deterministic sample methods whose executable lines are fully covered by app2.Test.",
   "privacyStatement": "",
   "EULA": "",
   "help": "",
@@ -16,8 +16,8 @@
   "application": "27.0.0.0",
   "idRanges": [
     {
-      "from": 55000,
-      "to": 55100
+      "from": 55040,
+      "to": 55059
     }
   ],
   "features": [

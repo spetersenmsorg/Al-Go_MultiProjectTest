@@ -4,10 +4,13 @@
       "path": "app1"
     },
     {
+      "path": "app1.partial"
+    },
+    {
       "path": "app1.Test"
     },
     {
-      "path": "App1.abc.Test"
+      "path": "app1.partial.Test"
     },
     {
       "path": ".AL-Go"

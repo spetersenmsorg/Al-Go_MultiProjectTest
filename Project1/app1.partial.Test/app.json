@@ -1,0 +1,44 @@
+{
+  "id": "2ac2061d-0912-4cff-96d6-8498e9aff57f",
+  "name": "app1.partial.Test",
+  "publisher": "spetersenProductions",
+  "version": "1.0.0.0",
+  "brief": "Tests for the Project 1 partial coverage sample",
+  "description": "Exercises selected paths while deliberately leaving valid lines uncovered in app1.partial.",
+  "privacyStatement": "",
+  "EULA": "",
+  "help": "",
+  "url": "",
+  "logo": "",
+  "dependencies": [
+    {
+      "publisher": "Microsoft",
+      "name": "Library Assert",
+      "id": "dd0be2ea-f733-4d65-bb34-a28f4624fb14",
+      "version": "25.0.0.0"
+    },
+    {
+      "publisher": "spetersenProductions",
+      "name": "app1.partial",
+      "id": "a6b30aa4-dc17-4d8a-86a6-71bc4e48d9f1",
+      "version": "1.0.0.0"
+    }
+  ],
+  "screenshots": [],
+  "platform": "27.0.0.0",
+  "application": "27.0.0.0",
+  "idRanges": [
+    {
+      "from": 50020,
+      "to": 50039
+    }
+  ],
+  "features": [
+    "NoImplicitWith"
+  ],
+  "resourceExposurePolicy": {
+    "allowDebugging": true,
+    "allowDownloadingSource": false,
+    "includeSourceInSymbolFile": false
+  }
+}

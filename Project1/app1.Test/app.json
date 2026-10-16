@@ -3,8 +3,8 @@
   "name": "app1.Test",
   "publisher": "spetersenProductions",
   "version": "1.0.0.0",
-  "brief": "",
-  "description": "",
+  "brief": "Tests for the Project 1 full coverage sample",
+  "description": "Exercises every executable line and branch in app1.",
   "privacyStatement": "",
   "EULA": "",
   "help": "",
@@ -18,10 +18,10 @@
       "version": "25.0.0.0"
     },
     {
-      "publisher": "Microsoft",
-      "name": "Any",
-      "id": "e7320ebb-08b3-4406-b1ec-b4927d3e280b",
-      "version": "25.0.0.0"
+      "publisher": "spetersenProductions",
+      "name": "app1",
+      "id": "6a25f3a8-0eb0-4fd8-8057-73a1f5d98a7c",
+      "version": "1.0.0.0"
     }
   ],
   "screenshots": [],
@@ -30,7 +30,7 @@
   "idRanges": [
     {
       "from": 50000,
-      "to": 99999
+      "to": 50019
     }
   ],
   "features": [

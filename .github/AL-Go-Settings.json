@@ -8,7 +8,7 @@
   "enableUICop": true,
   "rulesetFile": "../rulesets/ruleset.json",
   "trackAlAlertsInGitHub": true,
-  "useProjectDependencies": true,
+  "useProjectDependencies": false,
   "buildModes": [],
   "artifact": "bcinsider//30//latest",
   "useSeparateTestAction": {

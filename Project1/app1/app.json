@@ -3,28 +3,21 @@
   "name": "app1",
   "publisher": "spetersenProductions",
   "version": "1.0.0.0",
-  "brief": "",
-  "description": "",
+  "brief": "Project 1 full coverage sample",
+  "description": "Deterministic sample methods whose executable lines are fully covered by app1.Test.",
   "privacyStatement": "",
   "EULA": "",
   "help": "",
   "url": "",
   "logo": "",
-  "dependencies": [    
-    {
-      "publisher": "spetersenProductions",
-      "name": "app2",
-      "id": "bf3aad19-830e-4f77-a181-34543759ebfc",
-      "version": "1.0.0.0"
-    }
-  ],
+  "dependencies": [],
   "screenshots": [],
   "platform": "27.0.0.0",
   "application": "27.0.0.0",
   "idRanges": [
     {
       "from": 55000,
-      "to": 55100
+      "to": 55019
     }
   ],
   "features": [

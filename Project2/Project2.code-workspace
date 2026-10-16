@@ -4,6 +4,15 @@
       "path": "app2"
     },
     {
+      "path": "app2.partial"
+    },
+    {
+      "path": "app2.Test"
+    },
+    {
+      "path": "app2.partial.Test"
+    },
+    {
       "path": ".AL-Go"
     }
   ],

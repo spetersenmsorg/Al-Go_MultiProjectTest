@@ -2,11 +2,12 @@
   "$schema": "https://raw.githubusercontent.com/spetersenms/AL-Go/spetersen/separateTestActionCodeCoverage/Actions/.Modules/settings.schema.json",
   "country": "us",
   "appFolders": [
-    "./app1"
+    "./app1",
+    "./app1.partial"
   ],
   "testFolders": [
     "app1.Test",
-    "App1.abc.Test"
+    "app1.partial.Test"
   ],
   "bcptTestFolders": [],
   "pageScriptingTests": [
