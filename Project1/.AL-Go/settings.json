@@ -17,5 +17,6 @@
   "artifact": "bcinsider//30/us/latest",
   "useCompilerFolder": false,
   "doNotPublishApps": false,
-  "doNotRunTests": false
+  "doNotRunTests": false,
+  "skipUpgrade": true
 }

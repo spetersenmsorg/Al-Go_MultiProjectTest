@@ -13,5 +13,6 @@
   "pageScriptingTests": [
     "Recordings"
   ],
-  "artifact": "bcinsider//30/us/latest"
+  "artifact": "bcinsider//30/us/latest",
+  "doNotPublishApps": false
 }

@@ -15,4 +15,6 @@ Project1 and Project2 are independent. Regular apps and test apps only reference
 
 Each regular app contains deterministic codeunit procedures with multiple statements and branches. The full-coverage tests call every path in their target apps. The partial-coverage tests call only representative happy paths, leaving valid executable lines uncovered so the repository summary receives clearly different coverage data from both projects.
 
+Project1 skips upgrade validation because this synthetic fixture intentionally removed its historical dependency on Project2, making the old coupled release unsuitable as an upgrade baseline. Project2 explicitly enables app publishing so AL-Go creates a test container and runs its discovered test apps instead of inheriting the organization-level compile-only setting.
+
 Page scripting recordings remain configured independently for each project.
