@@ -10,9 +10,7 @@
     "EvergreenFulfillment.Test"
   ],
   "bcptTestFolders": [],
-  "pageScriptingTests": [
-    "Recordings"
-  ],
+  "pageScriptingTests": [],
   "artifact": "bcinsider//30/us/latest",
   "doNotPublishApps": false
 }
