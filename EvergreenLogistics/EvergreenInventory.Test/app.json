@@ -1,10 +1,10 @@
 {
-  "id": "be11fd2f-8f16-40b7-bd82-47a87db3534b",
-  "name": "app1.Test",
+  "id": "30a35a9e-e20c-48cd-bf51-5cb98c3d5903",
+  "name": "Evergreen Inventory Tests",
   "publisher": "spetersenProductions",
   "version": "1.0.0.0",
-  "brief": "Tests for the Project 1 full coverage sample",
-  "description": "Exercises every executable line and branch in app1.",
+  "brief": "Automated tests for Evergreen Inventory",
+  "description": "Validates all supported Evergreen Inventory availability and SKU paths.",
   "privacyStatement": "",
   "EULA": "",
   "help": "",
@@ -19,8 +19,8 @@
     },
     {
       "publisher": "spetersenProductions",
-      "name": "app1",
-      "id": "6a25f3a8-0eb0-4fd8-8057-73a1f5d98a7c",
+      "name": "Evergreen Inventory",
+      "id": "bf3aad19-830e-4f77-a181-34543759ebfc",
       "version": "1.0.0.0"
     }
   ],
@@ -29,8 +29,8 @@
   "application": "27.0.0.0",
   "idRanges": [
     {
-      "from": 50000,
-      "to": 50019
+      "from": 50040,
+      "to": 50059
     }
   ],
   "features": [

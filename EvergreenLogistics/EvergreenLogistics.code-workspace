@@ -1,0 +1,20 @@
+{
+  "folders": [
+    {
+      "path": "EvergreenInventory"
+    },
+    {
+      "path": "EvergreenFulfillment"
+    },
+    {
+      "path": "EvergreenInventory.Test"
+    },
+    {
+      "path": "EvergreenFulfillment.Test"
+    },
+    {
+      "path": ".AL-Go"
+    }
+  ],
+  "settings": {}
+}
