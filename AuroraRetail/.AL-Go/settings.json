@@ -10,10 +10,7 @@
     "AuroraCustomerService.Test"
   ],
   "bcptTestFolders": [],
-  "pageScriptingTests": [
-    "Recordings/Scenario1",
-    "Recordings/Scenario2"
-  ],
+  "pageScriptingTests": [],
   "artifact": "bcinsider//30/us/latest",
   "useCompilerFolder": false,
   "doNotPublishApps": false,
