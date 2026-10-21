@@ -1,10 +1,10 @@
 {
-  "id": "2ac2061d-0912-4cff-96d6-8498e9aff57f",
-  "name": "app1.partial.Test",
+  "id": "9f0e2204-5693-4588-afdb-9f6edcf2f61f",
+  "name": "Evergreen Fulfillment Tests",
   "publisher": "spetersenProductions",
   "version": "1.0.0.0",
-  "brief": "Tests for the Project 1 partial coverage sample",
-  "description": "Exercises selected paths while deliberately leaving valid lines uncovered in app1.partial.",
+  "brief": "Automated tests for Evergreen Fulfillment",
+  "description": "Validates selected shipment and package paths in Evergreen Fulfillment.",
   "privacyStatement": "",
   "EULA": "",
   "help": "",
@@ -19,8 +19,8 @@
     },
     {
       "publisher": "spetersenProductions",
-      "name": "app1.partial",
-      "id": "a6b30aa4-dc17-4d8a-86a6-71bc4e48d9f1",
+      "name": "Evergreen Fulfillment",
+      "id": "d4cf9ef1-c51c-4dc8-8588-0f9bfcd03e6a",
       "version": "1.0.0.0"
     }
   ],
@@ -29,8 +29,8 @@
   "application": "27.0.0.0",
   "idRanges": [
     {
-      "from": 50020,
-      "to": 50039
+      "from": 50060,
+      "to": 50079
     }
   ],
   "features": [

@@ -2,12 +2,12 @@
   "$schema": "https://raw.githubusercontent.com/spetersenms/AL-Go/spetersen/separateTestActionCodeCoverage/Actions/.Modules/settings.schema.json",
   "country": "us",
   "appFolders": [
-    "./app1",
-    "./app1.partial"
+    "./AuroraCommerce",
+    "./AuroraCustomerService"
   ],
   "testFolders": [
-    "app1.Test",
-    "app1.partial.Test"
+    "AuroraCommerce.Test",
+    "AuroraCustomerService.Test"
   ],
   "bcptTestFolders": [],
   "pageScriptingTests": [

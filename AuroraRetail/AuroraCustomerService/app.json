@@ -1,10 +1,10 @@
 {
   "id": "a6b30aa4-dc17-4d8a-86a6-71bc4e48d9f1",
-  "name": "app1.partial",
+  "name": "Aurora Customer Service",
   "publisher": "spetersenProductions",
   "version": "1.0.0.0",
-  "brief": "Project 1 partial coverage sample",
-  "description": "Deterministic sample methods with intentionally uncovered branches and methods.",
+  "brief": "Customer service workflows for Aurora Retail",
+  "description": "Provides priority, progress, and ownership helpers for customer service workflows.",
   "privacyStatement": "",
   "EULA": "",
   "help": "",

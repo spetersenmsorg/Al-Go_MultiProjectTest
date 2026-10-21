@@ -1,0 +1,20 @@
+{
+  "folders": [
+    {
+      "path": "AuroraCommerce"
+    },
+    {
+      "path": "AuroraCustomerService"
+    },
+    {
+      "path": "AuroraCommerce.Test"
+    },
+    {
+      "path": "AuroraCustomerService.Test"
+    },
+    {
+      "path": ".AL-Go"
+    }
+  ],
+  "settings": {}
+}

@@ -1,10 +1,10 @@
 {
-  "id": "d4cf9ef1-c51c-4dc8-8588-0f9bfcd03e6a",
-  "name": "app2.partial",
+  "id": "bf3aad19-830e-4f77-a181-34543759ebfc",
+  "name": "Evergreen Inventory",
   "publisher": "spetersenProductions",
   "version": "1.0.0.0",
-  "brief": "Project 2 partial coverage sample",
-  "description": "Deterministic sample methods with intentionally uncovered branches and methods.",
+  "brief": "Inventory services for Evergreen Logistics",
+  "description": "Provides inventory classification, back-order calculation, and SKU formatting services.",
   "privacyStatement": "",
   "EULA": "",
   "help": "",
@@ -16,8 +16,8 @@
   "application": "27.0.0.0",
   "idRanges": [
     {
-      "from": 55060,
-      "to": 55079
+      "from": 55040,
+      "to": 55059
     }
   ],
   "features": [
