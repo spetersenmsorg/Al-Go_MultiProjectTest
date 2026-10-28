@@ -11,14 +11,9 @@
   "useProjectDependencies": false,
   "buildModes": [],
   "artifact": "bcinsider//30//latest",
-  "useSeparateTestAction": {
-    "enabled": true,
-    "testType": "",
-    "codeCoverageEnabled": true,
-    "codeCoverageMode": "all",
-    "codeCoverageFormats": [
-      "bc-json",
-      "cobertura"
-    ]
+  "doNotRunTests": true,
+  "doNotPublishApps": true,
+  "DeployToTestEnv": {
+    "EnvironmentName": "ALGoSandbox1"
   }
 }
