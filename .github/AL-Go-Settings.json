@@ -1,9 +1,9 @@
 {
-  "$schema": "https://raw.githubusercontent.com/spetersenms/AL-Go/spetersen/separateTestActionCodeCoverage/Actions/.Modules/settings.schema.json",
+  "$schema": "https://raw.githubusercontent.com/spetersenms/AL-Go/spetersen-microsoft-pte-al-go-integration/Actions/.Modules/settings.schema.json",
   "type": "PTE",
-  "templateUrl": "https://github.com/spetersenms/AL-Go@spetersen/separateTestActionCodeCoverage",
+  "templateUrl": "https://github.com/spetersenms/AL-Go@spetersen-microsoft-pte-al-go-integration",
   "generateDependencyArtifact": true,
-  "templateSha": "d3cd3687e9ed685b458c8460802137d4678b689f",
+  "templateSha": "689676807cce54384bee22a0b7c47ca5f5164989",
   "enableCodeCop": true,
   "enableUICop": true,
   "rulesetFile": "../rulesets/ruleset.json",
