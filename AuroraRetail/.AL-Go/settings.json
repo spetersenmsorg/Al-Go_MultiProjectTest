@@ -1,6 +1,7 @@
 {
   "$schema": "https://raw.githubusercontent.com/spetersenms/AL-Go/spetersen/separateTestActionCodeCoverage/Actions/.Modules/settings.schema.json",
   "country": "us",
+  "githubRunnerShell": "powershell",
   "appFolders": [
     "./AuroraCommerce",
     "./AuroraCustomerService"
