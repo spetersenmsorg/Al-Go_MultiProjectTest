@@ -1,9 +1,9 @@
 {
-  "$schema": "https://raw.githubusercontent.com/microsoft/AL-Go/a946346885b3c762fcbadb265823e70150c3e2f1/Actions/.Modules/settings.schema.json",
+  "$schema": "https://raw.githubusercontent.com/spetersenms/AL-Go/spetersen-microsoft-pte-al-go-integration/Actions/.Modules/settings.schema.json",
   "type": "PTE",
-  "templateUrl": "https://github.com/microsoft/AL-Go-PTE@preview",
+  "templateUrl": "https://github.com/spetersenms/AL-Go@spetersen-microsoft-pte-al-go-integration",
   "generateDependencyArtifact": true,
-  "templateSha": "fb1274920d226ed93c592d08218b77c64a01b195",
+  "templateSha": "8b5b6e9c9dfe660dcad33bb00166e7a52a50c6c8",
   "enableCodeCop": true,
   "enableUICop": true,
   "rulesetFile": "../rulesets/ruleset.json",
