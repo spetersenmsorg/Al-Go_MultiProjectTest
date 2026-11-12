@@ -11,14 +11,8 @@
   "useProjectDependencies": false,
   "buildModes": [],
   "artifact": "bcinsider//30//latest",
+  "shell": "pwsh",
   "useSeparateTestAction": {
-    "enabled": true,
-    "testType": "",
-    "codeCoverageEnabled": true,
-    "codeCoverageMode": "all",
-    "codeCoverageFormats": [
-      "bc-json",
-      "cobertura"
-    ]
+    "enabled": true
   }
 }
