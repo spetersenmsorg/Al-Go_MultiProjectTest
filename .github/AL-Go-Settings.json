@@ -12,6 +12,9 @@
   "buildModes": [],
   "artifact": "bcinsider//30//latest",
   "useSeparateTestAction": {
-    "enabled": true
+    "enabled": true,
+    "codeCoverageEnabled": true,
+    "codeCoverageGenerateCobertura": false,
+    "codeCoverageSummary": "both"
   }
 }
