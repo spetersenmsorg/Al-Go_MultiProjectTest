@@ -3,7 +3,7 @@
   "type": "PTE",
   "templateUrl": "https://github.com/spetersenms/AL-Go@spetersen-microsoft-pte-al-go-integration",
   "generateDependencyArtifact": true,
-  "templateSha": "689676807cce54384bee22a0b7c47ca5f5164989",
+  "templateSha": "b730909fd352f547c77dc570bbfafb7995e612d8",
   "enableCodeCop": true,
   "enableUICop": true,
   "rulesetFile": "../rulesets/ruleset.json",
