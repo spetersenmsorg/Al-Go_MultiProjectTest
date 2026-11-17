@@ -3,7 +3,7 @@
   "type": "PTE",
   "templateUrl": "https://github.com/spetersenms/AL-Go@spetersen/separateTestActionCodeCoverage",
   "generateDependencyArtifact": true,
-  "templateSha": "ba13378841a3ecb4d5074270f3172a8a6858053b",
+  "templateSha": "e635961360514de185d9118a94eaff40d64b01a7",
   "enableCodeCop": true,
   "enableUICop": true,
   "rulesetFile": "../rulesets/ruleset.json",
