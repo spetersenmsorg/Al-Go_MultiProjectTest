@@ -128,7 +128,7 @@ jobs:
           buildOrderJson: ${{ needs.Initialization.outputs.buildOrderJson }}
 
   PostProcess:
-    needs: [ Initialization, Build ]
+    needs: [ Initialization, Build, AnalyzeCodeCoverage ]
     if: always()
     runs-on: [ windows-latest ]
     steps:

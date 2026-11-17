@@ -431,7 +431,7 @@ jobs:
           artifacts: '.artifacts'
 
   PostProcess:
-    needs: [ Initialization, Build, Deploy, Deliver, DeployALDoc, CodeAnalysisUpload ]
+    needs: [ Initialization, Build, AnalyzeCodeCoverage, Deploy, Deliver, DeployALDoc, CodeAnalysisUpload ]
     if: (!cancelled())
     runs-on: [ windows-latest ]
     steps:
