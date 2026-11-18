@@ -14,6 +14,9 @@
     "Recordings"
   ],
   "artifact": "/sandbox/28.5.54151.56840/w1",
+  "installApps": [
+    "https://dynamicssmb2.pkgs.visualstudio.com/571e802d-b44b-45fc-bd41-4cfddec73b44/_packaging/9c5cd71f-8d45-40bf-8fde-4ac4d924365a/nuget/v3/flat2/microsoft.subcontracting.1f32a50d-0057-4b95-b5df-cc04d7e89470/28.5.54151.54365/microsoft.subcontracting.1f32a50d-0057-4b95-b5df-cc04d7e89470.28.5.54151.54365.nupkg"
+  ],
   "useCompilerFolder": false,
   "doNotPublishApps": false
 }
