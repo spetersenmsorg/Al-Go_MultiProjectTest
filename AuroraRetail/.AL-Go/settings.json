@@ -14,7 +14,7 @@
     "Recordings/Scenario1",
     "Recordings/Scenario2"
   ],
-  "artifact": "sandbox/28.5.54151.56840/w1",
+  "artifact": "/sandbox/28.5.54151.56840/w1",
   "useCompilerFolder": false,
   "doNotPublishApps": false,
   "doNotRunTests": true,

@@ -1,6 +1,6 @@
 # AL-Go Subcontracting Dependency Reproduction
 
-This branch prepares the initial failing scenario from [microsoft/AL-Go#2418](https://github.com/microsoft/AL-Go/issues/2418). It pins both projects and the workflow-specific artifact overrides to `sandbox/28.5.54151.56840/w1` and BcContainerHelper to `6.1.19`. BC 28 ships Microsoft Subcontracting published-only, unlike BC 29 and later.
+This branch prepares the initial failing scenario from [microsoft/AL-Go#2418](https://github.com/microsoft/AL-Go/issues/2418). It pins both projects and the workflow-specific artifact overrides to `/sandbox/28.5.54151.56840/w1` and BcContainerHelper to `6.1.19`. The leading slash leaves AL-Go's storage-account segment empty; the artifact type, version, and country are the report's `sandbox/28.5.54151.56840/w1`. BC 28 ships Microsoft Subcontracting published-only, unlike BC 29 and later.
 
 ## Reproduction flow
 
@@ -12,7 +12,7 @@ This branch prepares the initial failing scenario from [microsoft/AL-Go#2418](ht
 
 Normal test compilation/execution, BCPT execution, page scripting execution, separate test actions, code coverage, and upgrade validation are disabled. The test sources/recordings remain in place but inactive. Both projects explicitly retain container-based publishing, synchronization, and installation.
 
-Use the **CI/CD** workflow for the initial reproduction after the branch has been explicitly committed and pushed. Do not use a source-only local development build as evidence of reproduction. No real container/pipeline run has been performed for this setup, and no `installApps` setting or container-creation workaround has been added.
+Use the **CI/CD** workflow for the initial reproduction after the branch has been explicitly committed and pushed. Do not use a source-only local development build as evidence of reproduction. The [first CI/CD run](https://github.com/spetersenmsorg/Al-Go_MultiProjectTest/actions/runs/44271902466) failed during artifact resolution because the original selectors omitted the leading slash, before container creation or app installation. The selectors are corrected; the intended Subcontracting failure remains unverified. No `installApps` setting or container-creation workaround has been added.
 
 The existing actions still use `spetersenms/AL-Go@spetersen/separateTestActionCodeCoverage`, not the report's AL-Go v9.2/v10. At preparation time that moving ref resolved to `f08b0b55101ac9079635b7e5b9e3822b78f99c13`; its `RunPipeline` action forwards downloaded prebuilt apps to `Run-AlPipeline -installApps`. The helper version is pinned to the report's `6.1.19` instead of the action branch's default `preview`. Record the resolved action SHA and helper version from the actual run; a source build succeeding is not confirmation of the failure.
 

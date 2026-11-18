@@ -11,7 +11,7 @@
   "trackAlAlertsInGitHub": true,
   "useProjectDependencies": true,
   "buildModes": [],
-  "artifact": "sandbox/28.5.54151.56840/w1",
+  "artifact": "/sandbox/28.5.54151.56840/w1",
   "doNotBuildTests": true,
   "doNotRunTests": true,
   "doNotRunBcptTests": true,
