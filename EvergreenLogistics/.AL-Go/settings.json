@@ -1,6 +1,6 @@
 {
   "$schema": "https://raw.githubusercontent.com/spetersenms/AL-Go/spetersen/separateTestActionCodeCoverage/Actions/.Modules/settings.schema.json",
-  "country": "us",
+  "country": "w1",
   "appFolders": [
     "./EvergreenInventory",
     "./EvergreenFulfillment"
@@ -13,6 +13,7 @@
   "pageScriptingTests": [
     "Recordings"
   ],
-  "artifact": "bcinsider//30/us/latest",
+  "artifact": "sandbox/28.5.54151.56840/w1",
+  "useCompilerFolder": false,
   "doNotPublishApps": false
 }

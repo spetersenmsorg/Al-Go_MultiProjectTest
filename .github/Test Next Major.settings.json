@@ -1,6 +1,6 @@
 {
   "$schema": "https://raw.githubusercontent.com/spetersenms/AL-Go/spetersen/separateTestActionCodeCoverage/Actions/.Modules/settings.schema.json",
-  "artifact": "////nextmajor",
+  "artifact": "sandbox/28.5.54151.56840/w1",
   "cacheImageName": "",
   "versioningStrategy": 15
 }

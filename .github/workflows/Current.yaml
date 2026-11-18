@@ -14,7 +14,7 @@ defaults:
     shell: powershell
 
 env:
-  workflowDepth: 1
+  workflowDepth: 2
   ALGoOrgSettings: ${{ vars.ALGoOrgSettings }}
   ALGoRepoSettings: ${{ vars.ALGoRepoSettings }}
 
@@ -105,8 +105,30 @@ jobs:
       artifactsNameSuffix: 'Current'
       needsContext:  ${{ toJson(needs) }}
 
-  AnalyzeCodeCoverage:
+  Build2:
     needs: [ Initialization, Build ]
+    if: (!failure()) && (!cancelled()) && fromJson(needs.Initialization.outputs.buildOrderJson)[1].projectsCount > 0
+    strategy:
+      matrix:
+        include: ${{ fromJson(needs.Initialization.outputs.buildOrderJson)[1].buildDimensions }}
+      fail-fast: false
+    name: Build ${{ matrix.projectName }} (${{ matrix.buildMode }})
+    uses: ./.github/workflows/_BuildALGoProject.yaml
+    secrets: inherit
+    with:
+      shell: ${{ matrix.githubRunnerShell }}
+      runsOn: ${{ matrix.githubRunner }}
+      project: ${{ matrix.project }}
+      projectName: ${{ matrix.projectName }}
+      buildMode: ${{ matrix.buildMode }}
+      projectDependenciesJson: ${{ needs.Initialization.outputs.projectDependenciesJson }}
+      secrets: 'licenseFileUrl,codeSignCertificateUrl,*codeSignCertificatePassword,keyVaultCertificateUrl,*keyVaultCertificatePassword,keyVaultClientId,gitHubPackagesContext,applicationInsightsConnectionString'
+      artifactsRetentionDays: ${{ fromJson(needs.Initialization.outputs.artifactsRetentionDays) }}
+      artifactsNameSuffix: 'Current'
+      needsContext:  ${{ toJson(needs) }}
+
+  AnalyzeCodeCoverage:
+    needs: [ Initialization, Build, Build2 ]
     if: (!cancelled()) && contains(needs.Initialization.outputs.buildOrderJson, '"codeCoverageRepositorySummary":true')
     runs-on: [ windows-latest ]
     steps:
@@ -130,7 +152,7 @@ jobs:
           buildOrderJson: ${{ needs.Initialization.outputs.buildOrderJson }}
 
   PostProcess:
-    needs: [ Initialization, Build, AnalyzeCodeCoverage ]
+    needs: [ Initialization, Build, Build2, AnalyzeCodeCoverage ]
     if: always()
     runs-on: [ windows-latest ]
     steps:

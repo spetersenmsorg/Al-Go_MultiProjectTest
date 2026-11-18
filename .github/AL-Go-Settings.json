@@ -2,23 +2,24 @@
   "$schema": "https://raw.githubusercontent.com/spetersenms/AL-Go/spetersen/separateTestActionCodeCoverage/Actions/.Modules/settings.schema.json",
   "type": "PTE",
   "templateUrl": "https://github.com/spetersenms/AL-Go@spetersen/separateTestActionCodeCoverage",
-  "generateDependencyArtifact": true,
+  "generateDependencyArtifact": false,
+  "BcContainerHelperVersion": "6.1.19",
   "templateSha": "f7aa9286584534aede83d23da8735b800be1abc9",
   "enableCodeCop": true,
   "enableUICop": true,
   "rulesetFile": "../rulesets/ruleset.json",
   "trackAlAlertsInGitHub": true,
-  "useProjectDependencies": false,
+  "useProjectDependencies": true,
   "buildModes": [],
-  "artifact": "bcinsider//30//latest",
+  "artifact": "sandbox/28.5.54151.56840/w1",
+  "doNotBuildTests": true,
+  "doNotRunTests": true,
+  "doNotRunBcptTests": true,
+  "doNotRunPageScriptingTests": true,
+  "skipUpgrade": true,
   "useSeparateTestAction": {
-    "enabled": true,
+    "enabled": false,
     "testType": "",
-    "codeCoverageEnabled": true,
-    "codeCoverageMode": "all",
-    "codeCoverageFormats": [
-      "bc-json",
-      "cobertura"
-    ]
+    "codeCoverageEnabled": false
   }
 }

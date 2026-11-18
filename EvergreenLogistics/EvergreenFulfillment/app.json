@@ -10,7 +10,14 @@
   "help": "",
   "url": "",
   "logo": "",
-  "dependencies": [],
+  "dependencies": [
+    {
+      "id": "6a25f3a8-0eb0-4fd8-8057-73a1f5d98a7c",
+      "name": "Aurora Commerce",
+      "publisher": "spetersenProductions",
+      "version": "1.0.0.0"
+    }
+  ],
   "screenshots": [],
   "platform": "27.0.0.0",
   "application": "27.0.0.0",
