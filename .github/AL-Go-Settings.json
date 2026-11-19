@@ -20,7 +20,7 @@
     "SharedHostContainer",
     "SharedHostCompiler"
   ],
-  "githubRunner": "self-hosted,Windows,X64,al-go-shared-host-primary",
+  "githubRunner": "self-hosted,Windows,X64",
   "githubRunnerShell": "powershell",
   "cacheImageName": "",
   "cacheKeepDays": 3,
