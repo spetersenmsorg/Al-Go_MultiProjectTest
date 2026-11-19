@@ -65,7 +65,7 @@
         "SharedHostContainer2"
       ],
       "settings": {
-        "githubRunner": "self-hosted,Windows,X64,al-go-shared-host-peer"
+        "githubRunner": "self-hosted,Windows,X64"
       }
     }
   ],
