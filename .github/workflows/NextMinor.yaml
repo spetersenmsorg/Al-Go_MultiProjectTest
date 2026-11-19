@@ -29,10 +29,9 @@ jobs:
       workflowDepth: ${{ steps.DetermineWorkflowDepth.outputs.WorkflowDepth }}
       artifactsRetentionDays: ${{ steps.DetermineWorkflowDepth.outputs.ArtifactsRetentionDays }}
       telemetryScopeJson: ${{ steps.init.outputs.telemetryScopeJson }}
-      githubRunnerShell: ${{ steps.ReadSettings.outputs.GitHubRunnerShell }}
     steps:
       - name: Dump Workflow Information
-        uses: spetersenms/AL-Go/Actions/DumpWorkflowInfo@spetersen/separateTestActionCodeCoverage
+        uses: spetersenms/AL-Go/Actions/DumpWorkflowInfo@spetersen-microsoft-pipeline-cleanup-isolation
         with:
           shell: powershell
 
@@ -43,13 +42,13 @@ jobs:
 
       - name: Initialize the workflow
         id: init
-        uses: spetersenms/AL-Go/Actions/WorkflowInitialize@spetersen/separateTestActionCodeCoverage
+        uses: spetersenms/AL-Go/Actions/WorkflowInitialize@spetersen-microsoft-pipeline-cleanup-isolation
         with:
           shell: powershell
 
       - name: Read settings
         id: ReadSettings
-        uses: spetersenms/AL-Go/Actions/ReadSettings@spetersen/separateTestActionCodeCoverage
+        uses: spetersenms/AL-Go/Actions/ReadSettings@spetersen-microsoft-pipeline-cleanup-isolation
         with:
           shell: powershell
           get: useGitSubmodules,shortLivedArtifactsRetentionDays
@@ -57,7 +56,7 @@ jobs:
       - name: Read submodules token
         id: ReadSubmodulesToken
         if: env.useGitSubmodules != 'false' && env.useGitSubmodules != ''
-        uses: spetersenms/AL-Go/Actions/ReadSecrets@spetersen/separateTestActionCodeCoverage
+        uses: spetersenms/AL-Go/Actions/ReadSecrets@spetersen-microsoft-pipeline-cleanup-isolation
         with:
           shell: powershell
           gitHubSecrets: ${{ toJson(secrets) }}
@@ -79,7 +78,7 @@ jobs:
 
       - name: Determine Projects To Build
         id: determineProjectsToBuild
-        uses: spetersenms/AL-Go/Actions/DetermineProjectsToBuild@spetersen/separateTestActionCodeCoverage
+        uses: spetersenms/AL-Go/Actions/DetermineProjectsToBuild@spetersen-microsoft-pipeline-cleanup-isolation
         with:
           shell: powershell
           maxBuildDepth: ${{ env.workflowDepth }}
@@ -106,29 +105,8 @@ jobs:
       artifactsNameSuffix: 'NextMinor'
       needsContext:  ${{ toJson(needs) }}
 
-  AnalyzeCodeCoverage:
-    needs: [ Initialization, Build ]
-    if: (!cancelled()) && contains(needs.Initialization.outputs.buildOrderJson, '"codeCoverageRepositorySummary":true')
-    runs-on: [ windows-latest ]
-    steps:
-      - name: Download Code Coverage artifacts
-        continue-on-error: true
-        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
-        with:
-          pattern: '*-*CodeCoverage-*'
-          path: '${{ github.workspace }}/.buildartifacts/DownloadedCodeCoverage/'
-
-      - name: Analyze Code Coverage
-        if: success() || failure()
-        uses: spetersenms/AL-Go/Actions/AnalyzeCodeCoverage@spetersen/separateTestActionCodeCoverage
-        with:
-          shell: ${{ needs.Initialization.outputs.githubRunnerShell }}
-          scope: repository
-          coveragePath: '${{ github.workspace }}/.buildartifacts/DownloadedCodeCoverage/'
-          buildOrderJson: ${{ needs.Initialization.outputs.buildOrderJson }}
-
   PostProcess:
-    needs: [ Initialization, Build, AnalyzeCodeCoverage ]
+    needs: [ Initialization, Build ]
     if: always()
     runs-on: [ windows-latest ]
     steps:
@@ -137,7 +115,7 @@ jobs:
 
       - name: Finalize the workflow
         id: PostProcess
-        uses: spetersenms/AL-Go/Actions/WorkflowPostProcess@spetersen/separateTestActionCodeCoverage
+        uses: spetersenms/AL-Go/Actions/WorkflowPostProcess@spetersen-microsoft-pipeline-cleanup-isolation
         env:
           GITHUB_TOKEN: ${{ github.token }}
         with:

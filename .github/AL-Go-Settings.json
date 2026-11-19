@@ -1,9 +1,9 @@
 {
-  "$schema": "https://raw.githubusercontent.com/spetersenms/AL-Go/spetersen/separateTestActionCodeCoverage/Actions/.Modules/settings.schema.json",
+  "$schema": "https://raw.githubusercontent.com/spetersenms/AL-Go/spetersen-microsoft-pipeline-cleanup-isolation/Actions/.Modules/settings.schema.json",
   "type": "PTE",
-  "templateUrl": "https://github.com/spetersenms/AL-Go@spetersen/separateTestActionCodeCoverage",
+  "templateUrl": "https://github.com/spetersenms/AL-Go@spetersen-microsoft-pipeline-cleanup-isolation",
   "generateDependencyArtifact": true,
-  "templateSha": "e635961360514de185d9118a94eaff40d64b01a7",
+  "templateSha": "36ea52be38641c498634f7e2066626bd55015bff",
   "enableCodeCop": true,
   "enableUICop": true,
   "rulesetFile": "../rulesets/ruleset.json",
