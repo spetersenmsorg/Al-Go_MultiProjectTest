@@ -9,7 +9,66 @@
   "rulesetFile": "../rulesets/ruleset.json",
   "trackAlAlertsInGitHub": true,
   "useProjectDependencies": false,
-  "buildModes": [],
+  "overwriteSettings": [
+    "projects",
+    "buildModes"
+  ],
+  "projects": [
+    "AuroraRetail"
+  ],
+  "buildModes": [
+    "SharedHostContainer",
+    "SharedHostCompiler"
+  ],
+  "githubRunner": "self-hosted,Windows,X64,al-go-shared-host-primary",
+  "githubRunnerShell": "powershell",
+  "cacheImageName": "",
+  "cacheKeepDays": 3,
+  "ConditionalSettings": [
+    {
+      "buildModes": [
+        "SharedHostContainer",
+        "SharedHostContainer2"
+      ],
+      "settings": {
+        "protectedSettings": [
+          "useCompilerFolder",
+          "doNotPublishApps",
+          "doNotRunTests"
+        ],
+        "useCompilerFolder": false,
+        "doNotPublishApps": false,
+        "doNotRunTests": false,
+        "preprocessorSymbols": [
+          "SHARED_HOST_CLEANUP_TEST"
+        ]
+      }
+    },
+    {
+      "buildModes": [
+        "SharedHostCompiler"
+      ],
+      "settings": {
+        "protectedSettings": [
+          "useCompilerFolder",
+          "doNotPublishApps",
+          "doNotRunTests"
+        ],
+        "useCompilerFolder": true,
+        "doNotPublishApps": true,
+        "doNotRunTests": true
+      }
+    },
+    {
+      "buildModes": [
+        "SharedHostCompiler",
+        "SharedHostContainer2"
+      ],
+      "settings": {
+        "githubRunner": "self-hosted,Windows,X64,al-go-shared-host-peer"
+      }
+    }
+  ],
   "artifact": "bcinsider//30//latest",
   "useSeparateTestAction": {
     "enabled": true,

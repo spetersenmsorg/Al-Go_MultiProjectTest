@@ -44,3 +44,81 @@ $codeunits = @(Get-TestsFromBcContainer @getTestsParams | ForEach-Object { $_ })
 Confirm that discovery yields three individual codeunits and that the loop runs each separately. For the end-to-end separate-action path, run CI/CD with Aurora Retail selected and `powershell` as its runner shell; use an unfixed AL-Go action ref to reproduce and the fixed ref to verify the correction. The configured remote action ref does not include uncommitted changes from a local AL-Go checkout. AL-Go system-file updates can overwrite the workflow shell forwarding, so check the `Run Tests` step after updating.
 
 No Business Central container run has been verified for this fixture change.
+
+## Shared-host cleanup isolation test
+
+This branch selects only `AuroraRetail` and builds it twice in a single manually
+dispatched **CI/CD** workflow. `SharedHostContainer` builds and publishes apps and
+runs the existing test folders in a Windows container. `SharedHostCompiler` uses
+the compiler folder with publishing and tests disabled. Mode-specific settings
+protect these three flags from the project's normal container-build settings.
+Evergreen Logistics and the existing app dependencies are unchanged.
+
+Register two Windows X64 runners for this repository on the same host, with
+separate installation/work directories and access to the same Windows Docker
+daemon. Give one the custom label `al-go-shared-host-primary` and the other
+`al-go-shared-host-peer`, in addition to `self-hosted`, `Windows`, and `X64`.
+Only build jobs use these labels; initialization and postprocessing still use
+GitHub-hosted Windows runners. CI/CD has no `max-parallel` or concurrency limit
+serializing the matrix, and project dependency discovery remains disabled.
+
+The test needs artifact access for `bcinsider//30/us/latest` and any required
+`licenseFileUrl` secret, plus access to the selected dev AL-Go action ref.
+Check organization/repository settings variables for protected runner, project,
+mode, or build settings that could override this file. Runner, secret-name, and
+settings-variable metadata could not be verified with the current token
+(HTTP 403). No runner registrations or secrets were changed.
+
+After updating AL-Go system files to the deployed dev branch, preserve these
+settings and verify that the generated build workflow still forwards
+`inputs.buildMode` to the build actions and uses the matrix runner labels.
+The checked-in workflows and action/template refs were deliberately not updated.
+Commit and push the test branch yourself before dispatching it.
+
+To establish overlap without relying on matrix ordering:
+
+1. Leave the peer runner stopped and the primary runner online. Dispatch CI/CD
+   once on this branch. Confirm both Aurora Retail modes appear in that run.
+2. Wait until the primary job creates its container, then start the peer runner.
+   The compiler job cannot take the primary runner's label. The container-mode
+   test `P1 Calculation Tests.CalculatesTotal` includes a five-minute `Sleep`
+   under `SHARED_HOST_CLEANUP_TEST`, which only the container modes define.
+   Start the peer promptly; do not wait until that test has finished.
+3. Confirm the compiler job reaches `Pipeline Cleanup` while the primary
+   container is still running. Correlate timestamps from both jobs and the
+   read-only Docker inventory below. If cleanup happens after the container
+   exits, the run is inconclusive, not a pass; repeat with warm artifacts or a
+   longer fixture delay.
+4. With the fix, the compiler job must not remove the primary container, and
+   the container job must finish its tests successfully. Confirm distinct
+   persisted `_ALGoBuildId` values in the job logs and a 15-character `bc`-prefixed
+   container name whose `al-go.build-id` label matches its owning build.
+
+Run this read-only command on the shared host while the primary container is
+alive and again immediately after the peer's cleanup:
+
+```powershell
+Get-Date -Format o
+docker ps --filter "label=creator=AL-Go" --format 'table {{.ID}}\t{{.Names}}\t{{.Status}}\t{{.Label "al-go.build-id"}}'
+```
+
+Match the container to the current job's logged identity; unrelated AL-Go
+containers are not test evidence and must not be changed.
+
+For the two-container variant, replace `SharedHostCompiler` in `buildModes` with
+`SharedHostContainer2`. That mode already selects the peer runner, disables the
+compiler folder, publishes apps, and runs the same delayed tests. Start the peer
+as soon as the primary container exists and verify two distinct, correctly
+labeled containers coexist in the same workflow run. Each job's cleanup must
+remove only its own container, with the other job's tests remaining successful.
+Two separate workflow runs do not reproduce the original same-run naming defect.
+
+`cacheKeepDays` remains `3`. `cacheImageName` is explicitly empty for the initial
+isolation test so shared image creation/maintenance does not confound container
+ownership. To cover cache-enabled maintenance separately, prewarm a dedicated
+image prefix in a non-overlapping run, then set `cacheImageName` to that prefix
+and repeat the same-run test with `cacheKeepDays: 3`. Do not use zero-day cache
+flushing, prune shared Docker state, or remove unrelated containers.
+
+The delay does not affect modes without `SHARED_HOST_CLEANUP_TEST`. No workflow,
+Docker workload, or runner installation was started while preparing this branch.
