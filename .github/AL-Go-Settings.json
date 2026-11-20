@@ -1,9 +1,8 @@
 {
-  "$schema": "https://raw.githubusercontent.com/spetersenms/AL-Go/spetersen-microsoft-altool-dev-coverage-experiment/Actions/.Modules/settings.schema.json",
+  "$schema": "https://raw.githubusercontent.com/spetersenms/AL-Go/spetersen-microsoft-renewal-coverage-compatibility/Actions/.Modules/settings.schema.json",
   "type": "PTE",
-  "templateUrl": "https://github.com/spetersenms/AL-Go@spetersen-microsoft-altool-dev-coverage-experiment",
+  "templateUrl": "https://github.com/spetersenms/AL-Go@spetersen-microsoft-renewal-coverage-compatibility",
   "generateDependencyArtifact": true,
-  "templateSha": "f08b0b55101ac9079635b7e5b9e3822b78f99c13",
   "enableCodeCop": true,
   "enableUICop": true,
   "rulesetFile": "../rulesets/ruleset.json",
